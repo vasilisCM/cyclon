@@ -1,0 +1,48 @@
+{
+    "key": "group_626dbfc9c3a7d",
+    "title": "Blog Category options",
+    "fields": [
+        {
+            "key": "field_626dbfde2fdaa",
+            "label": "Category Icon",
+            "name": "category_icon",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Place SVG Code",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "wpml_cf_preferences": 1,
+            "default_value": "",
+            "placeholder": "",
+            "maxlength": "",
+            "rows": 12,
+            "new_lines": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "taxonomy",
+                "operator": "==",
+                "value": "category"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1681203777,
+    "local_file": "\/www\/cyclongr_106\/public\/wp-content\/themes\/cyclon\/acf-json\/group_626dbfc9c3a7d.json",
+    "acfml_field_group_mode": "advanced"
+}

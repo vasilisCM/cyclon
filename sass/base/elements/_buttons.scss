@@ -1,0 +1,106 @@
+button,
+input[type="button"],
+input[type="reset"],
+input[type="submit"] {
+	border: 1px solid;
+	border-color: $color__border-button;
+	border-radius: 3px;
+	background: $color__background-button;
+	color: rgba(0, 0, 0, 0.8);
+	line-height: 1;
+	padding: 0.6em 1em 0.4em;
+
+	&:hover {
+		border-color: $color__border-button-hover;
+	}
+
+	&:active,
+	&:focus {
+		border-color: $color__border-button-focus;
+	}
+}
+.mButton{
+	display: inline-block;
+	width: 207px;
+	background: #e9e9e9;
+	color: $color__button;
+	font-size: 13px ;
+	line-height: 16px;
+	text-align: center;
+	font-weight: 500;
+	padding: 17px 0;
+	transition: all 350ms ease;
+	border: 1px solid $color__body;
+	border-radius: 30px;
+	&:hover{
+		background: $color__secondary;
+		color: $color__body;
+		transition: all 350ms ease-out;
+		border:1px solid $color__secondary;
+	}
+	&--blueButton{
+		color: $color__secondary !important;
+		background: $color__primary !important;
+		border: 1px solid $color__primary !important;
+		&:hover{
+			background: $color__secondary !important;
+			color: $color__primary !important;
+			border: 1px solid $color__secondary !important;
+		}
+	}
+	&--lightCTA{
+		width: 264px;
+		color: $color__body !important;
+		background: white !important;
+		border: 1px solid $color__body !important;
+		&:hover{
+			background: $color__secondary !important;
+			color: $white !important;
+			border: 1px solid $color__secondary !important;
+		}
+	}
+	&--darkBtn{
+		background: $color__body;
+		color: $white !important;
+		border: 1px solid $color__body;
+		&:hover{
+			color: $color__body !important;
+			background: transparent !important;
+			border: 1px solid $color__body !important;
+		}
+	}
+	&--darkBtn2{
+		background: $color__body;
+		color: $white !important;
+		border: 1px solid $color__body;
+		&:hover{
+			background: $color__secondary !important;
+			color: $white !important;
+			border: 1px solid $color__secondary !important;
+		}
+	}
+	&--redBtn{
+		background: $color__secondary !important;
+		color: $white !important;
+		border: 1px solid $color__secondary !important;
+		&:hover{
+			color: $color__body !important;
+			background: $white !important;
+			border: 1px solid $color__body !important;
+		}
+	}
+	&--trans{
+		box-shadow: none;
+		background: transparent;
+		color: #fff !important;
+		border: 1px solid #fff;
+		&:hover{
+			background: $color__secondary;
+			color: $color__body !important;
+			border: 1px solid $color__secondary;
+		}
+	}
+	&--ctaSize{
+		width: 264px;
+	}
+}

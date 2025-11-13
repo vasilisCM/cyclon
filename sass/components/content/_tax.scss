@@ -1,0 +1,410 @@
+html {
+  overflow-x: hidden;
+}
+.tax-cyclon_product_cat .taxHeader{
+  @include media('<=767px'){
+    height: 394px;
+  }
+}
+.taxHeader {
+  height: 620px;
+  background-size: cover !important;
+  @include media('<=767px') {
+    height: 681px;
+  }
+
+  & .container {
+    height: 100%;
+  }
+
+  & .row {
+    height: 100%;
+  }
+
+  &__Content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    @include media('<=767px') {
+      height: unset;
+    }
+
+    & h1 {
+      font-size: 80px;
+      line-height: 75px;
+      font-weight: 400;
+      color: $white;
+      letter-spacing: -4.4px;
+      margin: 120px 0 75px 0;
+      @include media('<=767px') {
+        font-size: 35px;
+        line-height: 35px;
+        letter-spacing: -1.23px;
+
+      }
+    }
+
+    & p {
+      margin-top: -50px;
+      max-width: 453px;
+      color: $white;
+      @include media('<=767px') {
+        font-size: 16px;
+        line-height: 22px;
+      }
+    }
+  }
+
+  &__Buttons {
+    display: flex;
+    align-items: center;
+    & a:first-child {
+      margin-right: 15px;
+    }
+    @include media('<=767px'){
+      display: none;
+    }
+  }
+}
+
+.taxHeader_Header_Wrapper__Inner {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.brand_cyclon_logo {
+  margin: 0 auto;
+  display: block;
+  padding-top: 100px;
+}
+
+.saloon {
+  padding: 45px 100px;
+  background: $color__moreLightGray;
+  @include media('<=767px') {
+    padding: 40px 10px;
+    margin-top: -30px;
+  }
+
+  &__Image {
+    max-width: 1165px;
+    margin: 0 auto;
+
+    & img {
+      object-fit: cover;
+      width: 100%;
+      height: auto;
+      margin-bottom: 20px;
+      @include media('<=767px') {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  & h3 {
+    font-size: 28px;
+    line-height: 35px;
+    font-weight: bold;
+    margin-bottom: 7px;
+    color: $color__primary;
+    @include media('<=767px') {
+      font-size: 20px;
+      line-height: 25px;
+      margin-bottom: 20px;
+    }
+  }
+
+  & p {
+    max-width: 788px;
+    margin: 0 auto 22px auto;
+    font-size: 20px;
+    line-height: 25px;
+    @include media('<=767px') {
+      font-size: 16px;
+      line-height: 20px;
+      margin-bottom: 20px;
+    }
+  }
+}
+
+.appMapping {
+  background-repeat: no-repeat;
+  background-size: cover !important;
+  height: 760px;
+  @include media('<=767px') {
+    height: 300px;
+  }
+}
+
+.features {
+  padding: 50px 0;
+  background: $color__moreLightGray;
+  @include media('<=767px') {
+    padding: 50px 0;
+  }
+}
+
+.feature {
+  margin-bottom: 120px;
+  @include media('<=767px') {
+    margin-bottom: 0;
+  }
+
+  &--leftImage {
+    text-align: right;
+
+    & .feature__Content {
+      padding-right: 80px;
+      @include media('<=767px') {
+        padding-right: 0;
+        text-align: center;
+        margin-top: 25px;
+        margin-bottom: 25px;
+      }
+    }
+
+    & .feature__Image {
+      text-align: left;
+      @include media('<=767px') {
+        text-align: left;
+        max-width: 250px;
+        margin: 30px auto 0 auto;
+      }
+    }
+
+  }
+
+  &--rightImage {
+    & .feature__Content {
+      padding-left: 65px;
+      @include media('<=767px') {
+        padding-left: 0;
+        text-align: center;
+        margin-top: 25px;
+        margin-bottom: 25px;
+      }
+    }
+
+    & .feature__Image {
+      text-align: right;
+      @include media('<=767px') {
+        margin: 0 auto;
+        max-width: 250px;
+      }
+    }
+
+    & a.mButton:first-child {
+      margin-right: 15px;
+    }
+  }
+
+  &__Content {
+    & h3 {
+      font-size: 44px;
+      line-height: 47px;
+      letter-spacing: -2.42px;
+      font-weight: 400;
+      margin: 0 0 10px 0;
+      color: $color__primary;
+      @include media('<=767px') {
+        font-size: 28px;
+        line-height: 32px;
+      }
+    }
+
+    & p {
+      margin-bottom: 28px;
+      @include media('<=767px') {
+        font-size: 16px;
+        line-height: 22px;
+      }
+    }
+
+    & .mButton {
+      @include media('<=600px') {
+        width: 160px;
+      }
+    }
+  }
+}
+
+.product-cat {
+  & h1 {
+    font-size: 50px;
+    line-height: 57px;
+    letter-spacing: -1.4px;
+    @include media('<=767px'){
+      font-size: 26px;
+      line-height: 30px;
+      letter-spacing: 0.73px;
+      max-width: 200px;
+    }
+  }
+}
+
+.cyclon_tax_wrapper {
+  background: #E9E9E9;
+  padding: 40px 0 70px 0;
+  @include media('<=767px'){
+    padding: 0 0 70px 0;
+  }
+}
+
+.product-filters {
+  padding: 27px 56px;
+  background: #fff;
+  margin-bottom: 200px;
+  @include media('<=767px'){
+    padding: 25px ;
+  }
+}
+
+.cyclon_tax_wrapper {
+  & .productCard {
+    margin-bottom: 180px;
+  }
+
+  & .productCard__Image {
+    max-width: 183px;
+  }
+
+  .productCard__Image img {
+    height: 330px;
+  }
+}
+
+.vehicle-icon {
+  position: absolute;
+  top: 30px;
+  right: 16px;
+  max-width: 40px;
+}
+
+.product-filter-line {
+  padding: 0 0 10px 0;
+  margin-bottom: 10px;
+  border-bottom: 1px solid rgba(112, 112, 112, 0.36);
+  display: flex;
+  align-items: center;
+  @include media('<=767px'){
+    display: block;
+  }
+  & .filter-label {
+    font-size: 16px;
+    line-height: 20px;
+    color: $color__primary;
+    margin-right: 75px;
+    @include media('<=767px'){
+      font-size: 14px;
+      line-height: 18px;
+      margin-bottom: 17px;
+    }
+  }
+
+  & .facetwp-facet {
+    margin: 0;
+  }
+
+  .facetwp-dropdown {
+    background: #DADADA;
+    padding: 10px;
+    font-size: 16px;
+    text-align: center;
+    border: none;
+    border-radius: 28px;
+    min-width: 150px;
+    box-shadow: inset 5px 5px 19px #0427598a;
+    margin-bottom: 10px;
+    @include media('<=767px'){
+      font-size: 14px;
+      line-height: 18px;
+      padding: 8px;
+      width: 100%;
+    }
+  }
+  & .facetwp-type-checkboxes{
+    margin-left: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    @include media('<=767px'){
+      margin-left: 0;
+    }
+  }
+  & .facetwp-type-radio{
+    margin-left: 15px;
+    display: flex;
+    flex-wrap: wrap;
+    @include media('<=767px'){
+      margin-left: 0;
+    }
+  }
+  .facetwp-checkbox{
+    background: #DADADA;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 28px;
+    min-width: 150px;
+    text-align: center;
+    box-shadow: inset 5px 5px 19px #0427598a;
+    margin-right: 20px;
+    @include media('<=767px'){
+      font-size: 14px;
+      line-height: 18px;
+      padding: 8px;
+      background: #DADADA;
+      border-radius: 28px;
+      text-align: center;
+      box-shadow: inset 5px 5px 19px #0427598a;
+      margin: 5px 7px 7px 0;
+      flex-grow: 4;
+    }
+    &:hover{
+      background: $color__secondary;
+    }
+  }
+  .facetwp-checkbox.checked{
+    background: $color__secondary;
+  }
+  .facetwp-radio{
+    background: #DADADA;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 28px;
+    min-width: 150px;
+    text-align: center;
+    box-shadow: inset 5px 5px 19px #0427598a;
+    margin-right: 20px;
+    @include media('<=767px'){
+      font-size: 14px;
+      line-height: 18px;
+      padding: 8px;
+      background: #DADADA;
+      border-radius: 28px;
+      text-align: center;
+      box-shadow: inset 5px 5px 19px #0427598a;
+      margin: 5px 7px 7px 0;
+      flex-grow: 4;
+    }
+    &:hover{
+      background: $color__secondary;
+    }
+  }
+  .facetwp-radio.checked{
+    background: $color__secondary;
+  }
+}
+/* Hide counts in all facets with a checkboxes UI (Checkboxes facet, Range List facet in UI mode "Checkboxes" */
+.facetwp-checkbox .facetwp-counter {
+  display: none;
+}
+
+/* Hide counts in all Checkboxes facets */
+[data-type="checkboxes"] .facetwp-counter {
+  display: none;
+}
+
+/* Hide counts in a specific Checkboxes facet */
+.facetwp-facet-yourfacetname .facetwp-counter {
+  display: none;
+}

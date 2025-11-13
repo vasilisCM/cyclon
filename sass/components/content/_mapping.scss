@@ -1,0 +1,84 @@
+.mappingWrapper{
+  width: 100%;
+  height: 760px;
+  background: url('/wp-content/uploads/2022/06/baseCar-Image-2.png') no-repeat center;
+}
+.mappingSrcImage{
+  position: relative;
+  width: 100%;
+  height: 760px;
+  & img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}
+.map-dot{
+  position: absolute;
+  width: 150px;
+  height:150px;
+  border-radius: 50%;
+  background: transparent;
+}
+.mappingChild{
+  position: relative;
+  height: 760px;
+}
+.car-windshield-dot{
+  top: 23%;
+  left: 60%;
+  
+}
+.car-engine-dot{
+  top: 55%;
+  left: 48%;
+}
+.car-transmission-dot{
+  top: 50%;
+  left: 56.7%;
+}
+.otherChild{
+  display: none;
+}
+.showMap{
+  display: block !important;
+}
+
+.mapping-contents{
+  position: absolute;
+  top: 25%;
+  left: 16%;
+  @include media('<=1440px'){
+    top: 23%;
+    left: 0;
+  }
+  & h3{
+    font-size: 28px;
+    line-height: 32px;
+    font-weight: 400;
+    color: #fff;
+  }
+  & .mapping-products-names{
+    display: flex;
+    align-items: center;
+    color: #fff;
+    font-size: 14px;
+    line-height: 18px;
+    & ul{
+      padding: 0;
+      margin: 0 20px 0 0;
+      list-style: none;
+      & li{
+        margin-bottom: 15px;
+      }
+    }
+  }
+  & .mapping-images{
+    display: flex;
+    align-items: center;
+    & img{
+
+      max-width: 80px;
+    }
+  }
+}

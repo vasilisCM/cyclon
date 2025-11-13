@@ -1,0 +1,27 @@
+body {
+	background: $color__background-body; // Fallback for when there is no custom background color defined.
+	color: $color__body;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-rendering: optimizeLegibility;
+	overflow-x: hidden;
+}
+p{
+	margin: 0 0 15px 0;
+}
+
+circle{
+	transition: all 1000ms ease-in;
+}
+
+.rotate {
+	animation: rotation 12s infinite linear;
+}
+@keyframes rotation {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(359deg);
+	}
+}

@@ -1,0 +1,57 @@
+.widget {
+	margin: 0 0 1.5em;
+
+	// Make sure select elements fit in widgets.
+	select {
+		max-width: 100%;
+	}
+}
+
+.footer-widget{
+	& ul,ol{
+		list-style: none;
+		padding: 0;
+		margin: 0 0 0 0;
+		& li{
+			&:last-child{
+				margin-bottom: 0;
+			}
+			& a{
+				font-weight: 500;
+				font-size: $footer-size;
+				line-height: $footer-line-height;
+				color: $color__primary;
+			}
+		}
+	}
+}
+.footer-widget-1{
+	max-width: 293px;
+	border-right: 1px solid #fff;
+}
+.footer-widget-1 a{
+
+	font-weight: bold !important;
+}
+.footer-widget-2{
+	border-right: 1px solid #fff;
+}
+.footer-address{
+	& h4{
+		font-size: $footer-size;
+		line-height: $footer-line-height;
+		margin: 0 0 9px 0;
+	}
+	& p:not(.address-phone){
+		color: $color__lightGray;
+		margin-bottom: 15px;
+	}
+	& .address-phone{
+		margin-bottom: 0 ;
+	}
+
+}
+.footer-widget-4,
+.footer-widget-9{
+	margin-left: -30px !important;
+}

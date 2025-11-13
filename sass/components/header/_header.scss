@@ -1,0 +1,49 @@
+.cyclon__Header{
+	position: absolute;
+	z-index: 888;
+	width: 100%;
+	top: 0;
+	left: 0;
+	padding: 0;
+}
+.logoLink{
+	@include media('<=768px'){
+		display: block;
+		max-width: 89px;
+	}
+	& img{
+		box-shadow: 0 0 181px 130px rgba(31 ,154, 225,0.80);
+		@include media('<=550px'){
+			box-shadow: -7px -2px 82px 50px rgba(31,154,225,0.8);
+		}
+	}
+}
+
+.cyclon__Header.solid-header{
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 100%;
+	z-index: 888;
+	background: $color__primary !important;
+	& .cyclon__Menu{
+		margin: 34px 0 0 0;
+	}
+	& .cyclon__logo{
+		height: 100px;
+		margin-bottom: -4px;
+		box-shadow: 0 0 132px 6px rgba(31 ,154, 225,0.80);
+		@include media('<=550px'){
+			height: auto !important;
+		}
+	}
+}
+#site-navigation{
+
+	@include media('<=996px'){
+		display: none;
+	}
+}
+.mobile-trigger{
+	text-align: right;
+}

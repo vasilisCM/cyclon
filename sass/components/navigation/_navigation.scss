@@ -1,0 +1,62 @@
+.cyclon__Menu {
+	padding: 0;
+	margin: 44px 0 0 0;
+	display: flex;
+	align-items: center;
+	justify-content: flex-end;
+	list-style: none;
+
+	& li {
+		margin-right: 20px;
+		&:last-child{
+			margin-right: 0;
+		}
+		& a {
+			font-size: 13px;
+			text-decoration: none;
+			line-height: 16px;
+			color: $white;
+			font-weight: 500;
+			padding: 7px 20px;
+			border-radius: 40px;
+			&:hover{
+				color: $color__secondary;
+			}
+		}
+	}
+	& li.current-menu-item{
+		& a{
+			background: $color__secondary;
+			color: $color__primary;
+		}
+	}
+}
+
+/* Small menu. */
+.menu-toggle,
+.main-navigation.toggled ul {
+	display: block;
+}
+
+
+.comment-navigation,
+.posts-navigation,
+.post-navigation {
+
+	.site-main & {
+		margin: 0 0 1.5em;
+	}
+
+	.nav-links {
+		display: flex;
+	}
+
+	.nav-previous {
+		flex: 1 0 50%;
+	}
+
+	.nav-next {
+		text-align: end;
+		flex: 1 0 50%;
+	}
+}

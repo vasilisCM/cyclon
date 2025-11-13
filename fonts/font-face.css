@@ -1,0 +1,26 @@
+@font-face {
+  font-family: "AeonikPro";
+  src: url("aeonikpro-regular.woff2") format("woff2"),
+    url("aeonikpro-regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "AeonikPro";
+  src: url("aeonikpro-bold.woff2") format("woff2"),
+    url("aeonikpro-bold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Ferry-Black";
+  src: url("Ferry-Black.woff2") format("woff2"),
+    url("Ferry-Black.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}

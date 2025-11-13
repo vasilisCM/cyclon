@@ -1,0 +1,734 @@
+jQuery(document).ready(function ($) {
+
+    /** Scroller **/
+    let scrollpos = window.scrollY;
+    const header = document.querySelector("#masthead");
+    const header_height = header.offsetHeight;
+
+    const add_class_on_scroll = () => header.classList.add("solid-header");
+    const remove_class_on_scroll = () => header.classList.remove("solid-header");
+
+    window.addEventListener('scroll', function () {
+        scrollpos = window.scrollY;
+
+        if (scrollpos >= header_height) {
+            add_class_on_scroll()
+        } else {
+            remove_class_on_scroll()
+        }
+    });
+
+    $('.mobile-trigger').on('click',function(){
+        $('.mobileMenuOverlay').toggleClass('menu-is-visible');
+        return false;
+    });
+
+    $('.mobileCategories').insertAfter('#mobile-menu li.menu-item-1089');
+    $('#mobile-menu li.menu-item-1089 a').on('click',function(){
+       $('.mobileCategories').slideToggle();
+    });
+    
+    /****** == Click on tab == *********/
+    let specTabLink = $('.specTab a');
+    specTabLink.on('click', function () {
+        $('.specTab').removeClass('specTab--active');
+        $('.specTab__Heading').removeClass('specTab__Heading--active');
+
+        $(this).parent().addClass('specTab--active');
+        $(this).addClass('specTab__Heading--active');
+
+        return false;
+    });
+
+    /** Related Swiper carousel **/
+    const swiper = new Swiper('.relatedProducts__Wrapper', {
+        direction: 'horizontal',
+        loop: false,
+        autoHeight: true,
+        slidesPerView: 4,
+        spaceBetween: 10,
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        breakpoints: {
+            320: {
+                slidesPerView: 1,
+            },
+            768: {
+                slidesPerView: 3,
+            },
+            1100: {
+                slidesPerView: 3,
+            },
+            1200: {
+                slidesPerView: 4
+            }
+        },
+
+    });
+    const swiper2 = new Swiper('.blogWrapper', {
+        direction: 'horizontal',
+        loop: true,
+        autoHeight: true,
+        slidesPerView: 4,
+        spaceBetween: 10,
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        breakpoints: {
+            320: {
+                slidesPerView: 2,
+            },
+            768: {
+                slidesPerView: 3,
+            },
+            1100: {
+                slidesPerView: 3,
+            },
+            1200: {
+                slidesPerView: 4
+            }
+        },
+
+    });
+    const swiper4 = new Swiper('.productGallery__thumbs', { // thumbs
+        direction: 'horizontal',
+        loop: false,
+        autoHeight: true,
+        slidesPerView: 3,
+        spaceBetween: 0,
+        centeredSlides: false
+    });
+
+    const swiper3 = new Swiper('.productGallery__Wrapper', {
+        direction: 'horizontal',
+        loop: false,
+        autoHeight: true,
+        slidesPerView: 1,
+        thumbs: {
+            swiper: swiper4
+        },
+        navigation: {
+            nextEl: '.swiper-button-carousel-next',
+            prevEl: '.swiper-button-carousel-prev',
+        },
+    });
+
+    let mapDot = $('.map-dot');
+    mapDot.on('click', function () {
+        let mapID = $(this).attr('data-map');
+        console.log(mapID);
+
+        $('.mappingChild').removeClass('showMap').hide();
+        $('.mappingChild[data-mapid="' + mapID + '"]').addClass('showMap');
+
+        return false;
+    });
+
+    /*-- Customer support Tabs --*/
+    let workShopTabLink = $('.workShopTabsLinks a');
+    workShopTabLink.on('click', function () {
+        workShopTabLink.removeClass('active');
+        $(this).addClass('active');
+        let tabID = $(this).attr('data-tab');
+
+        $('.workshop-tab').removeClass('activeTab').hide();
+        $('#tab' + tabID).addClass('activeTab').show();
+        return false;
+    });
+
+    /*-- Customer support Anchors --*/
+    function scrollToAnchor(aid) {
+        var aTag = $(aid);
+        var headerHeight = $('.cyclon__Header').outerHeight(true);
+        $('html,body').animate({scrollTop: aTag.offset().top - headerHeight - 20}, 'slow');
+    }
+
+    if ($('.customer_ctas a').length > 0) {
+        $(".customer_ctas a").click(function () {
+            scrollToAnchor($.attr(this, 'href'));
+        });
+    }
+
+    if ($('.appMapping').length > 0) {
+        createSelect();
+        if (window.innerWidth < 768) {
+            functionForMobile();
+        } else {
+            functionForDesktop();
+        }
+        window.addEventListener('resize', function () {
+            if (window.innerWidth < 768) {
+                functionForMobile();
+            } else {
+                functionForDesktop();
+            }
+        });
+    }
+
+    function functionForDesktop() {
+
+        if ($('.appMapping .dots').length > 0) {
+
+            var pageID;
+            var check = "page-id-";
+
+            jQuery('body[class*="page-id-"]').each(function () {
+
+                var cls = jQuery(this).attr('class').split(' ');
+                for (var i = 0; i < cls.length; i++) {
+
+                    if (cls[i].indexOf(check) > -1) {
+                        pageID = cls[i].slice(0, cls[i].length);
+                        pageID = pageID.split('-').pop();
+                    }
+                }
+            });
+
+            $('.appMapping .dots').on('click', function () {
+                var that = $(this);
+                var allParts = that.parent().find('.dots');
+                var partId = that.attr('id');
+                var currentPart = $(that.parent().find('.dots#' + partId))[0];
+                // var currentPart = document.getElementById(partId);
+
+                if ($('.single-tab.active').length > 0) {
+                    // var indexRowWrap = ($('.single-tab:not(.main-tab).active').attr('id').split('-').slice(2, -1)[0] - 1) + ($('.single-tab:not(.main-tab).active').attr('id').split('-').pop() - 1) + Math.abs($('.single-tab:not(.main-tab).active').attr('id').split('-').slice(2, -1)[0] - $('.single-tab:not(.main-tab).active').attr('id').split('-').pop());
+                    if ($('.main-tab').length > 0) {
+                        var indexRowWrap = parseInt($('.single-tab:not(.main-tab).active').attr('id').split('-').slice(2, -1)[0]) - 1;
+                    } else {
+                        var indexRowWrap = parseInt($('.single-tab:not(.main-tab).active').attr('id').split('-').pop()) - 1;
+                    }
+                    currId = $('.appMapping .single-tab:not(.main-tab).active').attr('id');
+                } else {
+                    var indexRowWrap = 0;
+                }
+
+                var indexRow = indexInClass(allParts, currentPart);
+
+                $('.appMapping .dots').removeClass('active');
+                $('.image-wrapper').removeClass('changed');
+                that.addClass('active');
+
+                $('.oil-wrapper-outer').css('opacity', '0');
+                if (checkPosition(that) == 'below') {
+                    $('.line-x').css({
+                        'height': '0px',
+                        'top': 'unset',
+                        'bottom': (($('.appMapping').offset().top + $('.appMapping').innerHeight()) - (that.offset().top + that.innerHeight())) + 6 + 'px'
+                    });
+                    $('.line-y').css({
+                        'width': '0px',
+                        'left': that.offset().left - that.parent().offset().left + (that.innerWidth() / 2 - 1) + 'px'
+                    });
+                } else {
+                    $('.line-x').css({
+                        'height': '0px',
+                        'top': (that.offset().top - $('.appMapping').offset().top - that.innerHeight()) + 'px',
+                        'bottom': 'unset'
+                    });
+                    $('.line-y').css({
+                        'width': '0px',
+                        'left': that.offset().left - that.parent().offset().left + (that.innerWidth() / 2 - 1) + 'px',
+                        'top': 'unset'
+                    });
+                }
+
+
+                that.parents('.appMapping').removeClass('default');
+                if (that.parents('.appMapping').hasClass('appear')) {
+                    that.parents('.appMapping').removeClass('appear');
+                }
+                $.post(
+                    wpAjax.ajaxUrl,
+                    {
+                        action: "get_mapping_info",
+                        req_nonce: '<?php echo wp_create_nonce("get_mapping_info_nonce");?>',
+                        indexRow: indexRow,
+                        indexRowWrap: indexRowWrap,
+                        pageID: parseInt(pageID)
+                    },
+                    function (mappingInfo) {
+                        if (mappingInfo) {
+
+                            that.parents('.appMapping').addClass('appear');
+                            that.parent().css('background-image', 'url("' + mappingInfo.part_image + '")');
+
+                            that.parent().addClass('changed');
+                            getLines(that);
+                            $('.content-wrapper h3').text(mappingInfo.part_title_front);
+                            $('.content-wrapper .oil-content').html(mappingInfo.oil_title);
+                            $('.content-wrapper .oil-image img').attr('src', mappingInfo.oil_image);
+                            if (mappingInfo.oil_category_link.length > 1) {
+                                $('.content-wrapper a').attr('href', mappingInfo.oil_category_link[0][1]);
+                                $('.content-wrapper a').text(translateString.viewall + ' ' + mappingInfo.oil_category_link[0][0]);
+                                for (let index = 1; index < mappingInfo.oil_category_link.length; index++) {
+                                    $('.content-wrapper').append('<a class="mButton mButton--trans extra" href="' + mappingInfo.oil_category_link[index][1] + '">' + translateString.viewall + ' ' + mappingInfo.oil_category_link[index][0] + '</a>');
+                                }
+                            } else {
+                                $('.content-wrapper a').attr('href', mappingInfo.oil_category_link[0][1]);
+                                $('.content-wrapper a').text(translateString.viewallproducts);
+                                $('.content-wrapper a.extra').remove();
+                            }
+                            setTimeout(() => {
+                                $('.oil-wrapper-outer').css('opacity', '1');
+                            }, 600);
+
+                            setTimeout(() => {
+                                that.parent().find('.hidden-field').css('background-image', 'url("' + mappingInfo.part_image + '")');
+                            }, 400);
+                        }
+
+                    }
+                );
+            });
+
+            window.addEventListener('resize', function () {
+                if ($('.appMapping .dots.active').length > 0) {
+                    getLines($('.appMapping .dots.active'));
+                }
+            });
+
+            function checkPosition(that) {
+                if (that.offset().top > ($('.content-wrapper .oil-wrapper-outer h3').offset().top + $('.content-wrapper .oil-wrapper-outer h3').innerHeight())) {
+                    return 'below';
+                } else {
+                    return 'above';
+                }
+            }
+
+            function getLines(that) {
+                if (checkPosition(that) == 'below') {
+                    positionBelow(that);
+                } else {
+                    positionAbove(that);
+                }
+            }
+
+            function positionBelow(that) {
+                lineXHeight = Math.abs(that.offset().top - $('.content-wrapper .oil-wrapper-outer h3').offset().top - that.innerHeight()) - 6;
+                lineXBottom = ($('.appMapping').offset().top + $('.appMapping').innerHeight()) - (that.offset().top + (that.innerHeight() / 2)) - 6;
+                lineXLeft = that.offset().left - that.parent().offset().left + (that.innerWidth() / 2 - 1);
+
+                lineYWidth = Math.abs($('.appMapping .col-4').innerWidth() + (that.offset().left - that.parent().offset().left) + (that.innerWidth() / 2));
+                lineYBottom = lineXBottom + lineXHeight;
+                lineYLeft = -($('.appMapping .col-8').offset().left - $('.content-wrapper').offset().left + (($('.appMapping .col-8').offset().left - $('.content-wrapper').offset().left) - $('.content-wrapper').width()));
+
+                $('.line-x').css({'height': lineXHeight + 'px', 'bottom': lineXBottom, 'left': lineXLeft + 'px'});
+                $('.line-y').css({
+                    'width': lineYWidth + 'px',
+                    'bottom': lineYBottom + 'px',
+                    'left': lineYLeft + 'px',
+                    'top': 'unset'
+                });
+            }
+
+            function positionAbove(that) {
+                lineXHeight = Math.abs($('.content-wrapper .oil-wrapper-outer h3').offset().top - that.offset().top + (that.innerHeight() / 2));
+                lineXTop = that.offset().top - $('.appMapping').offset().top - that.innerHeight() - (that.innerHeight() / 2);
+                lineXLeft = that.offset().left - $('.appMapping .image-wrapper').offset().left + (that.innerWidth() / 2 - 1);
+
+                lineYWidth = Math.abs($('.appMapping .col-4').innerWidth() + (that.offset().left - $('.image-wrapper').offset().left) + (that.innerWidth() / 2));
+                lineYTop = lineXTop + lineXHeight;
+                lineYLeft = -($('.appMapping .col-8').offset().left - $('.content-wrapper').offset().left + (($('.appMapping .col-8').offset().left - $('.content-wrapper').offset().left) - $('.content-wrapper').width()));
+
+                $('.line-x').css({'height': lineXHeight + 'px', 'top': lineXTop + 'px', 'left': lineXLeft + 'px'});
+                $('.line-y').css({'width': lineYWidth + 'px', 'top': lineYTop + 'px', 'left': lineYLeft + 'px'});
+            }
+
+            function indexInClass(allParts, node) {
+                var num = 0;
+                for (var i = 0; i < allParts.length; i++) {
+                    if (allParts[i] === node) {
+                        return num;
+                    }
+                    num++;
+                }
+                return -1;
+            }
+
+        }
+
+        if ($('.appMapping .single-tab:not(.active)').length > 0) {
+            $('.appMapping .single-tab:not(.main-tab)').click(function () {
+                var id = $(this).attr('id');
+                $('.appMapping .single-tab, .appMapping .single-mapping-wrapper').removeClass('active');
+                $('.oil-wrapper-outer h3, .oil-wrapper-outer .oil-content').text('');
+                $('.oil-wrapper-outer img').attr('src', '');
+                $('.line-x, .line-y').removeAttr('style');
+                $('.line-x, .line-y').removeAttr('style');
+                $('.appMapping #content-' + id).addClass('active');
+                $(this).addClass('active');
+                $('.single-mapping-wrapper').each(function () {
+                    $(this).find('.image-wrapper, .hidden-field').css('background-image', $(this).find('.image-wrapper .default-image').css('background-image'));
+                });
+            });
+
+            $('.appMapping .main-tab').click(function ()  {
+                $currMainTab = $(this).attr('id');
+                $currMainTabFirstChildId = $(this).next().attr('id');
+
+                $('.appMapping .main-tab').hide();
+                $('.' + $currMainTab).fadeIn();
+                if($('.mapping-tabs-wrapper .goback').length == 0) {
+                    $('.mapping-tabs-wrapper').append('<div class="goback">' + translateString.back + '</div>');
+                }
+                
+                $('.appMapping .single-tab, .appMapping .single-mapping-wrapper').removeClass('active');
+                $('.oil-wrapper-outer h3, .oil-wrapper-outer .oil-content').text('');
+                $('.oil-wrapper-outer img').attr('src', '');
+                $('.line-x, .line-y').removeAttr('style');
+                $('.line-x, .line-y').removeAttr('style');
+                $('.appMapping #content-' + $currMainTabFirstChildId).addClass('active');
+                $(this).addClass('active');
+                $('.single-mapping-wrapper').each(function () {
+                    $(this).find('.image-wrapper, .hidden-field').css('background-image', $(this).find('.image-wrapper .default-image').css('background-image'));
+                });
+                $($('.' + $currMainTab)[0]).addClass('active');
+
+                $('.appMapping .goback').click(function ()  {
+                    $('.appMapping .single-tab').hide();
+                    $('.appMapping .single-tab').removeClass('active');
+                    $('.appMapping .main-tab').fadeIn();
+                    $('.appMapping .goback').remove();
+                });
+                
+            });
+        }
+    };
+
+    function createSelect() {
+        var x, i, j, l, ll, selElmnt, a, b, c;
+        /*look for any elements with the class "custom-select":*/
+        x = document.getElementsByClassName("custom-select");
+        l = x.length;
+        $count = 0;
+        for (i = 0; i < l; i++) {
+            selElmnt = x[i].getElementsByTagName("select")[0];
+            ll = selElmnt.length;
+            /*for each element, create a new DIV that will act as the selected item:*/
+            a = document.createElement("DIV");
+            a.setAttribute("class", "select-selected ");
+            if(document.getElementsByClassName('main-tab').length > 0 && i == 0) {
+                a.innerHTML = selElmnt.options[selElmnt.selectedIndex + 1].innerHTML;
+            } else {
+                a.innerHTML = selElmnt.options[selElmnt.selectedIndex].innerHTML;
+            }
+            x[i].appendChild(a);
+            /*for each element, create a new DIV that will contain the option list:*/
+            b = document.createElement("DIV");
+            b.setAttribute("class", "select-items select-hide");
+            for (j = 0; j < ll; j++) {
+                
+                /*for each option in the original select element,
+                create a new DIV that will act as an option item:*/
+                c = document.createElement("DIV");
+                if(document.getElementsByClassName('main-tab').length > 0) {
+                    
+                    if(selElmnt.options[j].classList.contains("main-tab")) {
+                        c.setAttribute("class", "main-tab");
+                    } else {
+                        c.setAttribute("class", "gen-tab");
+                        if(!($(selElmnt.options[j]).text() == 'Please select') || (!($(selElmnt.options[j]).text() == 'Παρακαλώ επιλέξτε'))) {
+                        }
+                    }
+                    if(j == 1 && i == 0) {
+                        c.classList.add('active');
+                    }
+                    if($(selElmnt.options[j]).text() == 'Please select' || (($(selElmnt.options[j]).text() == 'Παρακαλώ επιλέξτε')) ) {
+                        c.classList.add('hide');
+                    }
+                } else {
+                    if($(selElmnt.options[j]).text() == 'Please select' || (($(selElmnt.options[j]).text() == 'Παρακαλώ επιλέξτε')) ) {
+                        c.classList.add('hide');
+                    }
+                }
+                c.innerHTML = selElmnt.options[j].innerHTML;
+                c.addEventListener("click", function (e) {
+                    /*when an item is clicked, update the original select box,
+                    and the selected item:*/
+                    var y, i, k, s, h, sl, yl;
+                    s = this.parentNode.parentNode.getElementsByTagName("select")[0];
+                    sl = s.length;
+                    h = this.parentNode.previousSibling;
+                    for (i = 0; i < sl; i++) {
+                        if (s.options[i].innerHTML == this.innerHTML) {
+                            s.selectedIndex = i;
+                            h.innerHTML = this.innerHTML;
+                            y = this.parentNode.getElementsByClassName("same-as-selected");
+                            yl = y.length;
+                            var classesActive = this.parentNode.getElementsByTagName('div');
+                            for (p = 0; p < classesActive.length; p++) {
+                                classesActive[p].classList.remove("same-as-selected", "active");
+                            }
+                            this.classList.add("same-as-selected", "active");
+                            break;
+                        }
+                    }
+                    h.click();
+                });
+                b.appendChild(c);
+            }
+            x[i].appendChild(b);
+            a.addEventListener("click", function (e) {
+                /*when the select box is clicked, close any other select boxes,
+                and open/close the current select box:*/
+                e.stopPropagation();
+                closeAllSelect(this);
+                this.nextSibling.classList.toggle("select-hide");
+                this.classList.toggle("select-arrow-active");
+            });
+        }
+
+        $count = 0
+        $('.custom-select:not(.main-select)').each( function () {
+            $(this).attr('id', 'row-' + $count++);
+        })
+
+        function closeAllSelect(elmnt) {
+            /*a function that will close all select boxes in the document,
+            except the current select box:*/
+            var x, y, i, xl, yl, arrNo = [];
+            x = document.getElementsByClassName("select-items");
+            y = document.getElementsByClassName("select-selected");
+            xl = x.length;
+            yl = y.length;
+            for (i = 0; i < yl; i++) {
+                if (elmnt == y[i]) {
+                    arrNo.push(i)
+                } else {
+                    y[i].classList.remove("select-arrow-active");
+                }
+            }
+            for (i = 0; i < xl; i++) {
+                if (arrNo.indexOf(i)) {
+                    x[i].classList.add("select-hide");
+                }
+            }
+        }
+
+        /*if the user clicks anywhere outside the select box,
+        then close all select boxes:*/
+        document.addEventListener("click", closeAllSelect);
+    }
+
+    function functionForMobile() {
+        if ($('.appMapping .dots').length > 0) {
+
+            var pageID;
+            var check = "page-id-";
+
+            jQuery('body[class*="page-id-"]').each(function () {
+
+                var cls = jQuery(this).attr('class').split(' ');
+                for (var i = 0; i < cls.length; i++) {
+
+                    if (cls[i].indexOf(check) > -1) {
+                        pageID = cls[i].slice(0, cls[i].length);
+                        pageID = pageID.split('-').pop();
+                    }
+                }
+            });
+
+            $('.appMapping .custom-select:not(.main-select) .select-items>div.gen-tab, .appMapping .gen-select .select-items>div').on('click', function () {
+                var that = $(this);
+                if ($('.main-select').length > 0) {
+                    if ($('.main-select .select-items>div.same-as-selected').length > 0) {
+                        var indexRowWrap = $('.main-select .select-items>div.active').index();
+                        
+                        var indexRowWrap = parseInt(that.parents('.custom-select').attr('id').split('-').pop());
+
+                    } else {
+                        var indexRowWrap = 0;
+                    }
+                } else {
+                    var indexRowWrap = 0;
+                }
+                var indexRow = $(this).parent().parent().find(".select-items>div:not(.hide)").index(that);
+
+
+                $('.appMapping .dots').removeClass('active');
+                $('.image-wrapper').removeClass('changed');
+                that.addClass('active');
+
+                $('.oil-details').css('opacity', '0');
+
+                that.parents('.appMapping').removeClass('default');
+                if (that.parents('.appMapping').hasClass('appear')) {
+                    that.parents('.appMapping').removeClass('appear');
+                }
+
+                $.post(
+                    wpAjax.ajaxUrl,
+                    {
+                        action: "get_mapping_info",
+                        req_nonce: '<?php echo wp_create_nonce("get_mapping_info_nonce");?>',
+                        indexRow: indexRow,
+                        indexRowWrap: indexRowWrap,
+                        pageID: pageID
+                    },
+                    function (mappingInfo) {
+
+                        if (mappingInfo) {
+
+                            that.parents('.appMapping').addClass('appear');
+                            that.parents('.col-12').find('.image-wrapper.active').css('background-image', 'url("' + mappingInfo.part_image + '")');
+
+                            that.parent().addClass('changed');
+
+                            that.parents('.col-12').find('.oil-details .oil-content').html(mappingInfo.oil_title);
+                            that.parents('.col-12').find('.oil-details .oil-image img').attr('src', mappingInfo.oil_image);
+                            if (mappingInfo.oil_category_link.length > 1) {
+                                that.parents('.col-12').find('a').attr('href', mappingInfo.oil_category_link[0][1]);
+                                that.parents('.col-12').find('a').text(translateString.viewall + ' ' +  mappingInfo.oil_category_link[0][0]);
+                                for (let index = 1; index < mappingInfo.oil_category_link.length; index++) {
+                                    that.parents('.col-12').append('<a class="mButton mButton--trans extra" href="' + mappingInfo.oil_category_link[index][1]  + translateString.viewall + ' ' +  mappingInfo.oil_category_link[index][0] + '</a>');
+                                }
+                            } else {
+                                that.parents('.col-12').find('a').attr('href', mappingInfo.oil_category_link[0][1]);
+                                that.parents('.col-12').find('a').text(translateString.viewallproducts);
+                                that.parents('.col-12').find('a.extra').remove();
+                            }
+                            setTimeout(() => {
+                                that.parents('.col-12').find('.oil-details').css('opacity', '1');
+                            }, 600);
+
+                            setTimeout(() => {
+                                that.parents('.col-12').find('.image-wrapper.active .hidden-field').css('background-image', 'url("' + mappingInfo.part_image + '")');
+                            }, 400);
+                        }
+
+                    }
+                );
+            });
+
+            if ($('.appMapping .main-select').length > 0) {
+                $('.appMapping .main-select .select-items>div:not(.main-tab)').click(function () {
+                    var that = $(this);
+                    var indexRow = $(this).parent().parent().find(".select-items>div:not(.main-tab)").index(that);
+                    var makeImageActive = $(this).parent().parent().parent().find(".image-wrapper")[indexRow];
+                    var makeSelectActive = $(this).parent().parent().parent().find(".custom-select:not(.main-select)")[indexRow];
+                    $('.oil-details .oil-content').text('');
+                    $('.oil-image img').attr('src', '');
+                    $('.appMapping .image-wrapper, .appMapping .custom-select:not(.main-select), .appMapping .image-main-wrap').removeClass('active');
+                    $(makeImageActive).addClass('active');
+                    $(makeImageActive).parent().addClass('active');
+                    $(makeSelectActive).parent().addClass('active');
+                    $(makeSelectActive).addClass('active');
+                });
+            }
+
+        }
+    };
+
+    if ($('.taxHeader .taxHeader__Buttons a').length > 0) {
+        $(".taxHeader .taxHeader__Buttons a").click(function () {
+            scrollToAnchor($.attr(this, 'href'));
+        });
+    }
+
+
+    $(window).load(function () {
+        $(".lubeFinder_popup").click(function(){
+           $('.hover_bkgr_fricc').show();
+        });
+        $('.hover_bkgr_fricc').click(function(){
+            $('.hover_bkgr_fricc').hide();
+        });
+        $('.popupCloseButton').click(function(){
+            $('.hover_bkgr_fricc').hide();
+        });
+    });
+
+    $('.blogCategory__Link').on('click',function(){
+        $('.blogCategory__Link').removeClass('activeNetwork');
+        $(this).addClass('activeNetwork');
+        let catID = $(this).attr('data-category');
+
+        jQuery.ajax({
+            type: 'POST',
+            url: wpAjax.ajaxUrl,
+            data: {
+                'action': 'cyclon_show_blogposts',
+                'catID': catID
+            },
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                $('.blogWrapper').empty().append(data.html);
+            },
+            error: function (xhr, status, error) {
+                var err = eval("(" + xhr.responseText + ")");
+                alert(err.Message);
+            }
+
+        });
+
+
+        return false;
+    });
+
+    setInterval(function(){
+        $('#Ellipse_117').attr('r',15);
+        $('#Ellipse_118').attr('r',15);
+        $('#Ellipse_120').attr('r',15);
+        $('#Ellipse_121').attr('r',15);
+        $('#Ellipse_126').attr('r',15);
+    }, 1000);
+    setInterval(function(){
+        $('#Ellipse_117').attr('r',10);
+        $('#Ellipse_118').attr('r',10);
+        $('#Ellipse_120').attr('r',10);
+        $('#Ellipse_121').attr('r',10);
+        $('#Ellipse_126').attr('r',10);
+    }, 2000);
+
+
+    setInterval(function(){
+        $('#Ellipse_128').attr('r',15);
+        $('#Ellipse_129').attr('r',15);
+        $('#Ellipse_130').attr('r',15);
+        $('#Ellipse_297').attr('r',15);
+        $('#Ellipse_298').attr('r',15);
+    }, 500);
+    setInterval(function(){
+        $('#Ellipse_128').attr('r',10);
+        $('#Ellipse_129').attr('r',10);
+        $('#Ellipse_130').attr('r',10);
+        $('#Ellipse_297').attr('r',10);
+        $('#Ellipse_298').attr('r',10);
+    }, 1500);
+
+    $(window).scroll(function(){
+
+    });
+
+    $(window).scroll(function() {
+        $('.brandCircle').css({transform: 'rotate('+ (180*window.pageYOffset/(document.body.clientHeight - window.innerHeight)) +'deg)'});
+    });
+
+    // $(window).scroll(function() {
+    //     var theta = ($(window).scrollTop() % Math.PI)/2;
+    //     $('.brandCircle').css({ transform: 'rotate(-' + theta + 'rad)' });
+    //
+    // });
+    // $(window).scroll($.debounce( 250, true, function(){
+    //     $('.brandCircle').addClass('rotate');
+    // } ) );
+    // $(window).scroll($.debounce( 250, function(){
+    //     $('.brandCircle').removeClass('rotate');
+    // } ) );
+
+    AOS.init();
+
+});
