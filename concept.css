@@ -1,3 +1,87 @@
+/* Utilities */
+.boxed {
+  max-width: 1200px;
+  padding-inline: 60px;
+}
+
+.centered {
+  margin-inline: auto;
+}
+
+.relative {
+  position: relative;
+}
+
+/* Layouts  */
+.mega-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 800;
+  border: solid 6px red;
+}
+
+.mega-menu__container {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  border: solid 4px green;
+}
+
+.mega-menu__item {
+  border: solid 4px yellow;
+  display: flex;
+  opacity: 0;
+  visibility: hidden;
+  transition: all ease 300ms; 
+}
+
+.mega-menu__item--active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.mega-menu__overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(13, 110, 253, 0.5);
+  z-index: 700;
+  opacity: 0;
+  visibility: hidden;
+  transition: all ease 300ms;
+}
+
+/* Submenu */
+.cyclon__Menu ul {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin: 0;
+  padding: 8px;
+  background-color: rgb(13, 110, 253);
+  visibility: hidden;
+  opacity: 0;
+  transition: all ease 300ms;
+
+  /* @include view(md-max) {
+    position: revert;
+    display: none;
+    padding: revert;
+  } */
+}
+
+/* .cyclon__Menu > li:hover ul {
+  visibility: visible;
+  opacity: 1;
+
+  @include view(md-max) {
+    display: block;
+  }
+} */
+
 /* Home */
 .home-more-news {
   text-align: center;
@@ -1271,44 +1355,6 @@ body.error404 .taxHeader {
   position: relative;
 }
 
-.sub-menu {
-  visibility: hidden;
-  opacity: 0;
-  transform: translateY(0px);
-  position: absolute;
-  /* inset: 0; */
-  top: 90%;
-  right: 0;
-  left: 0;
-  /* margin: 0 auto; */
-  /* top: 10rem; */
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 1.5rem;
-  background-color: #fff;
-  /* width: 1380px; */
-  /* width: 100%; */
-  padding: 20rem 0;
-  margin: 0;
-  height: 30rem;
-  transition: all ease 0.3s;
-}
-
-.sub-menu h4 {
-  padding: 7px 20px;
-}
-
-.mega-sub-menu {
-  margin: 0;
-  padding: 0;
-}
-
-.mega-menu-row > ul {
-  display: flex;
-}
-
 .cyclon__Menu li:last-child {
   margin-right: 10px;
 }
@@ -1467,7 +1513,7 @@ header.openSearch .search-form input[type="submit"] {
 .modal {
   display: none;
   align-items: center;
-    justify-content: center;
+  justify-content: center;
   position: fixed;
   z-index: 99999;
   left: 0;

@@ -963,21 +963,40 @@ jQuery(document).ready(function ($) {
 });
 
 // Custom Mega Menu Concept Maniax
-
 const itemHasChildren = document.querySelector(".menu-item-has-children");
+const megaMenuOverlay = document.querySelector(".mega-menu__overlay");
+const megaMenu = document.querySelector(".mega-menu");
 const submenu = document.querySelector(".sub-menu");
 
+const subMenuItems = document.querySelectorAll(".sub-menu li");
+const megaMenuItems = document.querySelectorAll(".mega-menu__item");
+
 itemHasChildren.addEventListener("mouseover", () => {
+  megaMenuOverlay.style.visibility = "visible";
+  megaMenuOverlay.style.opacity = "1";
+
   submenu.style.visibility = "visible";
   submenu.style.opacity = "1";
-  submenu.style.transform = "translateY(0)";
 });
 
-itemHasChildren.addEventListener("mouseleave", () => {
-  submenu.style.visibility = "hidden";
-  submenu.style.opacity = "0";
-  submenu.style.transform = "translateY(50px)";
+console.log(subMenuItems);
+
+subMenuItems.forEach((item, i) => {
+  item.addEventListener("mouseover", () => {
+    // Reset all mega menu items
+    megaMenuItems.forEach((item) => {
+      item.classList.remove("mega-menu__item--active");
+    });
+
+    megaMenuItems[i].classList.add("mega-menu__item--active");
+  });
 });
+
+// itemHasChildren.addEventListener("mouseleave", () => {
+//   submenu.style.visibility = "hidden";
+//   submenu.style.opacity = "0";
+//   submenu.style.transform = "translateY(50px)";
+// });
 
 // Search Header
 jQuery("form.search-form label span").click(function () {
@@ -996,31 +1015,27 @@ jQuery(document).click(function (e) {
   }
 });
 
-
 // Modal Logic
 
 window.addEventListener("load", function () {
+  let visitedBefore = sessionStorage.getItem("visitedBefore");
 
-    let visitedBefore = sessionStorage.getItem("visitedBefore");
+  // Show modal only if user has not visited before or is refreshing the page
+  if (!visitedBefore || performance.navigation.type === 1) {
+    const modal = document.querySelector(".modal");
+    const closeBtn = document.querySelector(".close");
 
-    // Show modal only if user has not visited before or is refreshing the page
-    if (!visitedBefore || performance.navigation.type === 1) {
-      const modal = document.querySelector(".modal");
-      const closeBtn = document.querySelector(".close");
+    setTimeout(() => {
+      modal.style.display = "flex";
+    }, 5000);
 
-      setTimeout(() => {
-        modal.style.display = "flex";
-      }, 5000);
+    closeBtn.addEventListener("click", function () {
+      modal.style.display = "none";
+    });
 
-      closeBtn.addEventListener("click", function () {
-        modal.style.display = "none";
-      });
-
-      sessionStorage.setItem("visitedBefore", true);
-    }
-  
+    sessionStorage.setItem("visitedBefore", true);
+  }
 });
-
 
 /*
 // Old Functionality

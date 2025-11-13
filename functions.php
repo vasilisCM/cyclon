@@ -52,113 +52,22 @@ function cyclon_theme_setup()
     // Remove Gutenberg editor
     add_filter('use_block_editor_for_post', '__return_false', 10);
 
-    function my_custom_menu_item_html($item_output, $item, $depth, $args)
-    {
-        if ('primary-nav' === $args->theme_location && in_array('menu-item-has-children', $item->classes)) {
-            // $dropdown_html = '
-            // <li class="mega-menu-row" id="mega-menu-1089-0">
-            //     <ul class="mega-sub-menu">
-            // <li class="mega-menu-column mega-menu-columns-3-of-12" id="mega-menu-1089-0-0">
-            //         <ul class="mega-sub-menu">
-            // <li class="mega-menu-item mega-menu-item-type-widget widget_custom_html mega-menu-item-custom_html-11" id="mega-menu-item-custom_html-11"><div class="textwidget custom-html-widget"><div class="catBox">
-            //     <div class="catBox__Inner">
-            //         <a href="/passenger-car-lubricants/"><img alt="Passenger Car Lubricants" src="/wp-content/uploads/2022/04/Mask-Group-157.png" class="catBoxImage"></a>
-            //     </div>
-            //     <div>
-            //         <a href="/passenger-car-lubricants/"><img alt="MAGMA" src="/wp-content/uploads/2022/06/logo-magma.svg"></a>
-            //     </div>
-            //     <h4>Passenger Car Lubricants.</h4>
-            // </div></div></li>		</ul>
-            // </li><li class="mega-menu-column mega-menu-columns-3-of-12" id="mega-menu-1089-0-1">
-            //         <ul class="mega-sub-menu">
-            // <li class="mega-menu-item mega-menu-item-type-widget widget_custom_html mega-menu-item-custom_html-12" id="mega-menu-item-custom_html-12"><div class="textwidget custom-html-widget"><div class="catBox">
-            //     <div class="catBox__Inner">
-            //         <a href="/heavy-duty-lubricants/"><img alt="Heavy Duty Lubricants" src="/wp-content/uploads/2022/04/Mask-Group-158.png" class="catBoxImage"></a>
-            //     </div>
-            //     <div><a href="/heavy-duty-lubricants/"><img alt="GRANIT" src="/wp-content/uploads/2022/06/logo-granit.svg"></a>
-            //     </div>
-            //     <h4>Heavy Duty Lubricants</h4>
-            // </div></div></li>		</ul>
-            // </li><li class="mega-menu-column mega-menu-columns-3-of-12" id="mega-menu-1089-0-2">
-            //         <ul class="mega-sub-menu">
-            // <li class="mega-menu-item mega-menu-item-type-widget widget_custom_html mega-menu-item-custom_html-13" id="mega-menu-item-custom_html-13"><div class="textwidget custom-html-widget"><div class="catBox">
-            //     <div class="catBox__Inner">
-            //         <a href="/motorcycle-lubricants/"><img alt="Motocycle Lubricants" src="/wp-content/uploads/2022/04/Mask-Group-159.png" class="catBoxImage"></a>
-            //     </div>
-            //     <div>
-            //         <a href="/motorcycle-lubricants/"><img alt="LAVA" src="/wp-content/uploads/2022/06/logo-lava.svg"></a>
-            //     </div>
-            //     <h4>Motocycle Lubricants</h4>
-            // </div></div></li>		</ul>
-            // </li><li class="mega-menu-column mega-menu-columns-3-of-12" id="mega-menu-1089-0-3">
-            //         <ul class="mega-sub-menu">
-            // <li class="mega-menu-item mega-menu-item-type-widget widget_custom_html mega-menu-item-custom_html-14" id="mega-menu-item-custom_html-14"><div class="textwidget custom-html-widget"><div class="catBox">
-            //     <div class="catBox__Inner">
-            //         <a href="/gear/"><img alt="Trasmission Lubricants" src="/wp-content/uploads/2022/04/Mask-Group-160.png" class="catBoxImage"></a>
-            //     </div>
-            //     <div>
-            //         <a href="/gear/"><img alt="GEAR" src="/wp-content/uploads/2022/06/logo-gear.svg"></a>
-            //     </div>
-            //     <h4>Trasmission Lubricants</h4>
-            // </div></div></li>		</ul>
-            // </li>	</ul>
-            // </li><li class="mega-menu-row" id="mega-menu-1089-1">
-            //     <ul class="mega-sub-menu">
-            // <li class="mega-menu-column mega-menu-columns-3-of-12" id="mega-menu-1089-1-0">
-            //         <ul class="mega-sub-menu">
-            // <li class="mega-menu-item mega-menu-item-type-widget widget_custom_html mega-menu-item-custom_html-15" id="mega-menu-item-custom_html-15"><div class="textwidget custom-html-widget"><div class="catBox">
-            //     <div class="catBox__Inner">
-            //         <a href="/industrial-lubricants/"><img alt="Industrial Lubricants" src="/wp-content/uploads/2022/04/Mask-Group-161.png" class="catBoxImage"></a>
-            //     </div>
-            //     <div>
-            //         <a href="/industrial-lubricants/"><img alt="INDUSTRIAL" src="/wp-content/uploads/2022/06/logo-industrial.svg"></a>
-            //     </div>
-            // <h4>Industrial Lubricants</h4>
-            // </div></div></li>		</ul>
-            // </li><li class="mega-menu-column mega-menu-columns-3-of-12" id="mega-menu-1089-1-1">
-            //         <ul class="mega-sub-menu">
-            // <li class="mega-menu-item mega-menu-item-type-widget widget_custom_html mega-menu-item-custom_html-16" id="mega-menu-item-custom_html-16"><div class="textwidget custom-html-widget"><div class="catBox">
-            //     <div class="catBox__Inner">
-            //         <a href="/marine-lubricants/"><img alt="Marine Lubricants" src="/wp-content/uploads/2022/04/Mask-Group-249.png" class="catBoxImage"></a>
-            //     </div>
-            //     <div>
-            //         <a href="/marine-lubricants/"><img alt="MARINE" src="/wp-content/uploads/2022/06/logo-marine.svg"></a>
-            //     </div>
-            //     <h4>Marine Lubricants</h4>
-            // </div></div></li>		</ul>
-            // </li><li class="mega-menu-column mega-menu-columns-3-of-12" id="mega-menu-1089-1-2">
-            //         <ul class="mega-sub-menu">
-            // <li class="mega-menu-item mega-menu-item-type-widget widget_custom_html mega-menu-item-custom_html-17" id="mega-menu-item-custom_html-17"><div class="textwidget custom-html-widget"><div class="catBox">
-            //     <div class="catBox__Inner">
-            //         <a href="/greases/"><img alt="Greases" src="/wp-content/uploads/2022/06/home-greases.png" class="catBoxImage"></a>
-            //     </div>
-            //     <div>
-            //         <a href="/greases/"><img alt="GREASES" src="/wp-content/uploads/2022/06/logo-greases.svg"></a>
-            //     </div>
-            //     <h4>Greases</h4>
-            // </div></div></li>		</ul>
-            // </li><li class="mega-menu-column mega-menu-columns-3-of-12" id="mega-menu-1089-1-3">
-            //         <ul class="mega-sub-menu">
-            // <li class="mega-menu-item mega-menu-item-type-widget widget_custom_html mega-menu-item-custom_html-18" id="mega-menu-item-custom_html-18"><div class="textwidget custom-html-widget"><div class="catBox">
-            //     <div class="catBox__Inner">
-            //         <a href="/special-products/"><img alt="Special Fluids" src="/wp-content/uploads/2022/04/Mask-Group-164.png" class="catBoxImage"></a>
-            //     </div>
-            //     <div>
-            //         <a href="/special-products/"><img alt="Special Fluids" src="/wp-content/uploads/2022/06/logo-special-fluids.svg"></a>
-            //     </div>
-            // </div></div></li>		</ul>
-            // </li>	</ul>
-            // </li>';
 
-            ob_start();
-            include(get_stylesheet_directory() . '/template-parts/header/mega-menu.php');
-            $dropdown_html = ob_get_clean();
+    // MEGA MENU
+    // function my_custom_menu_item_html($item_output, $item, $depth, $args)
+    // {
+    //     if ('primary-nav' === $args->theme_location && in_array('menu-item-has-children', $item->classes)) {
 
-            $item_output .= '<ul class="sub-menu">' . $dropdown_html . '</ul>';
-        }
-        return $item_output;
-    }
-    add_filter('walker_nav_menu_start_el', 'my_custom_menu_item_html', 10, 4);
+
+    //         ob_start();
+    //         include(get_stylesheet_directory() . '/template-parts/header/mega-menu.php');
+    //         $dropdown_html = ob_get_clean();
+
+    //         $item_output .= '<ul class="sub-menu">' . $dropdown_html . '</ul>';
+    //     }
+    //     return $item_output;
+    // }
+    // add_filter('walker_nav_menu_start_el', 'my_custom_menu_item_html', 10, 4);
 
 
     /*

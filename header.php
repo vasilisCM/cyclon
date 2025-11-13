@@ -79,7 +79,8 @@
 
         <header id="masthead" class="site-header cyclon__Header">
             <div class="container">
-                <div class="row">
+                <div class="row relative">
+
                     <div class="col-lg-2 col-md-2 col-sm-3 col-6">
                         <a href="<?php echo home_url('/'); ?>" class="logoLink">
                             <img src="/wp-content/uploads/2025/06/logo.svg" class="img-responsive cyclon__logo" />
@@ -105,7 +106,14 @@
 
                 </div>
             </div>
-        </header><!-- #masthead -->
+        </header>
+
+        <?php include 'template-parts/header/mega-menu.php'; ?>
+        <div class="mega-menu__overlay"></div>
+
+
+
+        <!-- #masthead -->
         <?php if (is_front_page()): ?>
             <?php add_revslider('slider-1'); ?>
         <?php
