@@ -972,14 +972,21 @@ const subMenuItems = document.querySelectorAll(".sub-menu li");
 const megaMenuItems = document.querySelectorAll(".mega-menu__item");
 
 itemHasChildren.addEventListener("mouseover", () => {
-  megaMenuOverlay.style.visibility = "visible";
-  megaMenuOverlay.style.opacity = "1";
-
-  submenu.style.visibility = "visible";
-  submenu.style.opacity = "1";
+  submenu.classList.add("sub-menu--active");
 });
 
-console.log(subMenuItems);
+submenu.addEventListener("mouseover", () => {
+  megaMenuOverlay.classList.add("mega-menu__overlay--active");
+});
+
+submenu.addEventListener("mouseleave", () => {
+  megaMenuOverlay.classList.remove("mega-menu__overlay--active");
+  submenu.classList.remove("sub-menu--active");
+
+  megaMenuItems.forEach((item) => {
+    item.classList.remove("mega-menu__item--active");
+  });
+});
 
 subMenuItems.forEach((item, i) => {
   item.addEventListener("mouseover", () => {

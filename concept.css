@@ -36,7 +36,7 @@
   display: flex;
   opacity: 0;
   visibility: hidden;
-  transition: all ease 300ms; 
+  transition: all ease 300ms;
 }
 
 .mega-menu__item--active {
@@ -54,8 +54,13 @@
   transition: all ease 300ms;
 }
 
+.mega-menu__overlay--active {
+  opacity: 1;
+  visibility: visible;
+}
+
 /* Submenu */
-.cyclon__Menu ul {
+.sub-menu {
   position: absolute;
   top: 100%;
   left: 0;
@@ -71,6 +76,11 @@
     display: none;
     padding: revert;
   } */
+}
+
+.sub-menu--active {
+  visibility: visible;
+  opacity: 1;
 }
 
 /* .cyclon__Menu > li:hover ul {
