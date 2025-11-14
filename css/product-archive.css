@@ -1,0 +1,31 @@
+header {
+  border: solid 4px red;
+  /* just for testing  */
+}
+
+/* Product Archive  */
+.product-archive__container {
+  margin-top: 200px;
+  display: grid;
+  grid-template-columns: 2fr 8fr;
+  border: solid 4px blue;
+}
+
+.product-filters {
+  background: revert;
+  padding: revert;
+  border: solid 4px red;
+}
+
+.cyclon_tax_wrapper .productCard {
+  margin-bottom: revert;
+}
+
+.productCard {
+  max-width: revert;
+  min-height: revert;
+}
+
+.productCard__Image img {
+  margin-top: revert;
+}

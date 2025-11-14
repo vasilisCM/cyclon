@@ -279,7 +279,11 @@ function cyclon_theme_scripts()
     wp_enqueue_style('aos', 'https://unpkg.com/aos@2.3.1/dist/aos.css', array(), _S_VERSION, 'all');
     wp_enqueue_style('fancybox', 'https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css', array(), _S_VERSION, 'all');
     wp_enqueue_style('cyclon-wp-theme-style', get_template_directory_uri() . '/sass/style.css', array(), time(), 'all');
-    wp_enqueue_style('concept-style', get_template_directory_uri() . '/concept.css', array(), time(), 'all');
+    wp_enqueue_style('concept-style', get_template_directory_uri() . '/css/concept.css', array(), time(), 'all');
+
+    if (is_tax('cyclon_product_cat')) {
+        wp_enqueue_style('product-archive', get_stylesheet_directory_uri() . '/css/product-archive.css', array(), time(), 'all');
+    }
 
     wp_style_add_data('cyclon-wp-theme-style', 'rtl', 'replace');
 
@@ -301,32 +305,10 @@ function cyclon_theme_scripts()
         'viewall' => esc_html__('VIEW ALL', 'cyclon'),
         'back' => esc_html__('back', 'cyclon'),
     ]);
-    /*
-     * GSAP - Global application
-     */
-    //  wp_enqueue_script('gsap');
-    //	wp_add_inline_script('gsap', '', 'after'); // Add inline script after gsap library, e.g. initialization
-    //  wp_enqueue_script('scroll-trigger');
-    //	wp_add_inline_script('scroll-trigger', '', 'after');
 
-    /*
-     * Slick Slider - Global application
-     */
-    //	wp_enqueue_script('slick');
-    //	wp_enqueue_style('slick-css', get_stylesheet_directory_uri() . '/js/vendor/slick/slick.css', array('cyclon-wp-theme-style'), '1.8.1');
-    //	wp_enqueue_style('slick-theme-css', get_stylesheet_directory_uri() . '/js/vendor/slick/slick-theme.css', array('cyclon-wp-theme-style'), '1.8.1');
-    //	wp_add_inline_script('slick', '', 'after');
-
-    /*
-     * Swiper - Global application
-     */
-    // wp_enqueue_script('swiper');
-    // wp_enqueue_style('swiper-css', get_stylesheet_directory_uri() . '/js/vendor/swiper/swiper-bundle.min.css', array('cyclon-wp-theme-style'), '8.0.7');
-    // wp_add_inline_script('swiper', '', 'after');
-
-    // if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
-    //  wp_enqueue_script( 'comment-reply' );
-    // }
+    if (is_tax('cyclon_product_cat')) {
+        wp_enqueue_script('product-archive', get_stylesheet_directory_uri() . '/js/productArchive.js', array('jquery'), time(), true);
+    }
 
     wp_enqueue_script('swiper');
     wp_enqueue_script('simpleScroll');
