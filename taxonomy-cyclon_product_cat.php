@@ -82,15 +82,12 @@ get_header(); ?>
 
             if (have_posts()): ?>
                 <div class="container product-grid">
-                    <div>
+                    <div class="selected-filters" style="display: none;">
                         <h4><?php _e('Επιλεγμένα Φίλτρα:', 'cyclon'); ?></h4>
-                        <div>
-                            <div>
-                                <span>Vehicle Type</span>
-                                <span>10W - 40</span>
-                            </div>
-                            <button><?php _e('Διαγραφή όλων', 'cyclon'); ?></button>
+                        <div class="selected-filters__list">
+                            <!-- Filters will be dynamically inserted here -->
                         </div>
+                        <button type="button" class="selected-filters__clear-all"><?php _e('Διαγραφή όλων', 'cyclon'); ?></button>
                     </div>
 
                     <div class="archive-grid relative row g-2">

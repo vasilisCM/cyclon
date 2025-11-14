@@ -481,6 +481,9 @@ function updateUrlFromCheckboxes() {
   // Update URL without reload
   window.history.pushState({}, "", url);
 
+  // Update selected filters display
+  updateSelectedFiltersDisplay();
+
   // Trigger filter update
   applyFiltersFromUrl();
 }
@@ -499,6 +502,115 @@ function syncCheckboxesFromUrl() {
       checkbox.checked = urlValues.includes(checkbox.value);
     });
   });
+
+  // Update selected filters display
+  updateSelectedFiltersDisplay();
+}
+
+function updateSelectedFiltersDisplay() {
+  const selectedFiltersContainer = document.querySelector(".selected-filters");
+  const selectedFiltersList = document.querySelector(".selected-filters__list");
+
+  if (!selectedFiltersContainer || !selectedFiltersList) return;
+
+  const urlFilters = getUrlParams();
+  const taxonomies = cyclonFilters?.taxonomies || [];
+
+  // Clear existing filters
+  selectedFiltersList.innerHTML = "";
+
+  // Get taxonomy labels (from the h4 elements in filter groups)
+  const taxonomyLabels = {};
+  taxonomies.forEach((taxonomy) => {
+    const filterGroup = document.querySelector(`.taxonomy-${taxonomy}`);
+    if (filterGroup) {
+      const labelElement = filterGroup.querySelector("h4");
+      taxonomyLabels[taxonomy] = labelElement
+        ? labelElement.textContent.trim()
+        : taxonomy;
+    }
+  });
+
+  // Build selected filters list
+  let hasActiveFilters = false;
+
+  taxonomies.forEach((taxonomy) => {
+    const urlValues = urlFilters[taxonomy] || [];
+
+    urlValues.forEach((termSlug) => {
+      // Find the checkbox and its label to get the term name
+      const checkbox = document.querySelector(
+        `input[name="filters[${taxonomy}][]"][value="${termSlug}"]`
+      );
+
+      if (checkbox) {
+        const label = checkbox
+          .closest(".product-filters__option")
+          ?.querySelector("label");
+        const termName = label ? label.textContent.trim() : termSlug;
+        const taxonomyLabel = taxonomyLabels[taxonomy] || taxonomy;
+
+        const filterItem = document.createElement("div");
+        filterItem.className = "selected-filters__item";
+
+        const taxonomySpan = document.createElement("span");
+        taxonomySpan.className = "selected-filters__taxonomy";
+        taxonomySpan.textContent = taxonomyLabel + ":";
+
+        const termSpan = document.createElement("span");
+        termSpan.className = "selected-filters__term";
+        termSpan.textContent = termName;
+
+        const removeBtn = document.createElement("button");
+        removeBtn.type = "button";
+        removeBtn.className = "selected-filters__remove";
+        removeBtn.setAttribute("data-taxonomy", taxonomy);
+        removeBtn.setAttribute("data-term", termSlug);
+        removeBtn.setAttribute("aria-label", "Remove filter");
+        removeBtn.textContent = "×";
+
+        filterItem.appendChild(taxonomySpan);
+        filterItem.appendChild(termSpan);
+        filterItem.appendChild(removeBtn);
+
+        selectedFiltersList.appendChild(filterItem);
+        hasActiveFilters = true;
+      }
+    });
+  });
+
+  // Show/hide the selected filters container
+  selectedFiltersContainer.style.display = hasActiveFilters ? "block" : "none";
+}
+
+function clearAllFilters() {
+  const taxonomies = cyclonFilters?.taxonomies || [];
+
+  // Uncheck all filter checkboxes
+  taxonomies.forEach((taxonomy) => {
+    const checkboxes = document.querySelectorAll(
+      `input[name="filters[${taxonomy}][]"]:checked`
+    );
+    checkboxes.forEach((checkbox) => {
+      checkbox.checked = false;
+    });
+  });
+
+  // Update URL (which will trigger filter update)
+  updateUrlFromCheckboxes();
+}
+
+function removeFilter(taxonomy, termSlug) {
+  // Find and uncheck the specific checkbox
+  const checkbox = document.querySelector(
+    `input[name="filters[${taxonomy}][]"][value="${termSlug}"]`
+  );
+
+  if (checkbox) {
+    checkbox.checked = false;
+    // Update URL (which will trigger filter update)
+    updateUrlFromCheckboxes();
+  }
 }
 
 // Function Call
@@ -558,12 +670,29 @@ document.addEventListener("DOMContentLoaded", () => {
       checkbox.addEventListener("change", updateUrlFromCheckboxes);
     });
 
+  // Clear all filters button
+  const clearAllBtn = document.querySelector(".selected-filters__clear-all");
+  if (clearAllBtn) {
+    clearAllBtn.addEventListener("click", clearAllFilters);
+  }
+
+  // Remove individual filter buttons (delegated event listener)
+  document.addEventListener("click", (e) => {
+    if (e.target.classList.contains("selected-filters__remove")) {
+      const taxonomy = e.target.getAttribute("data-taxonomy");
+      const term = e.target.getAttribute("data-term");
+      if (taxonomy && term) {
+        removeFilter(taxonomy, term);
+      }
+    }
+  });
+
   // Listen for browser back/forward buttons
   window.addEventListener("popstate", () => {
     syncCheckboxesFromUrl();
     applyFiltersFromUrl();
   });
 
-  // Initial filter application
-  // applyFiltersFromUrl();
+  // Initial display of selected filters (if any in URL)
+  updateSelectedFiltersDisplay();
 });
