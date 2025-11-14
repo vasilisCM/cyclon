@@ -95,7 +95,7 @@ get_header(); ?>
 
                     <div class="row g-2">
                         <?php while (have_posts()): the_post(); ?>
-                            <div class="col-12 col-sm-4 col-md-3 col-lg-3 col-xl-3">
+                            <div class="col-12 col-md-6">
                                 <div class="relatedProduct productCard">
                                     <?php if (get_field('vehicle_type_icon')): ?>
                                         <img src="<?php echo get_field('vehicle_type_icon'); ?>" class="vehicle-icon" />

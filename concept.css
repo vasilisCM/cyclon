@@ -113,6 +113,15 @@
   border: solid 4px red;
 }
 
+.cyclon_tax_wrapper .productCard {
+  margin-bottom: revert;
+}
+
+.productCard {
+  max-width: revert;
+  min-height: revert;
+}
+
 .productCard__Image img {
   margin-top: revert;
 }
