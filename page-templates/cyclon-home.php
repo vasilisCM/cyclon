@@ -32,7 +32,7 @@ get_header(); ?>
                         $term_link = get_term_link($term);
                         $term_image = get_field('right_image', $term);
                         ?>
-                        <div class="col-lg-3 col-md-3 col-sm-6 col-6">
+                        <div class="col-lg col-md-3 col-sm-6 col-6" style="flex: 0 0 20%; max-width: 20%;">
                             <div class="catBox">
                                 <div class="catBox__Inner">
                                     <a href="<?php echo esc_url($term_link); ?>">
@@ -55,7 +55,7 @@ get_header(); ?>
                 }
                 ?>
 
-                        <div class="col-lg-3 col-md-3 col-sm-6 col-6">
+                        <div class="col-lg col-md-3 col-sm-6 col-6" style="flex: 0 0 20%; max-width: 20%;">
                             <div class="catBox">
                             <?php 
                                         $id_lube = get_field('id_lube');
