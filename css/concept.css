@@ -8,6 +8,10 @@
   margin-inline: auto;
 }
 
+.hidden {
+  display: none;
+}
+
 .relative {
   position: relative;
 }

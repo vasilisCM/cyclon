@@ -93,33 +93,22 @@ get_header(); ?>
                         </div>
                     </div>
 
-                    <div class="row g-2">
+                    <div class="archive-grid relative row g-2">
+                        <div class="archive-grid__loader hidden">
+                        </div>
+
                         <?php while (have_posts()): the_post(); ?>
-                            <div class="col-12 col-md-6">
-                                <div class="relatedProduct productCard">
-                                    <?php if (get_field('vehicle_type_icon')): ?>
-                                        <img src="<?php echo get_field('vehicle_type_icon'); ?>" class="vehicle-icon" />
-                                    <?php endif; ?>
-                                    <div class="productCard__Image">
-                                        <?php
-                                        $im = get_the_post_thumbnail_url(get_the_ID(), 'full');
-                                        if (!empty($im)): ?>
-                                            <img src="<?php echo $im; ?>"
-                                                class="img-fluid" />
-                                        <?php else: ?>
-                                            <img src="/wp-content/uploads/2022/05/1L_MAGMA-SYN-ULTRA-S-0W-20-1.png"
-                                                class="img-fluid" />
-                                        <?php endif; ?>
-                                    </div>
-                                    <div class="productCard__Content">
-                                        <h3><?php the_title(); ?></h3>
-                                        <!--                                                    <p class="spec"><strong>SYN - SHPD PLUS </strong> / 10W - 40</p>-->
-                                        <p class="info"><?php echo get_field('small_text_line'); ?></p>
-                                    </div>
-                                    <a href="<?php the_permalink(); ?>" class="productCard__Link"></a>
-                                </div>
-                            </div>
+
+
+                            <?php include 'template-parts/components/product-card.php'; ?>
+
                         <?php endwhile; ?>
+                    </div>
+
+                    <div class="archive-grid__bottom">
+                        <button type="button" class="archive-grid__load-more">Load More Products <div class="ic-arrow"></div>
+                        </button>
+                        <div class="archive-grid__no-more-posts">No more products</div>
                     </div>
                 </div>
             <?php endif; ?>
