@@ -57,8 +57,25 @@ get_header(); ?>
 
                         <div class="col-lg-3 col-md-3 col-sm-6 col-6">
                             <div class="catBox">
+                            <?php 
+                                        $id_lube = get_field('id_lube');
+                                        $image_1 = $id_lube['image_1'];
+                                        $image_2 = $id_lube['image_2'];
+                                        $text = $id_lube['text'];
+                                        $link = $id_lube['link'];                                    
+                                    ?>
                                 <div class="catBox__Inner">
-                                    <h1>ID LUBE BANNER HERE</h1>
+                                    <a href="<?php echo $link; ?>">
+                                    <div>
+                                        <img src="<?php echo $image_1; ?>" alt="">
+                                    </div>
+                                    <h4><?php echo $text; ?></h4>
+                                    <div>
+                                        <img src="<?php echo $image_2; ?>" alt="">
+                                    </div>
+                                    </a>
+                                  
+                                 
                                 </div>
                             </div>
                         </div>
