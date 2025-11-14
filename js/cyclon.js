@@ -976,10 +976,12 @@ itemHasChildren.addEventListener("mouseover", () => {
 });
 
 submenu.addEventListener("mouseover", () => {
+  megaMenu.classList.add("mega-menu--active");
   megaMenuOverlay.classList.add("mega-menu__overlay--active");
 });
 
 submenu.addEventListener("mouseleave", () => {
+  megaMenu.classList.remove("mega-menu--active");
   megaMenuOverlay.classList.remove("mega-menu__overlay--active");
   submenu.classList.remove("sub-menu--active");
 

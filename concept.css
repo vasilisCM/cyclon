@@ -18,6 +18,13 @@
   inset: 0;
   z-index: 800;
   border: solid 6px red;
+  visibility: hidden;
+  opacity: 0;
+}
+
+.mega-menu--active {
+  visibility: visible;
+  opacity: 1;
 }
 
 .mega-menu__container {
