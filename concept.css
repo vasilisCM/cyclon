@@ -99,6 +99,24 @@
   }
 } */
 
+/* Product Archive  */
+.product-archive__container {
+  margin-top: 200px;
+  display: grid;
+  grid-template-columns: 2fr 8fr;
+  border: solid 4px blue;
+}
+
+.product-filters {
+  background: revert;
+  padding: revert;
+  border: solid 4px red;
+}
+
+.productCard__Image img {
+  margin-top: revert;
+}
+
 /* Home */
 .home-more-news {
   text-align: center;
