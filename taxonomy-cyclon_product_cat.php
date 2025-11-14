@@ -106,7 +106,7 @@ get_header(); ?>
                     </div>
 
                     <div class="archive-grid__bottom">
-                        <button type="button" class="archive-grid__load-more">Load More Products <div class="ic-arrow"></div>
+                        <button type="button" class="archive-grid__load-more hidden">Load More Products <div class="ic-arrow"></div>
                         </button>
                         <div class="archive-grid__no-more-posts">No more products</div>
                     </div>

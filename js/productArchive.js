@@ -86,10 +86,7 @@ async function filterProducts({
     noMorePostsSelector = ".archive-grid__no-more-posts",
     loaderClass = "archive-grid__loader",
     titleSelector = ".product-card__title",
-    contentSelector = ".archive-grid__content",
-    excerptSelector = ".archive-grid__excerpt",
     featuredImageSelector = ".product-card__image img",
-    featuredImageCaptionSelector = ".archive-grid__featured-image-caption",
     permalinkSelector = ".product-card__link",
     customFieldMappings = [],
     makeWholePostLink = true,
@@ -101,6 +98,7 @@ async function filterProducts({
     termSlugs = null,
     searchTerm = null,
     postsNumber = 12,
+    urlFilters = {},
   } = {},
 } = {}) {
   // Store initial filter options on first call
@@ -113,8 +111,11 @@ async function filterProducts({
   const loadMoreBtn = document.querySelector(".archive-grid__load-more");
   const noMorePostsText = document.querySelector(noMorePostsSelector);
 
-  // Set initial offset according to visible posts
-  const offset = document.querySelectorAll(productSelector).length;
+  // Set initial offset according to visible posts (only if no filters are active)
+  const hasActiveFilters = urlFilters && Object.keys(urlFilters).length > 0;
+  const offset = hasActiveFilters
+    ? 0
+    : document.querySelectorAll(productSelector).length;
 
   if (!container) {
     console.error("Container or button selector is incorrect.");
@@ -169,7 +170,20 @@ async function filterProducts({
       );
     }
 
-    // Collect selected attributes
+    // Add URL-based filters (from checkboxes)
+    if (urlFilters && Object.keys(urlFilters).length > 0) {
+      console.log("🔍 Adding URL filters:", urlFilters);
+      Object.keys(urlFilters).forEach((taxonomy) => {
+        const values = urlFilters[taxonomy];
+        if (Array.isArray(values)) {
+          values.forEach((value) => {
+            formData.append(`filters[${taxonomy}][]`, value);
+          });
+        }
+      });
+    }
+
+    // Collect selected attributes (legacy support for select dropdowns)
     console.log("🔍 Collecting filter values:");
     document.querySelectorAll(".woo-filters select").forEach((select) => {
       if (select.value) {
@@ -417,53 +431,139 @@ async function filterProducts({
   }
 }
 
-// Get current category from URL
-const urlWords = window.location.pathname.split("/");
-const postCategory = urlWords[2];
+// URL-based filter management
+function getUrlParams() {
+  const params = new URLSearchParams(window.location.search);
+  const filters = {};
 
-// Detect archive type and prepare data for API
-let archiveType = "category"; // default
-let termSlugs = postCategory;
-let customTaxonomy = "cyclon_product_cat";
+  // Get all filter taxonomies from localized variable
+  const taxonomies = cyclonFilters?.taxonomies || [];
 
-const options = {
-  html: {
-    customFieldMappings: [
-      {
-        selector: ".product-card__vehicle-icon",
-        fieldName: "vehicle_type_icon",
-        tag: "img",
-        // renderWhenValueIs: "yes",
-        // content: "Επιδοτηση εως 400€",
-        property: "src",
-        // insertInto: ".product-card__subsidy",
-      },
-      {
-        selector: ".product-card__range-code",
-        fieldName: "range_code",
-        tag: "div",
-        // renderWhenValueIs: "yes",
-        // content: "Νέο",
-        // property: "textContent",
-        // insertInto: ".product-card__new",
-      },
-      {
-        selector: ".product-card__info",
-        fieldName: "small_text_line",
-        tag: "div",
-        // renderWhenValueIs: "yes",
-        // content: "Νέο",
-        // property: "textContent",
-        // insertInto: ".product-card__new",
-      },
-    ],
-  },
-  wordpress: {
-    archiveType: archiveType,
-    customTaxonomy: customTaxonomy,
-    termSlugs: termSlugs,
-  },
-};
+  taxonomies.forEach((taxonomy) => {
+    const value = params.get(taxonomy);
+    if (value) {
+      // Support comma-separated values for multiple selections
+      filters[taxonomy] = value.split(",").filter((v) => v.trim() !== "");
+    }
+  });
 
-// Function call
-filterProducts(options);
+  return filters;
+}
+
+function updateUrlFromCheckboxes() {
+  const filters = {};
+  const taxonomies = cyclonFilters?.taxonomies || [];
+
+  // Collect checked values for each taxonomy
+  taxonomies.forEach((taxonomy) => {
+    const checked = Array.from(
+      document.querySelectorAll(`input[name="filters[${taxonomy}][]"]:checked`)
+    ).map((cb) => cb.value);
+
+    if (checked.length > 0) {
+      filters[taxonomy] = checked.join(",");
+    }
+  });
+
+  // Update URL without page reload
+  const url = new URL(window.location);
+
+  // Remove all filter params first
+  taxonomies.forEach((taxonomy) => {
+    url.searchParams.delete(taxonomy);
+  });
+
+  // Add current filter params
+  Object.keys(filters).forEach((taxonomy) => {
+    url.searchParams.set(taxonomy, filters[taxonomy]);
+  });
+
+  // Update URL without reload
+  window.history.pushState({}, "", url);
+
+  // Trigger filter update
+  applyFiltersFromUrl();
+}
+
+function syncCheckboxesFromUrl() {
+  const urlFilters = getUrlParams();
+  const taxonomies = cyclonFilters?.taxonomies || [];
+
+  taxonomies.forEach((taxonomy) => {
+    const checkboxes = document.querySelectorAll(
+      `input[name="filters[${taxonomy}][]"]`
+    );
+    const urlValues = urlFilters[taxonomy] || [];
+
+    checkboxes.forEach((checkbox) => {
+      checkbox.checked = urlValues.includes(checkbox.value);
+    });
+  });
+}
+
+// Function Call
+function applyFiltersFromUrl() {
+  const urlFilters = getUrlParams();
+
+  // Get current category from URL
+  const urlWords = window.location.pathname.split("/");
+  const postCategory = urlWords[2];
+
+  // Detect archive type and prepare data for API
+  let archiveType = "category"; // default
+  let termSlugs = postCategory;
+  let customTaxonomy = "cyclon_product_cat";
+
+  const options = {
+    html: {
+      customFieldMappings: [
+        {
+          selector: ".product-card__vehicle-icon",
+          fieldName: "vehicle_type_icon",
+          tag: "img",
+          property: "src",
+        },
+        {
+          selector: ".product-card__range-code",
+          fieldName: "range_code",
+          tag: "div",
+        },
+        {
+          selector: ".product-card__info",
+          fieldName: "small_text_line",
+          tag: "div",
+        },
+      ],
+    },
+    wordpress: {
+      archiveType: archiveType,
+      customTaxonomy: customTaxonomy,
+      termSlugs: termSlugs,
+      urlFilters: urlFilters, // Pass URL filters
+    },
+  };
+
+  filterProducts(options);
+}
+
+// Initialize: Set up checkbox listeners and URL sync
+document.addEventListener("DOMContentLoaded", () => {
+  // Sync checkboxes (UI) from URL on page load
+  syncCheckboxesFromUrl();
+
+  // Listen for checkbox changes to modify the URL
+  document
+    .querySelectorAll('input[type="checkbox"][name^="filters["]')
+    .forEach((checkbox) => {
+      checkbox.addEventListener("change", updateUrlFromCheckboxes);
+    });
+
+  // Listen for browser back/forward buttons
+  window.addEventListener("popstate", () => {
+    syncCheckboxesFromUrl();
+    applyFiltersFromUrl();
+  });
+
+  // Initial filter application
+  // applyFiltersFromUrl();
+});

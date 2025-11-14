@@ -312,6 +312,13 @@ function cyclon_theme_scripts()
     if (is_tax('cyclon_product_cat')) {
         wp_enqueue_script('product-archive', get_stylesheet_directory_uri() . '/js/productArchive.js', array('jquery'), time(), true);
         wp_localize_script('product-archive', 'wpAjax', array('ajaxUrl' => admin_url('admin-ajax.php')));
+        wp_localize_script('product-archive', 'cyclonFilters', array(
+            'taxonomies' => array(
+                'cyclon_range',
+                'cyclon_product_grade',
+                'cyclon_product_type',
+            )
+        ));
     }
 
     wp_enqueue_script('swiper');

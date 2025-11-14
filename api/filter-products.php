@@ -19,6 +19,7 @@ function custom_filter_products()
     );
 
     // Handle current archive context (maintain the current archive constraint)
+    $has_archive_context = false;
     if (!empty($_POST['current_archive_context'])) {
         $context = json_decode(stripslashes($_POST['current_archive_context']), true);
         if (!empty($context['taxonomy']) && !empty($context['term'])) {
@@ -27,7 +28,23 @@ function custom_filter_products()
                 'field' => 'term_id',
                 'terms' => intval($context['term']),
             );
+            $has_archive_context = true;
         }
+    }
+
+    // Handle archive context from customTaxonomy and termSlugs (fallback if current_archive_context not set)
+    if (!$has_archive_context && !empty($_POST['customTaxonomy']) && !empty($_POST['termSlugs'])) {
+        $archive_taxonomy = sanitize_text_field($_POST['customTaxonomy']);
+        $term_slug = sanitize_text_field($_POST['termSlugs']);
+
+        $args['tax_query'][] = array(
+            'taxonomy' => $archive_taxonomy,
+            'field' => 'slug',
+            'terms' => $term_slug,
+        );
+
+        $debug_info['applied_filters']['archive_taxonomy'] = $archive_taxonomy;
+        $debug_info['applied_filters']['archive_term'] = $term_slug;
     }
 
     // Define our custom taxonomies
@@ -120,11 +137,18 @@ function custom_filter_products()
             foreach ($custom_taxonomies as $taxonomy) {
                 // Skip the current archive taxonomy (don't show it in filters)
                 $skip_taxonomy = false;
+
+                // Check if this is the archive taxonomy from current_archive_context
                 if (!empty($_POST['current_archive_context'])) {
                     $context = json_decode(stripslashes($_POST['current_archive_context']), true);
                     if (!empty($context['taxonomy']) && $context['taxonomy'] === $taxonomy) {
                         $skip_taxonomy = true;
                     }
+                }
+
+                // Check if this is the archive taxonomy from customTaxonomy
+                if (!$skip_taxonomy && !empty($_POST['customTaxonomy']) && $_POST['customTaxonomy'] === $taxonomy) {
+                    $skip_taxonomy = true;
                 }
 
                 if (!$skip_taxonomy) {
