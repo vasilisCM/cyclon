@@ -30,12 +30,14 @@ get_header(); ?>
                 if (!empty($terms) && !is_wp_error($terms)) {
                     foreach ($terms as $term) {
                         $term_link = get_term_link($term);
+                        $landing_page = get_field('landing_page', $term);
+                        $term_url = $landing_page ? $landing_page : $term_link;
                         $term_image = get_field('right_image', $term);
-                        ?>
+                ?>
                         <div class="col-lg col-md-3 col-sm-6 col-6" style="flex: 0 0 20%; max-width: 20%;">
                             <div class="catBox">
                                 <div class="catBox__Inner">
-                                    <a href="<?php echo esc_url($term_link); ?>">
+                                    <a href="<?php echo esc_url($term_url); ?>">
                                         <?php if ($term_image): ?>
                                             <img src="<?php echo esc_url($term_image); ?>" class="catBoxImage" alt="<?php echo esc_attr($term->name); ?>" />
                                         <?php else: ?>
@@ -50,7 +52,7 @@ get_header(); ?>
                                 </h4>
                             </div>
                         </div>
-                        <?php
+                <?php
                     }
                 }
                 ?>
