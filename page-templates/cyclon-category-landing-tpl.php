@@ -28,6 +28,16 @@ get_header(); ?>
                     $saloon_term = get_term_by('slug', $possible_slug, 'cyclon_product_cat');
                 }
             }
+
+            $allowed_range_slugs = array('eco', 'evo', 'max', 'pro');
+            $range_terms = array();
+
+            foreach ($allowed_range_slugs as $allowed_slug) {
+                $range_term = get_term_by('slug', $allowed_slug, 'cyclon_range');
+                if ($range_term && !is_wp_error($range_term)) {
+                    $range_terms[] = $range_term;
+                }
+            }
             ?>
             <div>
                 <h1>
@@ -40,11 +50,6 @@ get_header(); ?>
                     ?>
                 </h1>
                 <?php
-                $range_terms = get_terms(array(
-                    'taxonomy' => 'cyclon_range',
-                    'hide_empty' => false,
-                ));
-
                 $category_term_id = ($saloon_term && !is_wp_error($saloon_term)) ? $saloon_term->term_id : 0;
                 ?>
 
@@ -59,7 +64,9 @@ get_header(); ?>
                                     $button_classes .= ' tabs__button--active';
                                 }
                             ?>
-                                <div class="<?php echo esc_attr($button_classes); ?>" data-tab-target="tab-<?php echo esc_attr($range_term->slug); ?>">
+                                <div class="<?php echo esc_attr($button_classes); ?>"
+                                    data-tab-target="tab-<?php echo esc_attr($range_term->slug); ?>"
+                                    data-range="<?php echo esc_attr($range_term->slug); ?>">
                                     <?php echo esc_html($range_term->name); ?>
                                 </div>
                             <?php
@@ -149,12 +156,21 @@ get_header(); ?>
                 <?php endif; ?>
             </div>
         <?php endif; ?>
+        <?php
+        $default_range_slug = !empty($range_terms) ? $range_terms[0]->slug : '';
+        $filtered_saloon_url = $saloon_btn_link;
+
+        if ($saloon_btn_link && $default_range_slug) {
+            $filtered_saloon_url = add_query_arg('cyclon_range', $default_range_slug, $saloon_btn_link);
+        }
+        ?>
         <div class="text-center">
-            <!-- <a class="mButton mButton--blueButton"-->
-            <!-- href="--><?php //echo get_field('saloon_btn_url'); 
-                            ?><!--">--><?php //echo get_field('saloon_btn_text'); 
-                                        ?><!--</a> -->
-            <a class="mButton" href="<?php echo get_field('saloon_btn_url'); ?>"><?php echo get_field('saloon_btn_text'); ?></a>
+            <a class="mButton product-category-landing__cta"
+                href="<?php echo esc_url($filtered_saloon_url); ?>"
+                data-base-url="<?php echo esc_url($saloon_btn_link); ?>"
+                data-active-range="<?php echo esc_attr($default_range_slug); ?>">
+                <?php echo esc_html(get_field('saloon_btn_text')); ?>
+            </a>
         </div>
     </section>
 

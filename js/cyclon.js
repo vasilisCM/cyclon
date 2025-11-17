@@ -1040,6 +1040,8 @@ class Tabs {
     const buttons = Array.from(document.querySelectorAll(this.buttonSelector));
     const contents = document.querySelectorAll(this.contentSelector);
 
+    const ctaLink = document.querySelector(".product-category-landing__cta");
+
     // Tab Functionality
     this.handleTabClick = (e) => {
       const clickedTab = e.target.closest(this.buttonSelector);
@@ -1054,6 +1056,19 @@ class Tabs {
       buttons.forEach((tab, i) => {
         tab.classList.toggle(this.activeButtonModifier, i === clickedIndex);
       });
+
+      // Update CTA link query string based on selected tab
+      if (ctaLink) {
+        const baseUrl = ctaLink.dataset.baseUrl || ctaLink.getAttribute("href");
+        const activeRange = clickedTab.dataset.range;
+
+        if (baseUrl && activeRange) {
+          const nextUrl = new URL(baseUrl, window.location.origin);
+          nextUrl.searchParams.set("cyclon_range", activeRange);
+          ctaLink.setAttribute("href", nextUrl.pathname + nextUrl.search);
+          ctaLink.dataset.activeRange = activeRange;
+        }
+      }
 
       // Show/ Hide content
       contents.forEach((content, index) => {
