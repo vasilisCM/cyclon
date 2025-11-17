@@ -1,6 +1,6 @@
 /* Utilities */
 .boxed {
-  max-width: 1200px;
+  max-width: 1380px;
   padding-inline: 60px;
 }
 
@@ -19,8 +19,9 @@
 /* Layouts  */
 .mega-menu {
   position: fixed;
-  inset: 0;
+  inset-inline: 0;
   top: 150px;
+  min-height: 650px;
   border: solid 6px red;
   visibility: hidden;
   opacity: 0;
@@ -37,6 +38,7 @@
 
 .mega-menu__container {
   position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -47,6 +49,8 @@
 }
 
 .mega-menu__item {
+  position: absolute;
+  inset: 0;
   border: solid 4px yellow;
   display: flex;
   opacity: 0;
@@ -74,6 +78,11 @@
   visibility: visible;
 }
 
+.mega-menu-panel__heading {
+  font-size: 31px;
+  line-height: 1;
+}
+
 /* Submenu */
 .sub-menu {
   position: absolute;
@@ -94,10 +103,56 @@
   } */
 }
 
+.sub-menu li {
+  margin-right: 0;
+  padding-inline: 15px;
+  position: relative;
+}
+
+.sub-menu li a {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 0;
+  display: block;
+  width: 100%;
+}
+
+.sub-menu li:hover {
+  background-color: #ffda00;
+}
+
+.sub-menu li:hover:after {
+  content: "";
+  clip-path: polygon(0 0, 0% 100%, 100% 50%);
+  background-color: #ffda00;
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 10px;
+  transform: translateX(100%);
+}
+
+.sub-menu li:hover a {
+  color: #001a61;
+}
+
 .sub-menu--active {
   visibility: visible;
   opacity: 1;
 }
+
+/* .sub-menu:after {
+  content: "";
+  position: absolute;
+  top: -10px;
+  left: min(-12px, calc((((100vw - 1400px) / 2) * (-1)) - 22px));
+  width: 100vw;
+  height: 650px;
+  background-image: url(/wp-content/uploads/2025/11/mega-menu-bg-img.jpg);
+  background-size: cover;
+  background-position: center;
+  z-index: -1000;
+} */
 
 /* .cyclon__Menu > li:hover ul {
   visibility: visible;
@@ -1411,9 +1466,9 @@ body.error404 .taxHeader {
   position: relative;
 }
 
-.cyclon__Menu li:last-child {
+/* .cyclon__Menu li:last-child {
   margin-right: 10px;
-}
+} */
 
 /* Search Results */
 .search .cyclon__Header {
@@ -1567,7 +1622,7 @@ header.openSearch .search-form input[type="submit"] {
 
 /* Modal  */
 .modal {
-  display: none;
+  display: none !important; /* Remove important before go live */
   align-items: center;
   justify-content: center;
   position: fixed;

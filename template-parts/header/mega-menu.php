@@ -18,10 +18,10 @@
                     <?php endif; ?>
                     <div class="mega-menu-panel__content">
                         <?php if ($heading): ?>
-                            <h3 class="mega-menu-panel__heading"><?php echo $heading; ?></h3>
+                            <h3 class="mega-menu-panel__heading white-text"><?php echo $heading; ?></h3>
                         <?php endif; ?>
                         <?php if ($text): ?>
-                            <div class="mega-menu-panel__text">
+                            <div class="mega-menu-panel__text accent">
                                 <?php echo $text; ?>
                             </div>
                         <?php endif; ?>
