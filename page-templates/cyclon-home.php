@@ -32,6 +32,19 @@ get_header(); ?>
                         $term_link = get_term_link($term);
                         $landing_page = get_field('landing_page', $term);
                         $term_url = $landing_page ? $landing_page : $term_link;
+
+                        $landing_page_id = 0;
+                        if (is_object($landing_page) && isset($landing_page->ID)) {
+                            $landing_page_id = $landing_page->ID;
+                        } elseif (is_array($landing_page) && isset($landing_page['ID'])) {
+                            $landing_page_id = $landing_page['ID'];
+                        } elseif (is_numeric($landing_page)) {
+                            $landing_page_id = intval($landing_page);
+                        } elseif (is_string($landing_page)) {
+                            $landing_page_id = url_to_postid($landing_page);
+                        }
+
+                        $has_product_range = $landing_page_id ? get_field('has_product_range', $landing_page_id) : false;
                         $term_image = get_field('right_image', $term);
                 ?>
                         <div class="col-lg col-md-3 col-sm-6 col-6" style="flex: 0 0 20%; max-width: 20%;">
@@ -50,6 +63,9 @@ get_header(); ?>
                                         <?php echo esc_html($term->name); ?>
                                     </a>
                                 </h4>
+                                <?php if ($has_product_range): ?>
+                                    <img src="/wp-content/uploads/2025/11/mega-menu-product-range-img.png" alt="">
+                                <?php endif; ?>
                             </div>
                         </div>
                 <?php
