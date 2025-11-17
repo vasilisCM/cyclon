@@ -39,59 +39,69 @@ get_header(); ?>
                     }
                     ?>
                 </h1>
-                <div class="tabs">
-                    <!-- <div class="tabs__buttons">
-                        <div class="tabs__button">
-                            Item 1
-                        </div>
-                        <div class="tabs__button">
-                            Item 2
-                        </div>
-                        <div class="tabs__button">
-                            Item 3
-                        </div>
-                        <div class="tabs__button">
-                            Item 4
-                        </div>
-                    </div> -->
+                <?php
+                $range_terms = get_terms(array(
+                    'taxonomy' => 'cyclon_range',
+                    'hide_empty' => false,
+                ));
 
-                    <div class="tabs__contents">
-                        <div class="tabs__content">
+                $category_term_id = ($saloon_term && !is_wp_error($saloon_term)) ? $saloon_term->term_id : 0;
+                ?>
+
+                <?php if (!empty($range_terms) && !is_wp_error($range_terms)) : ?>
+                    <div class="tabs">
+                        <div class="tabs__buttons">
                             <?php
-                            $range_terms = get_terms(array(
-                                'taxonomy' => 'cyclon_range',
-                                'hide_empty' => false,
-                            ));
-
-                            $category_term_id = ($saloon_term && !is_wp_error($saloon_term)) ? $saloon_term->term_id : 0;
-
-                            if (!empty($range_terms) && !is_wp_error($range_terms)) :
-                                foreach ($range_terms as $range_term) :
-                                    $tax_query = array(
-                                        'relation' => 'AND',
-                                        array(
-                                            'taxonomy' => 'cyclon_range',
-                                            'field'    => 'term_id',
-                                            'terms'    => $range_term->term_id,
-                                        ),
-                                    );
-
-                                    if ($category_term_id) {
-                                        $tax_query[] = array(
-                                            'taxonomy' => 'cyclon_product_cat',
-                                            'field'    => 'term_id',
-                                            'terms'    => $category_term_id,
-                                        );
-                                    }
-
-                                    $range_query = new WP_Query(array(
-                                        'post_type' => 'cyclon_product',
-                                        'posts_per_page' => -1,
-                                        'tax_query' => $tax_query,
-                                    ));
-
-                                    if ($range_query->have_posts()) :
+                            $tab_index = 0;
+                            foreach ($range_terms as $range_term) :
+                                $button_classes = 'tabs__button';
+                                if ($tab_index === 0) {
+                                    $button_classes .= ' tabs__button--active';
+                                }
                             ?>
+                                <div class="<?php echo esc_attr($button_classes); ?>" data-tab-target="tab-<?php echo esc_attr($range_term->slug); ?>">
+                                    <?php echo esc_html($range_term->name); ?>
+                                </div>
+                            <?php
+                                $tab_index++;
+                            endforeach;
+                            ?>
+                        </div>
+
+                        <div class="tabs__contents">
+                            <?php
+                            $tab_index = 0;
+                            foreach ($range_terms as $range_term) :
+                                $content_classes = 'tabs__content';
+                                if ($tab_index !== 0) {
+                                    $content_classes .= ' tabs__content--hidden';
+                                }
+
+                                $tax_query = array(
+                                    'relation' => 'AND',
+                                    array(
+                                        'taxonomy' => 'cyclon_range',
+                                        'field'    => 'term_id',
+                                        'terms'    => $range_term->term_id,
+                                    ),
+                                );
+
+                                if ($category_term_id) {
+                                    $tax_query[] = array(
+                                        'taxonomy' => 'cyclon_product_cat',
+                                        'field'    => 'term_id',
+                                        'terms'    => $category_term_id,
+                                    );
+                                }
+
+                                $range_query = new WP_Query(array(
+                                    'post_type' => 'cyclon_product',
+                                    'posts_per_page' => -1,
+                                    'tax_query' => $tax_query,
+                                ));
+                            ?>
+                                <div class="<?php echo esc_attr($content_classes); ?>" id="tab-<?php echo esc_attr($range_term->slug); ?>">
+                                    <?php if ($range_query->have_posts()) : ?>
                                         <div class="range-group" data-range="<?php echo esc_attr($range_term->slug); ?>">
                                             <h4 class="range-group__title"><?php echo esc_html($range_term->name); ?></h4>
                                             <div class="range-group__items">
@@ -123,16 +133,20 @@ get_header(); ?>
                                                 <?php endwhile; ?>
                                             </div>
                                         </div>
+                                    <?php else : ?>
+                                        <div class="range-group range-group--empty" data-range="<?php echo esc_attr($range_term->slug); ?>">
+                                            <p><?php echo esc_html__('No products available for this range.', 'cyclon'); ?></p>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
                             <?php
-                                    endif;
-                                    wp_reset_postdata();
-                                endforeach;
-                            endif;
+                                wp_reset_postdata();
+                                $tab_index++;
+                            endforeach;
                             ?>
                         </div>
                     </div>
-
-                </div>
+                <?php endif; ?>
             </div>
         <?php endif; ?>
         <div class="text-center">
