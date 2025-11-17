@@ -20,10 +20,14 @@
 .mega-menu {
   position: fixed;
   inset: 0;
-  z-index: 800;
+  top: 150px;
   border: solid 6px red;
   visibility: hidden;
   opacity: 0;
+  background-image: url("/wp-content/uploads/2025/11/mega-menu-bg-img.jpg");
+  background-size: cover;
+  background-position: center;
+  z-index: 800;
 }
 
 .mega-menu--active {
@@ -74,10 +78,11 @@
 .sub-menu {
   position: absolute;
   top: 100%;
-  left: 0;
+  left: 12px;
   margin: 0;
-  padding: 8px;
-  background-color: rgb(13, 110, 253);
+  padding: 15px 0;
+  background-color: rgb(216, 216, 216, 0.15);
+  backdrop-filter: blur(7px);
   visibility: hidden;
   opacity: 0;
   transition: all ease 300ms;
