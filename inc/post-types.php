@@ -44,6 +44,7 @@ if (! function_exists('cyclon_product_pt')) {
             'show_ui'               => true,
             'show_in_menu'          => true,
             'menu_position'         => 5,
+            'menu_icon'              => 'dashicons-cart',
             'show_in_admin_bar'     => true,
             'show_in_nav_menus'     => true,
             'can_export'            => true,
