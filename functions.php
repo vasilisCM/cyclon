@@ -8,6 +8,19 @@ if (!defined('_S_VERSION')) {
 // API Modules
 include_once(get_template_directory() . '/api/filter-products.php');
 
+function cyclon_limit_product_archive_posts($query)
+{
+    if (is_admin() || !$query->is_main_query()) {
+        return;
+    }
+
+    if ($query->is_tax('cyclon_product_cat')) {
+        $query->set('posts_per_page', 8);
+    }
+}
+
+add_action('pre_get_posts', 'cyclon_limit_product_archive_posts');
+
 /**
  * Sets up theme defaults and registers support for various WordPress features.
  *
@@ -287,6 +300,8 @@ function cyclon_theme_scripts()
     if (is_tax('cyclon_product_cat')) {
         wp_enqueue_style('product-archive', get_stylesheet_directory_uri() . '/css/product-archive.css', array(), time(), 'all');
     }
+    wp_enqueue_script('gsap', get_template_directory_uri() . '/js/lib/gsap.min.js', array(), false, true);
+    wp_enqueue_script('ScrollTrigger', get_template_directory_uri() . '/js/lib/ScrollTrigger.min.js', array(), false, true);
 
     wp_style_add_data('cyclon-wp-theme-style', 'rtl', 'replace');
 

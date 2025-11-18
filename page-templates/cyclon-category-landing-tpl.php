@@ -8,6 +8,9 @@ get_header(); ?>
     <section class="saloon">
         <?php
         $has_products_with_range = get_field('has_product_range');
+        $saloon_btn_link = get_field('saloon_btn_url');
+        $range_terms = array();
+
         if (!$has_products_with_range) : ?>
             <div class="saloon__Image">
                 <img src="<?php echo get_field('saloon_image'); ?>" class="img-responsive" />
@@ -16,7 +19,6 @@ get_header(); ?>
             <p class="text-center"><?php echo get_field('saloon_text'); ?></p>
         <?php else : ?>
             <?php
-            $saloon_btn_link = get_field('saloon_btn_url');
             $saloon_term = null;
 
             if ($saloon_btn_link) {
@@ -30,7 +32,6 @@ get_header(); ?>
             }
 
             $allowed_range_slugs = array('eco', 'evo', 'max', 'pro');
-            $range_terms = array();
 
             foreach ($allowed_range_slugs as $allowed_slug) {
                 $range_term = get_term_by('slug', $allowed_slug, 'cyclon_range');
@@ -157,11 +158,15 @@ get_header(); ?>
             </div>
         <?php endif; ?>
         <?php
-        $default_range_slug = !empty($range_terms) ? $range_terms[0]->slug : '';
+        $default_range_slug = '';
         $filtered_saloon_url = $saloon_btn_link;
 
-        if ($saloon_btn_link && $default_range_slug) {
-            $filtered_saloon_url = add_query_arg('cyclon_range', $default_range_slug, $saloon_btn_link);
+        if ($has_products_with_range && !empty($range_terms)) {
+            $default_range_slug = $range_terms[0]->slug;
+
+            if ($saloon_btn_link && $default_range_slug) {
+                $filtered_saloon_url = add_query_arg('cyclon_range', $default_range_slug, $saloon_btn_link);
+            }
         }
         ?>
         <div class="text-center">

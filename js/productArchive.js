@@ -1,5 +1,52 @@
 console.log("productArchive.js");
 
+function getArchiveBasePath(pathname = window.location.pathname) {
+  const cleaned = pathname.replace(/\/page\/\d+\/?$/, "/");
+  const normalized = cleaned.replace(/\/{2,}/g, "/");
+  return normalized.endsWith("/") ? normalized : `${normalized}/`;
+}
+
+function getCurrentArchivePage(pathname = window.location.pathname) {
+  const match = pathname.match(/\/page\/(\d+)\//);
+  return match ? parseInt(match[1], 10) : 1;
+}
+
+let archiveBasePath = getArchiveBasePath();
+let currentArchivePage = getCurrentArchivePage();
+let filterPinTrigger = null;
+
+// Stick To top
+function initPinElements() {
+  if (typeof ScrollTrigger === "undefined") {
+    return;
+  }
+
+  const stickyTarget = document.querySelector(".sticky");
+  const archiveGrid = document.querySelector(".archive-grid");
+
+  if (!stickyTarget || !archiveGrid) {
+    return;
+  }
+
+  if (filterPinTrigger) {
+    filterPinTrigger.kill();
+    filterPinTrigger = null;
+  }
+
+  const headerHeight =
+    document.querySelector(".site-header")?.offsetHeight || 0;
+  const archiveGridHeight = archiveGrid?.offsetHeight || 0;
+
+  filterPinTrigger = ScrollTrigger.create({
+    trigger: stickyTarget,
+    start: `-${headerHeight} top`,
+    end: `+=${archiveGridHeight} bottom`, // adjust to control how long it stays pinned
+    // markers: true,
+    pin: true,
+    pinSpacing: false, // or true if you want the placeholder spacing
+  });
+}
+
 // Helper function for clearing field elements
 function clearFieldElements(elements) {
   elements.forEach((element) => element.remove());
@@ -97,7 +144,8 @@ async function filterProducts({
     customTaxonomy = null,
     termSlugs = null,
     searchTerm = null,
-    postsNumber = 12,
+    postsNumber = 8,
+    page = 1,
     urlFilters = {},
   } = {},
 } = {}) {
@@ -151,6 +199,7 @@ async function filterProducts({
     if (termSlugs) formData.append("termSlugs", termSlugs);
     if (searchTerm) formData.append("searchTerm", searchTerm);
     formData.append("postsNumber", postsNumber);
+    formData.append("page", page);
 
     // Add archive type information
     if (archiveType) formData.append("archiveType", archiveType);
@@ -403,6 +452,16 @@ async function filterProducts({
       //   loader.replaceWith(button);
     }
 
+    const paginationContainer = document.querySelector(".archive-grid__bottom");
+    if (paginationContainer && "pagination_html" in data) {
+      paginationContainer.innerHTML = data.pagination_html || "";
+    }
+
+    if (typeof ScrollTrigger !== "undefined") {
+      initPinElements();
+      ScrollTrigger.refresh();
+    }
+
     // UP TO HERE!
 
     // else {
@@ -467,6 +526,9 @@ function updateUrlFromCheckboxes() {
 
   // Update URL without page reload
   const url = new URL(window.location);
+  currentArchivePage = 1;
+  url.pathname = archiveBasePath;
+  archiveBasePath = getArchiveBasePath(url.pathname);
 
   // Remove all filter params first
   taxonomies.forEach((taxonomy) => {
@@ -651,6 +713,7 @@ function applyFiltersFromUrl() {
       archiveType: archiveType,
       customTaxonomy: customTaxonomy,
       termSlugs: termSlugs,
+      page: currentArchivePage,
       urlFilters: urlFilters, // Pass URL filters
     },
   };
@@ -689,10 +752,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Listen for browser back/forward buttons
   window.addEventListener("popstate", () => {
+    archiveBasePath = getArchiveBasePath();
+    currentArchivePage = getCurrentArchivePage();
     syncCheckboxesFromUrl();
     applyFiltersFromUrl();
+    initPinElements();
+    ScrollTrigger.refresh();
   });
 
   // Initial display of selected filters (if any in URL)
   updateSelectedFiltersDisplay();
+  initPinElements();
+  ScrollTrigger.refresh();
 });
