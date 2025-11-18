@@ -2,7 +2,7 @@
 $term = get_queried_object();
 get_header(); ?>
 <main id="primary" class="main-content cyclon_product_category_content">
-    <div class="cyclon_tax_wrapper">
+    <div class="cyclon_tax_wrapper primary">
 
         <div class="container product-archive__container">
 
@@ -25,7 +25,7 @@ get_header(); ?>
             $cyclon_taxonomies = array_filter($cyclon_taxonomies);
             if (! empty($cyclon_taxonomies)): ?>
                 <div class="product-filters sticky">
-                    <h3 lang="el"><?php _e('Φίλτρα:', 'cyclon'); ?></h3>
+                    <div lang="el" class="font-ferry black-weight lowercase"><?php _e('Φίλτρα', 'cyclon'); ?></div>
                     <div class="product-filters__grid">
                         <?php foreach ($cyclon_taxonomies as $taxonomy):
                             // Get terms only for products in current archive
@@ -54,7 +54,7 @@ get_header(); ?>
                             }
                         ?>
                             <div class="product-filters__group taxonomy-<?php echo esc_attr($taxonomy->name); ?>">
-                                <h4><?php echo esc_html($taxonomy->labels->singular_name ?? $taxonomy->label); ?></h4>
+                                <div class="bold text-xs letter-spacing"><?php echo esc_html($taxonomy->labels->singular_name ?? $taxonomy->label); ?></div>
                                 <div class="product-filters__options">
                                     <?php foreach ($terms as $term):
                                         $checkbox_id = esc_attr($taxonomy->name . '-' . $term->slug);
@@ -90,12 +90,11 @@ get_header(); ?>
                         <button type="button" class="selected-filters__clear-all"><?php _e('Διαγραφή όλων', 'cyclon'); ?></button>
                     </div>
 
-                    <div class="archive-grid relative row g-2">
+                    <div class="archive-grid relative">
                         <div class="archive-grid__loader hidden">
                         </div>
 
                         <?php while (have_posts()): the_post(); ?>
-
 
                             <?php include 'template-parts/components/product-card.php'; ?>
 

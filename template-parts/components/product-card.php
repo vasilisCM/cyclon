@@ -1,7 +1,10 @@
-<div class="product-card relatedProduct productCard col-12 col-md-6">
-    <?php if (get_field('vehicle_type_icon')): ?>
-        <img src="<?php echo get_field('vehicle_type_icon'); ?>" class="vehicle-icon product-card__vehicle-icon" />
-    <?php endif; ?>
+<div class="product-card">
+    <!-- <?php // if (get_field('vehicle_type_icon')): 
+            ?>
+        <img src="<?php // echo get_field('vehicle_type_icon'); 
+                    ?>" class="vehicle-icon product-card__vehicle-icon" />
+    <?php // endif; 
+    ?> -->
     <div class="product-card__image productCard__Image">
         <?php
         $im = get_the_post_thumbnail_url(get_the_ID(), 'full');
@@ -14,8 +17,22 @@
         <?php endif; ?>
     </div>
     <div class="productCard__Content">
-        <h3 class="product-card__title"><?php the_title(); ?></h3>
-        <div class="product-card__range-code"><?php echo get_field('range_code'); ?></div>
+        <?php if (get_field('range_code')): ?>
+            <?php
+            $terms = get_the_terms(get_the_ID(), 'cyclon_range');
+            if (!empty($terms) && !is_wp_error($terms)) :
+                $term_names = wp_list_pluck($terms, 'name');
+            ?>
+                <div class=""><?php echo esc_html(implode(', ', $term_names)); ?></div>
+            <?php endif; ?>
+        <?php endif; ?>
+        <div class="product-card__title"><?php the_title(); ?></div>
+        <?php if (get_field('range_code')): ?>
+            <div class="product-card__range-code"><?php echo get_field('range_code'); ?></div>
+        <?php endif; ?>
+        <?php if (get_field('small_text_line')): ?>
+            <div class="info product-card__info"><?php echo get_field('small_text_line'); ?></div>
+        <?php endif; ?>
         <!--                                                    <p class="spec"><strong>SYN - SHPD PLUS </strong> / 10W - 40</p>-->
         <div class="info product-card__info"><?php echo get_field('small_text_line'); ?></div>
     </div>

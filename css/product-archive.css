@@ -1,9 +1,37 @@
-header {
-  border: solid 4px red;
-  /* just for testing  */
+/* For Utilities  */
+.primary {
+  color: #00144a;
+}
+
+.lowercase {
+  text-transform: lowercase;
+}
+
+.bold {
+  font-weight: 700;
+}
+
+.black-weight {
+  font-weight: 900;
+}
+
+.font-ferry {
+  font-family: "Ferry-Black", sans-serif;
+}
+
+.letter-spacing {
+  letter-spacing: -0.02em;
+}
+
+/* For typographgy  */
+.text-xs {
+  font-size: 12px;
 }
 
 /* Product Archive  */
+.cyclon_tax_wrapper {
+  background: #fff;
+}
 
 .product-archive__container {
   margin-top: 200px;
@@ -22,6 +50,17 @@ header {
 .product-filters__options {
   max-height: 300px;
   overflow-y: auto;
+}
+
+.archive-grid {
+  display: grid;
+  gap: 20px;
+}
+
+@media (min-width: 1025px) {
+  .archive-grid {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 .pagination .page-numbers {
@@ -47,6 +86,17 @@ header {
 
   li:last-child {
     margin-left: auto;
+  }
+}
+
+/* Product Card  */
+.product-card {
+  display: grid;
+}
+
+@media (min-width: 1025px) {
+  .product-card {
+    grid-template-columns: 1fr 1fr;
   }
 }
 
