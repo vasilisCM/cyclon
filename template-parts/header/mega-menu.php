@@ -25,12 +25,13 @@
                                 <?php echo $text; ?>
                             </div>
                         <?php endif; ?>
+
+                        <?php if ($secondary_image): ?>
+                            <figure class="mega-menu-panel__media mega-menu-panel__media--secondary">
+                                <img src="<?php echo $secondary_image; ?>" alt="<?php echo esc_attr($heading); ?>" loading="lazy">
+                            </figure>
+                        <?php endif; ?>
                     </div>
-                    <?php if ($secondary_image): ?>
-                        <figure class="mega-menu-panel__media mega-menu-panel__media--secondary">
-                            <img src="<?php echo $secondary_image; ?>" alt="<?php echo esc_attr($heading); ?>" loading="lazy">
-                        </figure>
-                    <?php endif; ?>
                 </article> <?php endwhile; ?>
         <?php endif; ?>
     </div>
