@@ -11,9 +11,13 @@ function custom_filter_products()
         'applied_filters' => array()
     );
 
+    $posts_per_page = isset($_POST['postsNumber']) ? intval($_POST['postsNumber']) : -1;
+    $page = isset($_POST['page']) ? max(1, intval($_POST['page'])) : 1;
+
     $args = array(
         'post_type' => 'cyclon_product',
-        'posts_per_page' => isset($_POST['postsNumber']) ? intval($_POST['postsNumber']) : -1,
+        'posts_per_page' => $posts_per_page,
+        'paged' => $page,
         'tax_query' => array('relation' => 'AND'),
         'meta_query' => array(),
     );
@@ -33,6 +37,9 @@ function custom_filter_products()
     }
 
     // Handle archive context from customTaxonomy and termSlugs (fallback if current_archive_context not set)
+    $archive_taxonomy = null;
+    $term_slug = null;
+
     if (!$has_archive_context && !empty($_POST['customTaxonomy']) && !empty($_POST['termSlugs'])) {
         $archive_taxonomy = sanitize_text_field($_POST['customTaxonomy']);
         $term_slug = sanitize_text_field($_POST['termSlugs']);
@@ -173,12 +180,40 @@ function custom_filter_products()
         $available_filters[$key] = array_unique($values);
     }
 
+    $pagination_html = '';
+    if ($query->max_num_pages > 1) {
+        $base_link = '';
+        if ($archive_taxonomy && $term_slug) {
+            $term = get_term_by('slug', $term_slug, $archive_taxonomy);
+            if ($term && !is_wp_error($term)) {
+                $base_link = get_term_link($term);
+            }
+        }
+
+        if (!$base_link) {
+            $base_link = get_pagenum_link(1);
+        }
+
+        if (!is_wp_error($base_link)) {
+            $pagination_html = paginate_links(array(
+                'base' => trailingslashit($base_link) . '%_%',
+                'format' => 'page/%#%/',
+                'current' => $page,
+                'total' => $query->max_num_pages,
+                'type' => 'list',
+            ));
+        }
+    }
+
     // Send JSON Response
     wp_send_json(array(
         'success' => true,
         'products' => $products,
         'total_products' => $query->found_posts, // Total number of products matching the filter
         'available_filters' => $available_filters,
+        'pagination_html' => $pagination_html,
+        'current_page' => $page,
+        'total_pages' => $query->max_num_pages,
         'debug_info' => $debug_info,
     ));
 }

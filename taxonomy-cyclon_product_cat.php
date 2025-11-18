@@ -24,8 +24,8 @@ get_header(); ?>
             $cyclon_taxonomies = array_map('get_taxonomy', $allowed_taxonomies);
             $cyclon_taxonomies = array_filter($cyclon_taxonomies);
             if (! empty($cyclon_taxonomies)): ?>
-                <div class="product-filters">
-                    <h3><?php _e('Φίλτρα:', 'cyclon'); ?></h3>
+                <div class="product-filters sticky">
+                    <h3 lang="el"><?php _e('Φίλτρα:', 'cyclon'); ?></h3>
                     <div class="product-filters__grid">
                         <?php foreach ($cyclon_taxonomies as $taxonomy):
                             // Get terms only for products in current archive
@@ -83,7 +83,7 @@ get_header(); ?>
             if (have_posts()): ?>
                 <div class="container product-grid">
                     <div class="selected-filters" style="display: none;">
-                        <h4><?php _e('Επιλεγμένα Φίλτρα:', 'cyclon'); ?></h4>
+                        <h4 lang="el"><?php _e('Επιλεγμένα Φίλτρα:', 'cyclon'); ?></h4>
                         <div class="selected-filters__list">
                             <!-- Filters will be dynamically inserted here -->
                         </div>
@@ -102,10 +102,14 @@ get_header(); ?>
                         <?php endwhile; ?>
                     </div>
 
-                    <div class="archive-grid__bottom">
-                        <button type="button" class="archive-grid__load-more hidden">Load More Products <div class="ic-arrow"></div>
-                        </button>
-                        <div class="archive-grid__no-more-posts">No more products</div>
+                    <div class="archive-grid__bottom pagination">
+                        <?php
+                        echo paginate_links(array(
+                            'total'   => $wp_query->max_num_pages,
+                            'current' => max(1, get_query_var('paged')),
+                            'type'    => 'list',
+                        ));
+                        ?>
                     </div>
                 </div>
             <?php endif; ?>
