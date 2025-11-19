@@ -1,6 +1,10 @@
 /* For Utilities  */
 .primary {
-  color: #00144a;
+  color: #001a61;
+}
+
+.accent {
+  color: #ffc107;
 }
 
 .lowercase {
@@ -24,6 +28,14 @@
 }
 
 /* For typographgy  */
+.heading-m {
+  font-size: 30px;
+}
+
+.text-m {
+  font-size: 18px;
+}
+
 .text-xs {
   font-size: 12px;
 }

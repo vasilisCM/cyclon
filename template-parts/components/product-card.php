@@ -17,24 +17,26 @@
         <?php endif; ?>
     </div>
     <div class="productCard__Content">
-        <?php if (get_field('range_code')): ?>
-            <?php
-            $terms = get_the_terms(get_the_ID(), 'cyclon_range');
-            if (!empty($terms) && !is_wp_error($terms)) :
-                $term_names = wp_list_pluck($terms, 'name');
-            ?>
-                <div class=""><?php echo esc_html(implode(', ', $term_names)); ?></div>
+        <div class="text-m">
+            <span>Cyclon </span>
+            <?php if (get_field('range_code')): ?>
+                <?php
+                $terms = get_the_terms(get_the_ID(), 'cyclon_range');
+                if (!empty($terms) && !is_wp_error($terms)) :
+                    $term_names = wp_list_pluck($terms, 'name');
+                ?>
+                    <?php echo esc_html(implode(', ', $term_names)); ?>
+                <?php endif; ?>
             <?php endif; ?>
-        <?php endif; ?>
-        <div class="product-card__title"><?php the_title(); ?></div>
+        </div>
+        <div class="heading-m product-card__title"><?php the_title(); ?></div>
         <?php if (get_field('range_code')): ?>
-            <div class="product-card__range-code"><?php echo get_field('range_code'); ?></div>
+            <div class="heading-m product-card__range-code"><?php echo get_field('range_code'); ?></div>
         <?php endif; ?>
         <?php if (get_field('small_text_line')): ?>
-            <div class="info product-card__info"><?php echo get_field('small_text_line'); ?></div>
+            <div class="text-xs info product-card__info"><?php echo get_field('small_text_line'); ?></div>
         <?php endif; ?>
-        <!--                                                    <p class="spec"><strong>SYN - SHPD PLUS </strong> / 10W - 40</p>-->
-        <div class="info product-card__info"><?php echo get_field('small_text_line'); ?></div>
+
     </div>
     <a href="<?php the_permalink(); ?>" class="product-card__link productCard__Link"></a>
 </div>
