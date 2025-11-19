@@ -973,12 +973,13 @@ const megaMenuItems = document.querySelectorAll(".mega-menu__item");
 
 itemHasChildren.addEventListener("mouseover", () => {
   submenu.classList.add("sub-menu--active");
+  megaMenu.classList.add("mega-menu--active");
 });
 
-submenu.addEventListener("mouseover", () => {
-  megaMenu.classList.add("mega-menu--active");
-  megaMenuOverlay.classList.add("mega-menu__overlay--active");
-});
+// submenu.addEventListener("mouseover", () => {
+//   megaMenu.classList.add("mega-menu--active");
+//   megaMenuOverlay.classList.add("mega-menu__overlay--active");
+// });
 
 submenu.addEventListener("mouseleave", () => {
   megaMenu.classList.remove("mega-menu--active");
