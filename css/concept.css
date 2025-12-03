@@ -95,6 +95,26 @@
 }
 
 /* Submenu */
+li:has(.sub-menu) > a {
+  position: relative;
+}
+li:has(.sub-menu) > a:after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%) translateY(40px);
+  clip-path: polygon(0 100%, 50% 0%, 100% 100%, 0% 100%);
+  background-color: #ffda00;
+  width: 14px;
+  height: 9px;
+  opacity: 0;
+  transition: all ease 300ms;
+}
+li:has(.sub-menu--active) > a:after {
+  opacity: 1;
+}
+
 .sub-menu {
   position: absolute;
   top: calc(100% + 12px);
@@ -122,6 +142,7 @@
 }
 
 .sub-menu li a {
+  font-weight: 700;
   border-bottom: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 0;
   padding-block: 12px 8px;
