@@ -11811,39 +11811,43 @@ form input[type="submit"]:hover {
   margin: 28px 0;
   border: 1px solid #e9e9e9;
 }
+
 .lubeFinder {
-  padding: 40px 0;
-  background: url("/wp-content/uploads/2022/04/Rectangle-154.png") center
-    no-repeat;
-  background-size: cover;
-  height: 304px;
+  padding: 30px 0 0;
+  background-image: radial-gradient(circle, #004199, #001a61 30%);
+  height: 250px;
 }
-@media (max-width: 767px) {
-  .lubeFinder {
-    height: 257px;
-  }
+
+.lubeFinder__container {
+  display: grid;
+  grid-template-columns: max-content 1fr max-content;
 }
+
 .lubeFinder p {
   color: #ffda00;
   margin: 5px 0 20px 0;
+  font-size: 16px;
+  line-height: 1.3;
+  max-width: 280px;
+}
+
+.lubeFinder__image {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.lubeFinder__image img {
+  max-height: 220px;
 }
 @media (max-width: 767px) {
-  .lubeFinder p {
-    font-size: 16px;
-    line-height: 20px;
-    max-width: 170px;
-  }
 }
 .lubeFinder a {
-  display: inline-block;
+  /* display: inline-block; */
 }
 @media (max-width: 767px) {
-  .lubeFinder a {
-    position: absolute;
-    /* display: none; */
-  }
 }
-.lubeFinder .engine {
+/* .lubeFinder .engine {
   background: url(/wp-content/uploads/2022/04/Mask-Group-34.png) center
     no-repeat;
   background-size: cover;
@@ -11863,7 +11867,7 @@ form input[type="submit"]:hover {
   .lubelogo {
     max-width: 250px;
   }
-}
+} */
 @media (max-width: 767px) {
   .footer-widget-1,
   .footer-widget-2 {

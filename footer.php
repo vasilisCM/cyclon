@@ -25,19 +25,19 @@
 
     <section class="lubeFinder" id="lubeFinder">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                    <img src="/wp-content/uploads/2022/04/Group-12359.png"
+            <div class="lubeFinder__container">
+                <div class="lubeFinder__text">
+                    <img src="/wp-content/uploads/2025/12/id-lube-logo-large.svg"
                         class="img-responsive lubelogo" />
                     <p>
                         <?php echo __('Find the appropriate Cyclon lubricant for your vehicle or equipment!!', 'cyclon'); ?>
                     </p>
-                    <a class="mButton mButton--trans lubeFinder_popup" href="<?php echo __('https://lpc-cyclon.ewp.earlweb.net/en_GB', 'cyclon'); ?>" target="_blank"><?php echo __('DISCOVER NOW', 'cyclon'); ?></a>
                 </div>
-                <div class="col-lg-8 col-md-8 col-sm-6 col-xs-12">
-                    <div class="engine">
-
-                    </div>
+                <div class="lubeFinder__image">
+                    <img src="/wp-content/uploads/2025/12/id-lube-image.png" />
+                </div>
+                <div class="lubeFinder__button">
+                    <a class="mButton mButton--trans lubeFinder_popup" href="<?php echo __('https://lpc-cyclon.ewp.earlweb.net/en_GB', 'cyclon'); ?>" target="_blank"><?php echo __('DISCOVER NOW', 'cyclon'); ?></a>
                 </div>
             </div>
         </div>

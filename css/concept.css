@@ -406,9 +406,6 @@ li:has(.sub-menu--active) > a:after {
 }
 
 /* Footer */
-.lubeFinder .engine {
-  margin-top: -180px;
-}
 .cyclonNewsletter .row {
   justify-content: center;
 }
