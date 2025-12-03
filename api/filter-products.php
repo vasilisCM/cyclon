@@ -13,9 +13,10 @@ function custom_filter_products()
 
     $posts_per_page = isset($_POST['postsNumber']) ? intval($_POST['postsNumber']) : -1;
     $page = isset($_POST['page']) ? max(1, intval($_POST['page'])) : 1;
+    $post_type = isset($_POST['postType']) ? sanitize_text_field($_POST['postType']) : 'cyclon_product';
 
     $args = array(
-        'post_type' => 'cyclon_product',
+        'post_type' => $post_type,
         'posts_per_page' => $posts_per_page,
         'paged' => $page,
         'tax_query' => array('relation' => 'AND'),

@@ -1,0 +1,120 @@
+<?php
+$term = get_queried_object();
+get_header(); ?>
+<main id="primary" class="main-content cyclon_product_category_content">
+    <div class="cyclon_tax_wrapper primary">
+
+        <div class="container product-archive__container">
+
+
+            <!-- Product Filters  -->
+            <?php
+            // Get post IDs from current archive query
+            global $wp_query;
+            $post_ids = array();
+            if (! empty($wp_query->posts)) {
+                $post_ids = wp_list_pluck($wp_query->posts, 'ID');
+            }
+
+            $allowed_taxonomies = array(
+                'cyclon_range',
+                'cyclon_product_grade',
+                'cyclon_product_type',
+            );
+            $cyclon_taxonomies = array_map('get_taxonomy', $allowed_taxonomies);
+            $cyclon_taxonomies = array_filter($cyclon_taxonomies);
+            if (! empty($cyclon_taxonomies)): ?>
+                <div class="product-filters sticky">
+                    <div lang="el" class="font-ferry black-weight lowercase"><?php _e('Φίλτρα', 'cyclon'); ?></div>
+                    <div class="product-filters__grid">
+                        <?php foreach ($cyclon_taxonomies as $taxonomy):
+                            // Get terms only for products in current archive
+                            $terms = array();
+                            if (! empty($post_ids)) {
+                                $term_ids = array();
+                                foreach ($post_ids as $post_id) {
+                                    $post_terms = wp_get_object_terms($post_id, $taxonomy->name, array('fields' => 'ids'));
+                                    if (! is_wp_error($post_terms)) {
+                                        $term_ids = array_merge($term_ids, $post_terms);
+                                    }
+                                }
+                                // Get unique term IDs and fetch full term objects
+                                $term_ids = array_unique($term_ids);
+                                if (! empty($term_ids)) {
+                                    $terms = get_terms(array(
+                                        'taxonomy'   => $taxonomy->name,
+                                        'include'    => $term_ids,
+                                        'hide_empty' => false,
+                                    ));
+                                }
+                            }
+
+                            if (is_wp_error($terms) || empty($terms)) {
+                                continue;
+                            }
+                        ?>
+                            <div class="product-filters__group taxonomy-<?php echo esc_attr($taxonomy->name); ?>">
+                                <div class="bold text-xs letter-spacing"><?php echo esc_html($taxonomy->labels->singular_name ?? $taxonomy->label); ?></div>
+                                <div class="product-filters__options">
+                                    <?php foreach ($terms as $term):
+                                        $checkbox_id = esc_attr($taxonomy->name . '-' . $term->slug);
+                                    ?>
+                                        <div class="product-filters__option">
+                                            <input
+                                                type="checkbox"
+                                                name="filters[<?php echo esc_attr($taxonomy->name); ?>][]"
+                                                id="<?php echo $checkbox_id; ?>"
+                                                value="<?php echo esc_attr($term->slug); ?>">
+                                            <label for="<?php echo $checkbox_id; ?>">
+                                                <?php echo esc_html($term->name); ?>
+                                            </label>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+            <!-- Products -->
+            <?php
+
+            if (have_posts()): ?>
+                <div class="container product-grid">
+                    <div class="selected-filters" style="display: none;">
+                        <h4 lang="el"><?php _e('Επιλεγμένα Φίλτρα:', 'cyclon'); ?></h4>
+                        <div class="selected-filters__list">
+                            <!-- Filters will be dynamically inserted here -->
+                        </div>
+                        <button type="button" class="selected-filters__clear-all"><?php _e('Διαγραφή όλων', 'cyclon'); ?></button>
+                    </div>
+
+                    <div class="archive-grid relative">
+                        <div class="archive-grid__loader hidden">
+                        </div>
+
+                        <?php while (have_posts()): the_post(); ?>
+
+                            <?php include 'template-parts/components/product-card.php'; ?>
+
+                        <?php endwhile; ?>
+                    </div>
+
+                    <div class="archive-grid__bottom pagination">
+                        <?php
+                        echo paginate_links(array(
+                            'total'   => $wp_query->max_num_pages,
+                            'current' => max(1, get_query_var('paged')),
+                            'type'    => 'list',
+                        ));
+                        ?>
+                    </div>
+                </div>
+            <?php endif; ?>
+
+        </div>
+    </div>
+</main>
+<?php
+get_footer();

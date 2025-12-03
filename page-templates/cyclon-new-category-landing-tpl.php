@@ -1,29 +1,194 @@
 <?php
 /*
- * Template Name: Category Landing
+ * Template Name: New Category Landing
  */
 $term = get_queried_object();
 get_header(); ?>
 <main id="primary" class="main-content cyclon_product_category_content">
+
     <section class="saloon">
-        <div class="saloon__Image">
-            <img src="<?php echo get_field('saloon_image'); ?>" class="img-responsive" />
-        </div>
-        <h3 class="text-center"><?php echo get_field('saloon_title'); ?></h3>
-        <p class="text-center"><?php echo get_field('saloon_text'); ?></p>
-        <div class="text-center">
-            <!-- <a class="mButton mButton--blueButton"-->
-            <!-- href="--><?php //echo get_field('saloon_btn_url'); 
-                            ?><!--">--><?php //echo get_field('saloon_btn_text'); 
-                                                                                ?><!--</a> -->
-            <a class="mButton" href="<?php echo get_field('saloon_btn_url'); ?>"><?php echo get_field('saloon_btn_text'); ?></a>
-        </div>
+        <?php
+        $has_products_with_range = get_field('has_product_range');
+        $saloon_btn_link = get_field('saloon_btn_url');
+        $range_terms = array();
+
+        if (!$has_products_with_range) : ?>
+            <div class="saloon__Image">
+                <img src="<?php echo get_field('saloon_image'); ?>" class="img-responsive" />
+            </div>
+            <h3 class="text-center"><?php echo get_field('saloon_title'); ?></h3>
+            <p class="text-center"><?php echo get_field('saloon_text'); ?></p>
+        <?php else : ?>
+            <?php
+            $saloon_term = null;
+
+            if ($saloon_btn_link) {
+                $path = trim(parse_url($saloon_btn_link, PHP_URL_PATH), '/');
+                $segments = array_filter(explode('/', $path));
+                $possible_slug = end($segments);
+
+                if ($possible_slug) {
+                    $saloon_term = get_term_by('slug', $possible_slug, 'cyclon_product_cat');
+                }
+            }
+
+            $allowed_range_slugs = array('eco', 'evo', 'max', 'pro');
+
+            foreach ($allowed_range_slugs as $allowed_slug) {
+                $range_term = get_term_by('slug', $allowed_slug, 'cyclon_range');
+                if ($range_term && !is_wp_error($range_term)) {
+                    $range_terms[] = $range_term;
+                }
+            }
+            ?>
+            <div>
+                <h1>
+                    <?php
+                    if ($saloon_term && !is_wp_error($saloon_term)) {
+                        echo esc_html($saloon_term->slug);
+                    } else {
+                        echo esc_html($saloon_btn_link);
+                    }
+                    ?>
+                </h1>
+                <?php
+                $category_term_id = ($saloon_term && !is_wp_error($saloon_term)) ? $saloon_term->term_id : 0;
+                ?>
+
+                <?php if (!empty($range_terms) && !is_wp_error($range_terms)) : ?>
+                    <div class="tabs">
+                        <div class="tabs__buttons">
+                            <?php
+                            $tab_index = 0;
+                            foreach ($range_terms as $range_term) :
+                                $button_classes = 'tabs__button';
+                                if ($tab_index === 0) {
+                                    $button_classes .= ' tabs__button--active';
+                                }
+                            ?>
+                                <div class="<?php echo esc_attr($button_classes); ?>"
+                                    data-tab-target="tab-<?php echo esc_attr($range_term->slug); ?>"
+                                    data-range="<?php echo esc_attr($range_term->slug); ?>">
+                                    <?php echo esc_html($range_term->name); ?>
+                                </div>
+                            <?php
+                                $tab_index++;
+                            endforeach;
+                            ?>
+                        </div>
+
+                        <div class="tabs__contents">
+                            <?php
+                            $tab_index = 0;
+                            foreach ($range_terms as $range_term) :
+                                $content_classes = 'tabs__content';
+                                if ($tab_index !== 0) {
+                                    $content_classes .= ' tabs__content--hidden';
+                                }
+
+                                $tax_query = array(
+                                    'relation' => 'AND',
+                                    array(
+                                        'taxonomy' => 'cyclon_range',
+                                        'field'    => 'term_id',
+                                        'terms'    => $range_term->term_id,
+                                    ),
+                                );
+
+                                if ($category_term_id) {
+                                    $tax_query[] = array(
+                                        'taxonomy' => 'cyclon_product_cat',
+                                        'field'    => 'term_id',
+                                        'terms'    => $category_term_id,
+                                    );
+                                }
+
+                                $range_query = new WP_Query(array(
+                                    'post_type' => 'cyclon_product',
+                                    'posts_per_page' => -1,
+                                    'tax_query' => $tax_query,
+                                ));
+                            ?>
+                                <div class="<?php echo esc_attr($content_classes); ?>" id="tab-<?php echo esc_attr($range_term->slug); ?>">
+                                    <?php if ($range_query->have_posts()) : ?>
+                                        <div class="range-group" data-range="<?php echo esc_attr($range_term->slug); ?>">
+                                            <h4 class="range-group__title"><?php echo esc_html($range_term->name); ?></h4>
+                                            <div class="range-group__items">
+                                                <?php
+                                                while ($range_query->have_posts()) :
+                                                    $range_query->the_post();
+                                                    $range_code = get_field('range_code', get_the_ID());
+                                                    $small_text_line = get_field('small_text_line', get_the_ID());
+                                                    $thumbnail_url = get_the_post_thumbnail_url(get_the_ID(), 'medium');
+                                                ?>
+                                                    <article class="range-product">
+                                                        <?php if ($thumbnail_url) : ?>
+                                                            <a href="<?php the_permalink(); ?>" class="range-product__thumb">
+                                                                <img src="<?php echo esc_url($thumbnail_url); ?>" alt="<?php echo esc_attr(get_the_title()); ?>">
+                                                            </a>
+                                                        <?php endif; ?>
+                                                        <div class="range-product__body">
+                                                            <h5 class="range-product__title">
+                                                                <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+                                                            </h5>
+                                                            <?php if ($range_code) : ?>
+                                                                <p class="range-product__code"><?php echo esc_html($range_code); ?></p>
+                                                            <?php endif; ?>
+                                                            <?php if ($small_text_line) : ?>
+                                                                <p class="range-product__text"><?php echo esc_html($small_text_line); ?></p>
+                                                            <?php endif; ?>
+                                                        </div>
+                                                    </article>
+                                                <?php endwhile; ?>
+                                            </div>
+                                        </div>
+                                    <?php else : ?>
+                                        <div class="range-group range-group--empty" data-range="<?php echo esc_attr($range_term->slug); ?>">
+                                            <p><?php echo esc_html__('No products available for this range.', 'cyclon'); ?></p>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
+                            <?php
+                                wp_reset_postdata();
+                                $tab_index++;
+                            endforeach;
+                            ?>
+                        </div>
+                    </div>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
+        <?php
+        $default_range_slug = '';
+        $filtered_saloon_url = $saloon_btn_link;
+
+        if ($has_products_with_range && !empty($range_terms)) {
+            $default_range_slug = $range_terms[0]->slug;
+
+            if ($saloon_btn_link && $default_range_slug) {
+                $filtered_saloon_url = add_query_arg('cyclon_range', $default_range_slug, $saloon_btn_link);
+            }
+        }
+        ?>
+        <!-- <div class="text-center">
+            <a class="mButton product-category-landing__cta"
+                href="<?php // echo esc_url($filtered_saloon_url); 
+                        ?>"
+                data-base-url="<?php // echo esc_url($saloon_btn_link); 
+                                ?>"
+                data-active-range="<?php // echo esc_attr($default_range_slug); 
+                                    ?>">
+                <?php // echo esc_html(get_field('saloon_btn_text')); 
+                ?>
+            </a>
+        </div> -->
     </section>
 
     <?php if (get_field('mapping_information')): ?>
         <section class="appMapping default" id="mappingSection">
             <div class="container d-none d-md-block">
                 <div class="row">
+
                     <?php
                     if (have_rows('mapping_information') && count(get_field('mapping_information')) > 1) :
                     ?>
@@ -274,6 +439,7 @@ get_header(); ?>
     <?php endif; ?>
 
     <section class="features">
+
 
 
         <!-- This is going to override the below features -->

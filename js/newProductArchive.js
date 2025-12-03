@@ -139,7 +139,7 @@ async function filterProducts({
     makeWholePostLink = true,
   } = {},
   wordpress: {
-    postType = "product",
+    postType = "cyclon_new_product",
     archiveType = "category",
     customTaxonomy = null,
     termSlugs = null,
@@ -686,7 +686,7 @@ function applyFiltersFromUrl() {
   // Detect archive type and prepare data for API
   let archiveType = "category"; // default
   let termSlugs = postCategory;
-  let customTaxonomy = "cyclon_product_cat";
+  let customTaxonomy = "cyclon_new_product_cat";
 
   const options = {
     html: {

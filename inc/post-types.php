@@ -99,6 +99,108 @@ if (! function_exists('cyclon_product_category')) {
     add_action('init', 'cyclon_product_category', 0);
 }
 
+
+// New Product CPT
+if (! function_exists('cyclon_new_product_pt')) {
+
+    // Register Custom Post Type
+    function cyclon_new_product_pt()
+    {
+
+        $labels = array(
+            'name'                  => _x('New Products', 'Post Type General Name', 'cyclon'),
+            'singular_name'         => _x('New Product', 'Post Type Singular Name', 'cyclon'),
+            'menu_name'             => __('New Products', 'cyclon'),
+            'name_admin_bar'        => __('New Product', 'cyclon'),
+            'archives'              => __('Item Archives', 'cyclon'),
+            'attributes'            => __('Item Attributes', 'cyclon'),
+            'parent_item_colon'     => __('Parent Item:', 'cyclon'),
+            'all_items'             => __('All Items', 'cyclon'),
+            'add_new_item'          => __('Add New Item', 'cyclon'),
+            'add_new'               => __('Add New', 'cyclon'),
+            'new_item'              => __('New Item', 'cyclon'),
+            'edit_item'             => __('Edit Item', 'cyclon'),
+            'update_item'           => __('Update Item', 'cyclon'),
+            'view_item'             => __('View Item', 'cyclon'),
+            'view_items'            => __('View Items', 'cyclon'),
+            'search_items'          => __('Search Item', 'cyclon'),
+            'not_found'             => __('Not found', 'cyclon'),
+            'not_found_in_trash'    => __('Not found in Trash', 'cyclon'),
+            'featured_image'        => __('Featured Image', 'cyclon'),
+            'set_featured_image'    => __('Set featured image', 'cyclon'),
+            'remove_featured_image' => __('Remove featured image', 'cyclon'),
+            'use_featured_image'    => __('Use as featured image', 'cyclon'),
+            'insert_into_item'      => __('Insert into item', 'cyclon'),
+            'uploaded_to_this_item' => __('Uploaded to this item', 'cyclon'),
+            'items_list'            => __('Items list', 'cyclon'),
+            'items_list_navigation' => __('Items list navigation', 'cyclon'),
+            'filter_items_list'     => __('Filter items list', 'cyclon'),
+        );
+        $args = array(
+            'label'                 => __('New Product', 'cyclon'),
+            'description'           => __('Post Type Description', 'cyclon'),
+            'labels'                => $labels,
+            'supports'              => array('title', 'editor', 'thumbnail'),
+            'hierarchical'          => true,
+            'public'                => true,
+            'show_ui'               => true,
+            'show_in_menu'          => true,
+            'menu_position'         => 5,
+            'menu_icon'              => 'dashicons-cart',
+            'show_in_admin_bar'     => true,
+            'show_in_nav_menus'     => true,
+            'can_export'            => true,
+            'has_archive'           => true,
+            'exclude_from_search'   => false,
+            'publicly_queryable'    => true,
+            'capability_type'       => 'page',
+        );
+        register_post_type('cyclon_new_product', $args);
+    }
+    add_action('init', 'cyclon_new_product_pt', 0);
+}
+if (! function_exists('cyclon_new_product_category')) {
+
+    // Register Custom Taxonomy
+    function cyclon_new_product_category()
+    {
+
+        $labels = array(
+            'name'                       => _x('New Product Categories', 'Taxonomy General Name', 'cyclon'),
+            'singular_name'              => _x('New Product Category', 'Taxonomy Singular Name', 'cyclon'),
+            'menu_name'                  => __('New Product Category', 'cyclon'),
+            'all_items'                  => __('All Items', 'cyclon'),
+            'parent_item'                => __('Parent Item', 'cyclon'),
+            'parent_item_colon'          => __('Parent Item:', 'cyclon'),
+            'new_item_name'              => __('New Item Name', 'cyclon'),
+            'add_new_item'               => __('Add New Item', 'cyclon'),
+            'edit_item'                  => __('Edit Item', 'cyclon'),
+            'update_item'                => __('Update Item', 'cyclon'),
+            'view_item'                  => __('View Item', 'cyclon'),
+            'separate_items_with_commas' => __('Separate items with commas', 'cyclon'),
+            'add_or_remove_items'        => __('Add or remove items', 'cyclon'),
+            'choose_from_most_used'      => __('Choose from the most used', 'cyclon'),
+            'popular_items'              => __('Popular Items', 'cyclon'),
+            'search_items'               => __('Search Items', 'cyclon'),
+            'not_found'                  => __('Not Found', 'cyclon'),
+            'no_terms'                   => __('No items', 'cyclon'),
+            'items_list'                 => __('Items list', 'cyclon'),
+            'items_list_navigation'      => __('Items list navigation', 'cyclon'),
+        );
+        $args = array(
+            'labels'                     => $labels,
+            'hierarchical'               => true,
+            'public'                     => true,
+            'show_ui'                    => true,
+            'show_admin_column'          => true,
+            'show_in_nav_menus'          => true,
+            'show_tagcloud'              => true,
+        );
+        register_taxonomy('cyclon_new_product_cat', array('cyclon_new_product'), $args);
+    }
+    add_action('init', 'cyclon_new_product_category', 0);
+}
+
 if (! function_exists('cyclon_product_grade')) {
 
     // Register Custom Taxonomy
@@ -283,7 +385,7 @@ function cyclon_product_range()
         'show_tagcloud'              => true,
     );
 
-    register_taxonomy('cyclon_range', array('cyclon_product'), $args);
+    register_taxonomy('cyclon_range', array('cyclon_product', 'cyclon_new_product'), $args);
 }
 add_action('init', 'cyclon_product_range', 0);
 

@@ -297,8 +297,8 @@ function cyclon_theme_scripts()
     wp_enqueue_style('cyclon-wp-theme-style', get_template_directory_uri() . '/sass/style.css', array(), time(), 'all');
     wp_enqueue_style('concept-style', get_template_directory_uri() . '/css/concept.css', array(), time(), 'all');
 
-    if (is_tax('cyclon_product_cat')) {
-        wp_enqueue_style('product-archive', get_stylesheet_directory_uri() . '/css/product-archive.css', array(), time(), 'all');
+    if (is_tax('cyclon_new_product_cat')) {
+        wp_enqueue_style('new-product-archive', get_stylesheet_directory_uri() . '/css/new-product-archive.css', array(), time(), 'all');
     }
     wp_enqueue_script('gsap', get_template_directory_uri() . '/js/lib/gsap.min.js', array(), false, true);
     wp_enqueue_script('ScrollTrigger', get_template_directory_uri() . '/js/lib/ScrollTrigger.min.js', array(), false, true);
@@ -324,14 +324,13 @@ function cyclon_theme_scripts()
         'back' => esc_html__('back', 'cyclon'),
     ]);
 
-    if (is_tax('cyclon_product_cat')) {
-        wp_enqueue_script('product-archive', get_stylesheet_directory_uri() . '/js/productArchive.js', array('jquery'), time(), true);
-        wp_localize_script('product-archive', 'wpAjax', array('ajaxUrl' => admin_url('admin-ajax.php')));
-        wp_localize_script('product-archive', 'cyclonFilters', array(
+    if (is_tax('cyclon_new_product_cat')) {
+        wp_enqueue_script('new-product-archive', get_stylesheet_directory_uri() . '/js/newProductArchive.js', array('jquery'), time(), true);
+        wp_localize_script('new-product-archive', 'wpAjax', array('ajaxUrl' => admin_url('admin-ajax.php')));
+        wp_localize_script('new-product-archive', 'cyclonFilters', array(
             'taxonomies' => array(
-                'cyclon_range',
-                'cyclon_product_grade',
-                'cyclon_product_type',
+                'cyclon_new_product_grade',
+                'cyclon_new_product_type',
             )
         ));
     }
