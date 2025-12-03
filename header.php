@@ -115,7 +115,30 @@
 
         <!-- #masthead -->
         <?php if (is_front_page()): ?>
-            <?php add_revslider('slider-1'); ?>
+
+            <section class="taxHeader hero-home" style="background-image: url(/wp-content/uploads/2025/10/1115x627-03.jpg);">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                            <div class="taxHeader__Content">
+                                <div class="taxHeader__Content__Inner">
+                                    <div class="hero-home__text-container">
+                                        <h1 class="hero-home__heading">
+                                            Engineered to Perform </h1>
+                                        <div class="hero-home__subheading accent">Advanced technology in every move</div>
+                                        <a class="mButton mButton--trans" href="/">Ακαλύψτες Περισσότερα</a>
+                                    </div>
+                                    <div class="taxHeader__Buttons d-none d-sm-flex d-md-flex d-lg-flex d-xl-flex">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
         <?php
         elseif (is_tax()): ?>
             <div class="taxHeader taxHeader2 product-cat"

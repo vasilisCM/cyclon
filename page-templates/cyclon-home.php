@@ -221,7 +221,7 @@ get_header(); ?>
                         $term_image = get_field('right_image', $term);
                 ?>
                         <div class="col-lg col-md-3 col-sm-6 col-6" style="flex: 0 0 20%; max-width: 20%;">
-                            <div class="catBox">
+                            <div class="catBox home-categories__card">
                                 <div class="catBox__Inner">
                                     <a href="<?php echo esc_url($term_url); ?>">
                                         <?php if ($term_image): ?>
@@ -231,14 +231,15 @@ get_header(); ?>
                                         <?php endif; ?>
                                     </a>
                                 </div>
-                                <h4>
+                                <?php if ($has_product_range): ?>
+                                    <img src="/wp-content/uploads/2025/11/mega-menu-product-range-img.png" alt="">
+                                <?php endif; ?>
+                                <h4 class="home-categories__category-heading">
                                     <a href="<?php echo esc_url($term_link); ?>">
                                         <?php echo esc_html($term->name); ?>
                                     </a>
                                 </h4>
-                                <?php if ($has_product_range): ?>
-                                    <img src="/wp-content/uploads/2025/11/mega-menu-product-range-img.png" alt="">
-                                <?php endif; ?>
+                                
                             </div>
                         </div>
                 <?php
@@ -246,7 +247,7 @@ get_header(); ?>
                 }
                 ?>
 
-                <div class="col-lg col-md-3 col-sm-6 col-6" style="flex: 0 0 20%; max-width: 20%;">
+                <div class="col-lg col-md-6 col-sm-6 col-6" style="flex: 0 0 40%; max-width: 40%;">
                     <div class="catBox">
                         <?php
                         $id_lube = get_field('id_lube');
@@ -614,9 +615,7 @@ Our products support the success of leading businesses worldwide, ensuring seaml
 </div>
 </section>
 
-<!-- <div class="swiper-pagination"></div> -->
-<div class="swiper-button-prev"></div>
-<div class="swiper-button-next"></div>
+
 </section>
 </div>
 </div>
@@ -637,9 +636,7 @@ Our products support the success of leading businesses worldwide, ensuring seaml
 </div>
 </section>
 
-<!-- <div class="swiper-pagination"></div> -->
-<div class="swiper-button-prev"></div>
-<div class="swiper-button-next"></div>
+
 </section>
 </div>
 </div>
