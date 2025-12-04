@@ -1,0 +1,49 @@
+.new-category-landing {
+  padding-top: 0;
+  background: revert;
+}
+
+.new-category-landing__tabs {
+  margin-top: -93px;
+}
+
+.new-category-landing__tabs-buttons {
+  margin-inline: auto;
+  width: fit-content;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tabs__button {
+  padding: 10px 60px;
+}
+
+.tabs__button--evo {
+  background-color: #001a61;
+  color: #ffda00;
+}
+
+.tabs__button--pro {
+  background-color: #ffda00;
+  color: #001a61;
+}
+
+.tabs__button--eco {
+  background-color: #ffda00;
+  color: #001a61;
+}
+
+.tabs__button--max {
+  background-color: #001a61;
+  color: #ffda00;
+}
+
+.new-category-landing__tabs-buttons-label {
+  position: absolute;
+  color: white;
+  font-size: 12px;
+  left: -10px;
+  transform: translateX(-100%);
+}

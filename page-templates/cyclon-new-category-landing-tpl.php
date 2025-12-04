@@ -6,7 +6,7 @@ $term = get_queried_object();
 get_header(); ?>
 <main id="primary" class="main-content cyclon_product_category_content">
 
-    <section class="saloon">
+    <section class="saloon new-category-landing">
         <?php
         $has_products_with_range = get_field('has_product_range');
         $saloon_btn_link = get_field('saloon_btn_url');
@@ -56,12 +56,13 @@ get_header(); ?>
                 ?>
 
                 <?php if (!empty($range_terms) && !is_wp_error($range_terms)) : ?>
-                    <div class="tabs">
-                        <div class="tabs__buttons">
+                    <div class="tabs new-category-landing__tabs">
+                        <div class="tabs__buttons new-category-landing__tabs-buttons">
+                            <span class="white new-category-landing__tabs-buttons-label"><?php echo __('select product range', 'cyclon'); ?></span>
                             <?php
                             $tab_index = 0;
                             foreach ($range_terms as $range_term) :
-                                $button_classes = 'tabs__button';
+                                $button_classes = 'tabs__button tabs__button--' . $range_term->slug;
                                 if ($tab_index === 0) {
                                     $button_classes .= ' tabs__button--active';
                                 }
@@ -79,6 +80,12 @@ get_header(); ?>
 
                         <div class="tabs__contents">
                             <?php
+                            $range_descriptions = get_field('product_category_landing__range_descriptions');
+                            $evo = $range_descriptions['evo'];
+                            $pro = $range_descriptions['pro'];
+                            $eco = $range_descriptions['eco'];
+                            $max = $range_descriptions['max'];
+
                             $tab_index = 0;
                             foreach ($range_terms as $range_term) :
                                 $content_classes = 'tabs__content';
@@ -97,56 +104,82 @@ get_header(); ?>
 
                                 if ($category_term_id) {
                                     $tax_query[] = array(
-                                        'taxonomy' => 'cyclon_product_cat',
+                                        'taxonomy' => 'cyclon_new_product_cat',
                                         'field'    => 'term_id',
                                         'terms'    => $category_term_id,
                                     );
                                 }
 
                                 $range_query = new WP_Query(array(
-                                    'post_type' => 'cyclon_product',
+                                    'post_type' => 'cyclon_new_product',
                                     'posts_per_page' => -1,
                                     'tax_query' => $tax_query,
                                 ));
                             ?>
-                                <div class="<?php echo esc_attr($content_classes); ?>" id="tab-<?php echo esc_attr($range_term->slug); ?>">
-                                    <?php if ($range_query->have_posts()) : ?>
-                                        <div class="range-group" data-range="<?php echo esc_attr($range_term->slug); ?>">
-                                            <h4 class="range-group__title"><?php echo esc_html($range_term->name); ?></h4>
-                                            <div class="range-group__items">
-                                                <?php
-                                                while ($range_query->have_posts()) :
-                                                    $range_query->the_post();
-                                                    $range_code = get_field('range_code', get_the_ID());
-                                                    $small_text_line = get_field('small_text_line', get_the_ID());
-                                                    $thumbnail_url = get_the_post_thumbnail_url(get_the_ID(), 'medium');
-                                                ?>
-                                                    <article class="range-product">
-                                                        <?php if ($thumbnail_url) : ?>
-                                                            <a href="<?php the_permalink(); ?>" class="range-product__thumb">
-                                                                <img src="<?php echo esc_url($thumbnail_url); ?>" alt="<?php echo esc_attr(get_the_title()); ?>">
-                                                            </a>
-                                                        <?php endif; ?>
-                                                        <div class="range-product__body">
-                                                            <h5 class="range-product__title">
-                                                                <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-                                                            </h5>
-                                                            <?php if ($range_code) : ?>
-                                                                <p class="range-product__code"><?php echo esc_html($range_code); ?></p>
+                                <div class="<?php echo esc_attr($content_classes); ?> primary" id="tab-<?php echo esc_attr($range_term->slug); ?>">
+
+                                    <div class="text-center">
+                                        <!-- Product Category Description  -->
+                                        <div>
+                                            <?php
+                                            // Get the associated category ID from the field.
+                                            $associated_cat_id = get_field('product_category_landing__assosiated_category');
+                                            if ($associated_cat_id) {
+                                                // Get the term object by ID from cyclon_new_product_cat taxonomy.
+                                                $cat_term = get_term($associated_cat_id, 'cyclon_new_product_cat');
+                                                if (! is_wp_error($cat_term) && ! empty($cat_term) && isset($cat_term->description)) {
+                                                    echo wpautop($cat_term->description);
+                                                }
+                                            }
+                                            ?>
+                                        </div>
+
+                                        <div>
+                                            <h3 class="sans normal text-l"><?php echo $range_descriptions[$range_term->slug]['heading']; ?></h3>
+                                            <p><?php echo $range_descriptions[$range_term->slug]['text']; ?></p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Products  -->
+                                    <div>
+                                        <?php if ($range_query->have_posts()) : ?>
+                                            <div class="range-group" data-range="<?php echo esc_attr($range_term->slug); ?>">
+                                                <h4 class="range-group__title"><?php echo esc_html($range_term->name); ?></h4>
+                                                <div class="range-group__items">
+                                                    <?php
+                                                    while ($range_query->have_posts()) :
+                                                        $range_query->the_post();
+                                                        $range_code = get_field('range_code', get_the_ID());
+                                                        $small_text_line = get_field('small_text_line', get_the_ID());
+                                                        $thumbnail_url = get_the_post_thumbnail_url(get_the_ID(), 'medium');
+                                                    ?>
+                                                        <article class="range-product">
+                                                            <?php if ($thumbnail_url) : ?>
+                                                                <a href="<?php the_permalink(); ?>" class="range-product__thumb">
+                                                                    <img src="<?php echo esc_url($thumbnail_url); ?>" alt="<?php echo esc_attr(get_the_title()); ?>">
+                                                                </a>
                                                             <?php endif; ?>
-                                                            <?php if ($small_text_line) : ?>
-                                                                <p class="range-product__text"><?php echo esc_html($small_text_line); ?></p>
-                                                            <?php endif; ?>
-                                                        </div>
-                                                    </article>
-                                                <?php endwhile; ?>
+                                                            <div class="range-product__body">
+                                                                <h5 class="range-product__title">
+                                                                    <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+                                                                </h5>
+                                                                <?php if ($range_code) : ?>
+                                                                    <p class="range-product__code"><?php echo esc_html($range_code); ?></p>
+                                                                <?php endif; ?>
+                                                                <?php if ($small_text_line) : ?>
+                                                                    <p class="range-product__text"><?php echo esc_html($small_text_line); ?></p>
+                                                                <?php endif; ?>
+                                                            </div>
+                                                        </article>
+                                                    <?php endwhile; ?>
+                                                </div>
                                             </div>
-                                        </div>
-                                    <?php else : ?>
-                                        <div class="range-group range-group--empty" data-range="<?php echo esc_attr($range_term->slug); ?>">
-                                            <p><?php echo esc_html__('No products available for this range.', 'cyclon'); ?></p>
-                                        </div>
-                                    <?php endif; ?>
+                                        <?php else : ?>
+                                            <div class="range-group range-group--empty" data-range="<?php echo esc_attr($range_term->slug); ?>">
+                                                <p><?php echo esc_html__('', 'cyclon'); ?></p>
+                                            </div>
+                                        <?php endif; ?>
+                                    </div>
                                 </div>
                             <?php
                                 wp_reset_postdata();
