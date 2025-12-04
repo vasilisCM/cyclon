@@ -235,7 +235,7 @@ get_header(); ?>
                                     <img src="/wp-content/uploads/2025/12/home-menu-categories.png" alt="">
                                 <?php endif; ?>
                                 <h4 class="home-categories__category-heading">
-                                    <a href="<?php echo esc_url($term_link); ?>">
+                                    <a href="<?php echo esc_url($term_url); ?>">
                                         <?php echo esc_html($term->name); ?>
                                     </a>
                                 </h4>

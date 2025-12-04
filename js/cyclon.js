@@ -2,7 +2,8 @@ jQuery(document).ready(function ($) {
   /** Scroller **/
   let scrollpos = window.scrollY;
   const header = document.querySelector("#masthead");
-  const header_height = header.offsetHeight;
+  // const header_height = header.offsetHeight;
+  const header_height = 0;
 
   const add_class_on_scroll = () => header.classList.add("solid-header");
   const remove_class_on_scroll = () => header.classList.remove("solid-header");
@@ -10,7 +11,7 @@ jQuery(document).ready(function ($) {
   window.addEventListener("scroll", function () {
     scrollpos = window.scrollY;
 
-    if (scrollpos >= header_height) {
+    if (scrollpos > header_height) {
       add_class_on_scroll();
     } else {
       remove_class_on_scroll();

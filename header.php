@@ -115,8 +115,15 @@
 
         <!-- #masthead -->
         <?php if (is_front_page()): ?>
-
-            <section class="taxHeader hero-home" style="background-image: url(/wp-content/uploads/2025/12/home-hero.jpg);">
+            <?php
+            // Get the front page ID
+            $front_page_id = get_option('page_on_front') ? get_option('page_on_front') : get_queried_object_id();
+            // Get the featured image URL
+            $featured_image_url = get_the_post_thumbnail_url($front_page_id, 'full');
+            // Fallback to default image if no featured image is set
+            $background_image = $featured_image_url ? $featured_image_url : '/wp-content/uploads/2025/12/home-hero.jpg';
+            ?>
+            <section class="taxHeader hero-home" style="background-image: url(<?php echo esc_url($background_image); ?>);">
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
