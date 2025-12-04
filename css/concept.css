@@ -84,6 +84,22 @@
   font-size: 10px;
 }
 
+/* Components */
+.button-with-arrow {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+}
+
+.button-with-arrow::after {
+  content: "\e900";
+  font-family: "icomoon";
+  font-variant: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: all ease 300ms;
+}
+
 /* Layouts  */
 .mega-menu {
   position: fixed;
@@ -210,10 +226,12 @@ li:has(.sub-menu--active) > a:after {
 }
 
 .sub-menu li a {
+  font-size: 15px;
+  line-height: 1.2;
   font-weight: 700;
   border-bottom: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 0;
-  padding-block: 12px 8px;
+  padding-block: 12px 10px;
   display: block;
   width: 100%;
   transition: 0.3s ease;

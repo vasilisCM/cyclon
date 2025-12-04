@@ -37,7 +37,7 @@
                     <img src="/wp-content/uploads/2025/12/id-lube-image.png" />
                 </div>
                 <div class="lubeFinder__button">
-                    <a class="mButton mButton--trans lubeFinder_popup" href="<?php echo __('https://lpc-cyclon.ewp.earlweb.net/en_GB', 'cyclon'); ?>" target="_blank"><?php echo __('DISCOVER NOW', 'cyclon'); ?></a>
+                    <a class="button-with-arrow" href="<?php echo __('https://lpc-cyclon.ewp.earlweb.net/en_GB', 'cyclon'); ?>" target="_blank"><?php echo __('DISCOVER NOW', 'cyclon'); ?></a>
                 </div>
             </div>
         </div>
