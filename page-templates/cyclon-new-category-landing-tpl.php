@@ -93,6 +93,9 @@ get_header(); ?>
                                     $content_classes .= ' tabs__content--hidden';
                                 }
 
+                                // Get the associated category ID from the field
+                                $associated_cat_id = get_field('product_category_landing__assosiated_category');
+
                                 $tax_query = array(
                                     'relation' => 'AND',
                                     array(
@@ -102,11 +105,11 @@ get_header(); ?>
                                     ),
                                 );
 
-                                if ($category_term_id) {
+                                if ($associated_cat_id) {
                                     $tax_query[] = array(
                                         'taxonomy' => 'cyclon_new_product_cat',
                                         'field'    => 'term_id',
-                                        'terms'    => $category_term_id,
+                                        'terms'    => $associated_cat_id,
                                     );
                                 }
 
@@ -122,8 +125,6 @@ get_header(); ?>
                                         <!-- Product Category Description  -->
                                         <div class="text">
                                             <?php
-                                            // Get the associated category ID from the field.
-                                            $associated_cat_id = get_field('product_category_landing__assosiated_category');
                                             if ($associated_cat_id) {
                                                 // Get the term object by ID from cyclon_new_product_cat taxonomy.
                                                 $cat_term = get_term($associated_cat_id, 'cyclon_new_product_cat');
