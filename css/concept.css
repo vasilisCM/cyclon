@@ -1,11 +1,11 @@
 /* Font Face  */
 @font-face {
   font-family: "icomoon";
-  src: url("../fonts/icomoon.eot?dd4hcc");
-  src: url("../fonts/icomoon.eot?dd4hcc#iefix") format("embedded-opentype"),
-    url("../fonts/icomoon.ttf?dd4hcc") format("truetype"),
-    url("../fonts/icomoon.woff?dd4hcc") format("woff"),
-    url("../fonts/icomoon.svg?dd4hcc#icomoon") format("svg");
+  src: url("../fonts/icomoon.eot?f98yao");
+  src: url("../fonts/icomoon.eot?f98yao#iefix") format("embedded-opentype"),
+    url("../fonts/icomoon.ttf?f98yao") format("truetype"),
+    url("../fonts/icomoon.woff?f98yao") format("woff"),
+    url("../fonts/icomoon.svg?f98yao#icomoon") format("svg");
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -117,12 +117,16 @@
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.1em;
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 
 .button-with-arrow::after {
-  content: "\e900";
+  content: "\e90a";
   font-family: "icomoon";
   font-variant: normal;
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   transition: all ease 300ms;
