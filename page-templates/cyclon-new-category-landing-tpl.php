@@ -136,8 +136,21 @@ get_header(); ?>
                                         </div>
 
                                         <div>
-                                            <div class="text-l regular sans normal"><?php echo $range_descriptions[$range_term->slug]['heading']; ?></div>
-                                            <div class="text-m"><?php echo $range_descriptions[$range_term->slug]['text']; ?></div>
+                                            <div class="text-l regular sans normal">
+
+                                                <?php if ($range_descriptions[$range_term->slug]['heading']) : ?>
+                                                    <?php echo $range_descriptions[$range_term->slug]['heading']; ?>
+                                                <?php else : ?>
+                                                    <?php echo esc_html($range_term->name); ?> Line
+                                                <?php endif; ?>
+                                            </div>
+                                            <div class="text-m"><?php
+                                                                if ($range_descriptions[$range_term->slug]['text']) : ?>
+                                                    <?php echo $range_descriptions[$range_term->slug]['text']; ?>
+                                                <?php else : ?>
+                                                    <?php echo esc_html($range_term->description); ?>
+                                                <?php endif; ?>
+                                            </div>
                                         </div>
                                     </div>
 
