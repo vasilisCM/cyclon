@@ -116,7 +116,7 @@
         <!-- #masthead -->
         <?php if (is_front_page()): ?>
 
-            <section class="taxHeader hero-home" style="background-image: url(/wp-content/uploads/2025/10/1115x627-03.jpg);">
+            <section class="taxHeader hero-home" style="background-image: url(/wp-content/uploads/2025/12/home-hero.jpg);">
                 <div class="container">
                     <div class="row">
                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -126,9 +126,10 @@
                                 <div class="taxHeader__Content__Inner">
                                     <div class="hero-home__text-container">
                                         <h1 class="hero-home__heading">
-                                            Engineered to Perform </h1>
-                                        <div class="hero-home__subheading accent">Advanced technology in every move</div>
-                                        <a class="mButton mButton--trans" href="/">Ακαλύψτες Περισσότερα</a>
+                                            Engineered <br> to Perform </h1>
+                                        <div class="hero-home__subheading accent">Advanced technology <br> in every move</div>
+                                        <a class="mButton mButton--trans uppercase hero-home__button" href="/">Ανακαλυψτε Περισσοτερα</a>
+                                        <!-- <a class="mButton mButton--trans text-xs letter-spacing-medium uppercase hero-home__button" href="/">Ανακαλυψτε Περισσοτερα</a> -->
                                     </div>
                                     <div class="taxHeader__Buttons d-none d-sm-flex d-md-flex d-lg-flex d-xl-flex">
 

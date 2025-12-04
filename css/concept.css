@@ -1,3 +1,16 @@
+/* Font Face  */
+@font-face {
+  font-family: "icomoon";
+  src: url("../fonts/icomoon.eot?dd4hcc");
+  src: url("../fonts/icomoon.eot?dd4hcc#iefix") format("embedded-opentype"),
+    url("../fonts/icomoon.ttf?dd4hcc") format("truetype"),
+    url("../fonts/icomoon.woff?dd4hcc") format("woff"),
+    url("../fonts/icomoon.svg?dd4hcc#icomoon") format("svg");
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
 /* Utilities */
 .boxed {
   max-width: 1380px;
@@ -16,8 +29,59 @@
   position: relative;
 }
 
+.regular {
+  font-weight: 400 !important;
+}
+
 .bold {
   font-weight: 700;
+}
+
+.uppercase {
+  text-transform: uppercase !important;
+}
+
+.lowercase {
+  text-transform: lowercase;
+}
+
+.normal {
+  text-transform: initial;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.letter-spacing-medium {
+  letter-spacing: 0.2em;
+}
+
+.primary {
+  color: #001a61;
+}
+
+/* Typography  */
+.sans {
+  font-family: "AeonikPro", sans-serif;
+}
+
+.text-l {
+  font-size: 30px;
+}
+
+.text-m {
+  font-size: 20px;
+}
+
+@media screen and (max-width: 767px) {
+  .text-m {
+    font-size: 16px;
+  }
+}
+
+.text-xs {
+  font-size: 10px;
 }
 
 /* Layouts  */
@@ -238,50 +302,6 @@ li:has(.sub-menu--active) > a:after {
 
 .tabs__content--hidden {
   display: none;
-}
-
-/* Home */
-.hero-home__heading {
-  margin: 0 !important;
-}
-.hero-home__subheading {
-  font-size: clamp(18px, 2.7vw, 27px);
-}
-
-/* Home New Categories  */
-.home-categories__card {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  margin-bottom: clamp(20px, 6.3vw, 40px);
-  min-height: clamp(140px, 22vw, 180px);
-}
-
-.home-categories__category-heading a {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 10px;
-  font-size: 20px;
-  text-transform: none;
-  font-weight: 700;
-  color: #001a61;
-}
-
-.home-categories__category-heading a::after {
-  content: "➡";
-  visibility: hidden;
-  opacity: 0;
-  transition: all ease 300ms;
-}
-
-.home-categories__card:hover .home-categories__category-heading a::after {
-  visibility: visible;
-  opacity: 1;
-}
-
-.home-more-news {
-  text-align: center;
 }
 
 .swiper-autoheight,

@@ -297,6 +297,13 @@ function cyclon_theme_scripts()
     wp_enqueue_style('cyclon-wp-theme-style', get_template_directory_uri() . '/sass/style.css', array(), time(), 'all');
     wp_enqueue_style('concept-style', get_template_directory_uri() . '/css/concept.css', array(), time(), 'all');
 
+    // CSS per page template
+    // Home
+    if (is_front_page()) {
+        wp_enqueue_style('home-style', get_template_directory_uri() . '/css/home.css', array(), time(), 'all');
+    }
+
+    // New Product Category Archive
     if (is_tax('cyclon_new_product_cat')) {
         wp_enqueue_style('new-product-archive', get_stylesheet_directory_uri() . '/css/new-product-archive.css', array(), time(), 'all');
     }

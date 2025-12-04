@@ -971,9 +971,20 @@ const submenu = document.querySelector(".sub-menu");
 const subMenuItems = document.querySelectorAll(".sub-menu li");
 const megaMenuItems = document.querySelectorAll(".mega-menu__item");
 
+const taxHeader = document.querySelector(".taxHeader");
+const main = document.querySelector("main");
+
 itemHasChildren.addEventListener("mouseover", () => {
   submenu.classList.add("sub-menu--active");
   megaMenu.classList.add("mega-menu--active");
+  if (taxHeader) {
+    taxHeader.style.filter = `blur(5px)`;
+    taxHeader.style.overflow = `hidden`;
+  }
+  if (main) {
+    main.style.filter = `blur(5px)`;
+    main.style.overflow = `hidden`;
+  }
 });
 
 // submenu.addEventListener("mouseover", () => {
@@ -989,6 +1000,14 @@ submenu.addEventListener("mouseleave", () => {
   megaMenuItems.forEach((item) => {
     item.classList.remove("mega-menu__item--active");
   });
+  if (taxHeader) {
+    taxHeader.style.filter = `none`;
+    taxHeader.style.overflow = ``;
+  }
+  if (main) {
+    main.style.filter = `none`;
+    main.style.overflow = ``;
+  }
 });
 
 subMenuItems.forEach((item, i) => {
