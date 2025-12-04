@@ -136,38 +136,56 @@ get_header(); ?>
 
                                         <div>
                                             <div class="text-l regular sans normal"><?php echo $range_descriptions[$range_term->slug]['heading']; ?></div>
-                                            <div class="text-ml"><?php echo $range_descriptions[$range_term->slug]['text']; ?></div>
+                                            <div class="text-m"><?php echo $range_descriptions[$range_term->slug]['text']; ?></div>
                                         </div>
                                     </div>
 
                                     <!-- Products  -->
                                     <div>
                                         <?php if ($range_query->have_posts()) : ?>
-                                            <div class="range-group" data-range="<?php echo esc_attr($range_term->slug); ?>">
-                                                <h4 class="range-group__title"><?php echo esc_html($range_term->name); ?></h4>
-                                                <div class="range-group__items">
+                                            <?php
+                                            // Fetch the color field from the range term
+                                            $range_color = get_field('color', $range_term);
+                                            ?>
+                                            <div class="range-group primary" data-range="<?php echo esc_attr($range_term->slug); ?>">
+
+                                                <div class="new-category-product-grid">
                                                     <?php
                                                     while ($range_query->have_posts()) :
                                                         $range_query->the_post();
+
+                                                        // Retrieve custom fields first
                                                         $range_code = get_field('range_code', get_the_ID());
                                                         $small_text_line = get_field('small_text_line', get_the_ID());
                                                         $thumbnail_url = get_the_post_thumbnail_url(get_the_ID(), 'medium');
                                                     ?>
-                                                        <article class="range-product">
+                                                        <article class="new-category-product-card">
+
                                                             <?php if ($thumbnail_url) : ?>
-                                                                <a href="<?php the_permalink(); ?>" class="range-product__thumb">
+                                                                <!-- <a href="<?php the_permalink(); ?>" class="new-category-product-card__img-container"> -->
+                                                                <div class="new-category-product-card__img-container">
                                                                     <img src="<?php echo esc_url($thumbnail_url); ?>" alt="<?php echo esc_attr(get_the_title()); ?>">
-                                                                </a>
+
+                                                                </div>
                                                             <?php endif; ?>
-                                                            <div class="range-product__body">
-                                                                <h5 class="range-product__title">
-                                                                    <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-                                                                </h5>
-                                                                <?php if ($range_code) : ?>
-                                                                    <p class="range-product__code"><?php echo esc_html($range_code); ?></p>
-                                                                <?php endif; ?>
+                                                            <div class="new-category-product-card__text-container">
+                                                                <div>
+                                                                    <div class="sans regular range-group__title uppercase text-ms">Cyclon <?php echo esc_html($range_term->name); ?></div>
+                                                                    <!-- <h5 class="text-l regular primary sans new-category-product-card__title">
+                                                                        <a href="<?php // the_permalink(); 
+                                                                                    ?>"><?php // the_title(); 
+                                                                                        ?></a>
+                                                                    </h5> -->
+                                                                    <h5 class="text-l regular primary sans new-category-product-card__title">
+                                                                        <?php the_title(); ?>
+                                                                    </h5>
+                                                                    <?php if ($range_code) : ?>
+                                                                        <div class="text-l regular sans new-category-product-card__code" style="color: <?php echo esc_attr($range_color); ?>;"><?php echo esc_html($range_code); ?></div>
+                                                                    <?php endif; ?>
+
+                                                                </div>
                                                                 <?php if ($small_text_line) : ?>
-                                                                    <p class="range-product__text"><?php echo esc_html($small_text_line); ?></p>
+                                                                    <div class="text-s new-category-product-card__text"><?php echo esc_html($small_text_line); ?></div>
                                                                 <?php endif; ?>
                                                             </div>
                                                         </article>

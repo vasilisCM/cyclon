@@ -22,17 +22,17 @@
 
 .tabs__button--evo {
   background-color: #001a61;
-  color: #a4916a;
+  color: #ae9753;
 }
 
 .tabs__button--pro {
   background-color: #28407a;
-  color: #b8b8b8;
+  color: #8c9091;
 }
 
 .tabs__button--eco {
   background-color: #3b578d;
-  color: #0ddf80;
+  color: #00ce7c;
 }
 
 .tabs__button--max {
@@ -50,4 +50,34 @@
 
 .new-category-landing__dynamic-texts {
   margin-top: 40px;
+}
+
+/* Products  */
+
+.new-category-product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 80px;
+}
+
+/* Product Card  */
+.new-category-product-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.new-category-product-card__text-container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  /* justify-content: space-between; */
+}
+
+.new-category-product-card__title {
+  margin: 0;
+  padding: 0;
+  margin-top: 8px;
+  line-height: 1.2;
 }
