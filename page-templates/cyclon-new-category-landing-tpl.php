@@ -58,7 +58,7 @@ get_header(); ?>
                 <?php if (!empty($range_terms) && !is_wp_error($range_terms)) : ?>
                     <div class="tabs new-category-landing__tabs">
                         <div class="tabs__buttons new-category-landing__tabs-buttons">
-                            <span class="white new-category-landing__tabs-buttons-label"><?php echo __('select product range', 'cyclon'); ?></span>
+                            <span class="white new-category-landing__tabs-buttons-label"><?php echo __('select product range: ', 'cyclon'); ?></span>
                             <?php
                             $tab_index = 0;
                             foreach ($range_terms as $range_term) :
@@ -112,7 +112,7 @@ get_header(); ?>
 
                                 $range_query = new WP_Query(array(
                                     'post_type' => 'cyclon_new_product',
-                                    'posts_per_page' => -1,
+                                    'posts_per_page' => 3,
                                     'tax_query' => $tax_query,
                                 ));
                             ?>

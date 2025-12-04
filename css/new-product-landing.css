@@ -61,6 +61,18 @@
   margin-top: 80px;
 }
 
+@media screen and (max-width: 1024px) {
+  .new-category-product-grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .new-category-product-grid {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}
+
 /* Product Card  */
 .new-category-product-card {
   display: grid;
