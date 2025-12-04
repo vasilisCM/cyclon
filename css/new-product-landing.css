@@ -4,7 +4,7 @@
 }
 
 .new-category-landing__tabs {
-  margin-top: -93px;
+  margin-top: -79px;
 }
 
 .new-category-landing__tabs-buttons {
@@ -22,22 +22,22 @@
 
 .tabs__button--evo {
   background-color: #001a61;
-  color: #ffda00;
+  color: #a4916a;
 }
 
 .tabs__button--pro {
-  background-color: #ffda00;
-  color: #001a61;
+  background-color: #28407a;
+  color: #b8b8b8;
 }
 
 .tabs__button--eco {
-  background-color: #ffda00;
-  color: #001a61;
+  background-color: #3b578d;
+  color: #0ddf80;
 }
 
 .tabs__button--max {
-  background-color: #001a61;
-  color: #ffda00;
+  background-color: #274176;
+  color: #f7691d;
 }
 
 .new-category-landing__tabs-buttons-label {
@@ -46,4 +46,8 @@
   font-size: 12px;
   left: -10px;
   transform: translateX(-100%);
+}
+
+.new-category-landing__dynamic-texts {
+  margin-top: 40px;
 }

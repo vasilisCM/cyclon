@@ -32,7 +32,7 @@ get_header(); ?>
                 }
             }
 
-            $allowed_range_slugs = array('eco', 'evo', 'max', 'pro');
+            $allowed_range_slugs = array('evo', 'pro', 'eco', 'max');
 
             foreach ($allowed_range_slugs as $allowed_slug) {
                 $range_term = get_term_by('slug', $allowed_slug, 'cyclon_range');
@@ -118,9 +118,9 @@ get_header(); ?>
                             ?>
                                 <div class="<?php echo esc_attr($content_classes); ?> primary" id="tab-<?php echo esc_attr($range_term->slug); ?>">
 
-                                    <div class="text-center">
+                                    <div class="text-center boxed-sm centered new-category-landing__dynamic-texts">
                                         <!-- Product Category Description  -->
-                                        <div>
+                                        <div class="text">
                                             <?php
                                             // Get the associated category ID from the field.
                                             $associated_cat_id = get_field('product_category_landing__assosiated_category');
@@ -135,8 +135,8 @@ get_header(); ?>
                                         </div>
 
                                         <div>
-                                            <h3 class="sans normal text-l"><?php echo $range_descriptions[$range_term->slug]['heading']; ?></h3>
-                                            <p><?php echo $range_descriptions[$range_term->slug]['text']; ?></p>
+                                            <div class="text-l regular sans normal"><?php echo $range_descriptions[$range_term->slug]['heading']; ?></div>
+                                            <div class="text-ml"><?php echo $range_descriptions[$range_term->slug]['text']; ?></div>
                                         </div>
                                     </div>
 

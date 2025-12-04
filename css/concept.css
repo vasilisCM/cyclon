@@ -17,6 +17,11 @@
   padding-inline: 60px;
 }
 
+.boxed-sm {
+  max-width: 1150px;
+  padding-inline: 60px;
+}
+
 .centered {
   margin-inline: auto;
 }
@@ -70,8 +75,17 @@
   font-size: 30px;
 }
 
+.text-ml {
+  font-size: 24px;
+  line-height: 1.3;
+}
+
 .text-m {
   font-size: 20px;
+}
+
+.text {
+  font-size: 16px;
 }
 
 @media screen and (max-width: 767px) {
@@ -300,18 +314,17 @@ li:has(.sub-menu--active) > a:after {
 
 .tabs__button {
   padding: 16px 32px;
-  border: solid 1px rgba(0, 26, 97, 0.2);
+  /* border: solid 1px rgba(0, 26, 97, 0.2); */
   cursor: pointer;
   transition: all ease 300ms;
 }
 
-.tabs__button:hover {
+/* .tabs__button:hover {
   border: solid 1px rgba(0, 26, 97, 1);
-}
+} */
 
 .tabs__button--active {
-  background-color: #001a61;
-  color: #ffda00;
+  background-color: white !important;
 }
 
 .tabs__content {
