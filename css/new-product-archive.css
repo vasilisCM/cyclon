@@ -18,7 +18,7 @@
 }
 
 .product-archive__container {
-  margin-top: 200px;
+  /* margin-top: 200px; */
   display: grid;
   grid-template-columns: 2fr 8fr;
   gap: 20px;
