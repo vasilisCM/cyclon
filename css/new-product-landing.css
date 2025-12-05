@@ -62,6 +62,10 @@
   margin-top: 40px;
 }
 
+.new-category-landing__dynamic-texts__description {
+  color: #4b505d;
+}
+
 /* Products  */
 
 .new-category-product-grid {
