@@ -30,6 +30,10 @@
   display: none;
 }
 
+.absolute {
+  position: absolute;
+}
+
 .relative {
   position: relative;
 }
@@ -72,7 +76,7 @@
 }
 
 .text-xl {
-  font-size: 39px;
+  font-size: clamp(30px, calc((39 * 100vw) / 1280), 39px);
 }
 
 .text-l {
@@ -120,6 +124,10 @@
   line-height: 1;
 }
 
+.line-height-m {
+  line-height: 1.2;
+}
+
 /* Components */
 .button-with-arrow {
   font-size: 12px;
@@ -142,11 +150,12 @@
 
 .tribo-act-banner {
   background-color: #ffda00;
-  padding-block: 30px;
+  padding-block: clamp(35px, calc((50 * 100vw) / 1280) ,50px); 30px;
 }
 
 .tribo-act-banner__container {
   display: grid;
+  gap: 20px clamp(30px, calc((40 * 100vw) / 1280), 40px);
   grid-template-columns: max-content 1fr;
 }
 
@@ -160,7 +169,63 @@
 }
 
 .tribo-act-banner__logo {
-  max-width: 93px;
+  max-width: clamp(75px, calc((93 * 100vw) / 1280), 93px);
+}
+
+.tribo-act-banner__features-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.2fr;
+  padding-top: 25px;
+}
+
+.tribo-act-banner__feature-number {
+  font-size: clamp(40px, calc((60 * 100vw) / 1280), 60px);
+  background-image: linear-gradient(to right, white, transparent);
+  padding: 5px 12px;
+  border-radius: 15px;
+}
+
+.tribo-act-banner__feature-image {
+  top: 50%;
+  right: 50%;
+  transform: translateX(100%) translateY(-42%);
+}
+
+.tribo-act-banner__feature-image img {
+  max-height: clamp(70px, calc((90 * 100vw) / 1280), 90px);
+}
+
+.tribo-act-banner__feature-text {
+  padding: 12px;
+  max-width: 180px;
+}
+
+.tribo-act-banner__button-container {
+  grid-column: span 2;
+  justify-self: end;
+}
+
+@media screen and (max-width: 1024px) {
+  .tribo-act-banner__container {
+    grid-template-columns: 1fr;
+  }
+
+  .tribo-act-banner__button-container {
+    grid-column: revert;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .tribo-act-banner__features-container {
+    grid-template-columns: 1fr 1fr;
+    row-gap: 20px;
+  }
+  .tribo-act-banner__feature {
+    max-width: 260px;
+  }
+.tribo-act-banner__feature:last-child {
+    grid-column: span 2;
+  }
 }
 
 /* Layouts  */
