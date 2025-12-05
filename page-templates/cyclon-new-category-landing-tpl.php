@@ -123,7 +123,7 @@ get_header(); ?>
 
                                     <div class="text-center boxed-sm centered new-category-landing__dynamic-texts">
                                         <!-- Product Category Description  -->
-                                        <div class="text">
+                                        <div class="text new-category-landing__dynamic-texts__description">
                                             <?php
                                             if ($associated_cat_id) {
                                                 // Get the term object by ID from cyclon_new_product_cat taxonomy.

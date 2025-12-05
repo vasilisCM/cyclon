@@ -204,7 +204,7 @@
         ?>
             <?php
             // Use fallback image if no header image is set
-            $headerImageUrl = $headerImage ?: get_site_url() . '/wp-content/uploads/2025/11/mega-menu-bg-img.jpg';
+            $headerImageUrl = $headerImage ?: get_site_url() . '/wp-content/uploads/2025/12/cat-landing-hero-bg.jpg';
             ?>
             <div class="taxHeader" style="background:url('<?php echo esc_url($headerImageUrl); ?>') center no-repeat;">
                 <?php if (is_page('brand') || is_page('contact')): ?>
@@ -237,7 +237,11 @@
                                                             <?php echo get_the_title(); ?>
 
                                                         </h1>
-                                                        <div class="text-ml accent hero-new-category-landing__subheading">Advanced technology in every move</div>
+                                                        <?php if (get_field('product_category_landing__hero_text')): ?>
+                                                            <div class="text-ml accent hero-new-category-landing__subheading">
+                                                                <?php echo get_field('product_category_landing__hero_text'); ?>
+                                                            </div>
+                                                        <?php endif; ?>
                                                     </div>
                                                 <?php endif; ?>
                                             </div>
