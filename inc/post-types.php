@@ -238,7 +238,7 @@ if (! function_exists('cyclon_product_grade')) {
             'show_in_nav_menus'          => true,
             'show_tagcloud'              => true,
         );
-        register_taxonomy('cyclon_product_grade', array('cyclon_product'), $args);
+        register_taxonomy('cyclon_product_grade', array('cyclon_product', 'cyclon_new_product'), $args);
     }
     add_action('init', 'cyclon_product_grade', 0);
 }
@@ -279,7 +279,7 @@ if (! function_exists('cyclon_product_type')) {
             'show_in_nav_menus'          => true,
             'show_tagcloud'              => true,
         );
-        register_taxonomy('cyclon_product_type', array('cyclon_product'), $args);
+        register_taxonomy('cyclon_product_type', array('cyclon_product', 'cyclon_new_product'), $args);
     }
     add_action('init', 'cyclon_product_type', 0);
 }
