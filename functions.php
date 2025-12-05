@@ -342,8 +342,9 @@ function cyclon_theme_scripts()
         wp_localize_script('new-product-archive', 'wpAjax', array('ajaxUrl' => admin_url('admin-ajax.php')));
         wp_localize_script('new-product-archive', 'cyclonFilters', array(
             'taxonomies' => array(
-                'cyclon_new_product_grade',
-                'cyclon_new_product_type',
+                'cyclon_range',
+                'cyclon_product_grade',
+                'cyclon_product_type',
             )
         ));
     }
