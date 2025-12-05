@@ -615,15 +615,15 @@ function updateSelectedFiltersDisplay() {
         const filterItem = document.createElement("div");
         filterItem.className = "selected-filters__item";
 
-        const taxonomySpan = document.createElement("span");
-        taxonomySpan.className = "selected-filters__taxonomy";
-        taxonomySpan.textContent = taxonomyLabel + ":";
+        // const taxonomySpan = document.createElement("span");
+        // taxonomySpan.className = "selected-filters__taxonomy";
+        // taxonomySpan.textContent = taxonomyLabel + ":";
 
         const termSpan = document.createElement("span");
         termSpan.className = "selected-filters__term";
         termSpan.textContent = termName;
 
-        const removeBtn = document.createElement("button");
+        const removeBtn = document.createElement("div");
         removeBtn.type = "button";
         removeBtn.className = "selected-filters__remove";
         removeBtn.setAttribute("data-taxonomy", taxonomy);
@@ -631,7 +631,7 @@ function updateSelectedFiltersDisplay() {
         removeBtn.setAttribute("aria-label", "Remove filter");
         removeBtn.textContent = "×";
 
-        filterItem.appendChild(taxonomySpan);
+        // filterItem.appendChild(taxonomySpan);
         filterItem.appendChild(termSpan);
         filterItem.appendChild(removeBtn);
 
