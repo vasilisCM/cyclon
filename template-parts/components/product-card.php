@@ -17,7 +17,7 @@
         <?php endif; ?>
     </div>
     <div class="productCard__Content">
-        <div class="text-m">
+        <div class="text-ms uppercase">
             <span>Cyclon </span>
             <?php if (get_field('range_code')): ?>
                 <?php
@@ -29,12 +29,12 @@
                 <?php endif; ?>
             <?php endif; ?>
         </div>
-        <div class="heading-m product-card__title"><?php the_title(); ?></div>
+        <div class="text-l uppercase product-card__title"><?php the_title(); ?></div>
         <?php if (get_field('range_code')): ?>
-            <div class="heading-m product-card__range-code"><?php echo get_field('range_code'); ?></div>
+            <div class="text-l uppercase product-card__range-code"><?php echo get_field('range_code'); ?></div>
         <?php endif; ?>
         <?php if (get_field('small_text_line')): ?>
-            <div class="text-xs info product-card__info"><?php echo get_field('small_text_line'); ?></div>
+            <div class="text-s info product-card__info"><?php echo get_field('small_text_line'); ?></div>
         <?php endif; ?>
 
     </div>

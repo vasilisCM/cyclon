@@ -1,4 +1,4 @@
-console.log("productArchive.js");
+console.log("new productArchive.js");
 
 function getArchiveBasePath(pathname = window.location.pathname) {
   const cleaned = pathname.replace(/\/page\/\d+\/?$/, "/");

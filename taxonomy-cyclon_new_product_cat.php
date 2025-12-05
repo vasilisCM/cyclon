@@ -25,7 +25,7 @@ get_header(); ?>
             $cyclon_taxonomies = array_filter($cyclon_taxonomies);
             if (! empty($cyclon_taxonomies)): ?>
                 <div class="product-filters sticky">
-                    <div lang="el" class="font-ferry black-weight lowercase"><?php _e('Φίλτρα', 'cyclon'); ?></div>
+                    <div lang="el" class="font-ferry black-weight lowercase product-filters__heading"><?php _e('Φιλτρα', 'cyclon'); ?></div>
                     <div class="product-filters__grid">
                         <?php foreach ($cyclon_taxonomies as $taxonomy):
                             // Get terms only for products in current archive
@@ -54,7 +54,7 @@ get_header(); ?>
                             }
                         ?>
                             <div class="product-filters__group taxonomy-<?php echo esc_attr($taxonomy->name); ?>">
-                                <div class="bold text-xs letter-spacing"><?php echo esc_html($taxonomy->labels->singular_name ?? $taxonomy->label); ?></div>
+                                <div class="bold text-s uppercase letter-spacing-medium"><?php echo esc_html($taxonomy->labels->singular_name ?? $taxonomy->label); ?></div>
                                 <div class="product-filters__options">
                                     <?php foreach ($terms as $term):
                                         $checkbox_id = esc_attr($taxonomy->name . '-' . $term->slug);
@@ -65,7 +65,7 @@ get_header(); ?>
                                                 name="filters[<?php echo esc_attr($taxonomy->name); ?>][]"
                                                 id="<?php echo $checkbox_id; ?>"
                                                 value="<?php echo esc_attr($term->slug); ?>">
-                                            <label for="<?php echo $checkbox_id; ?>">
+                                            <label for="<?php echo $checkbox_id; ?>" class="text-s">
                                                 <?php echo esc_html($term->name); ?>
                                             </label>
                                         </div>
