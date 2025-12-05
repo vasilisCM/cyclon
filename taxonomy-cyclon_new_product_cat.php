@@ -20,6 +20,8 @@ get_header(); ?>
                 'cyclon_range',
                 'cyclon_product_grade',
                 'cyclon_product_type',
+                'cyclon_new_product_acea',
+                'cyclon_new_product_oem',
             );
             $cyclon_taxonomies = array_map('get_taxonomy', $allowed_taxonomies);
             $cyclon_taxonomies = array_filter($cyclon_taxonomies);
