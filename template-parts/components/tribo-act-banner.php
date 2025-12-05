@@ -7,10 +7,10 @@
                     <img src="<?php echo $triboAct['image']; ?>" alt="Tribo Act">
                 </div>
                 <div class="tribo-act-banner__logo-text primary">
-                    <h2 class="tribo-act-banner__logo-title text-xl">
+                    <h2 class="tribo-act-banner__logo-title text-xl line-height-s">
                         <?php echo $triboAct['heading']; ?>
                     </h2>
-                    <div class="tribo-act-banner__logo-moto text sans">
+                    <div class="tribo-act-banner__logo-moto text sans line-height-s">
                         <?php echo $triboAct['text']; ?>
                     </div>
                 </div>

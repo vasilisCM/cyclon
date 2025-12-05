@@ -73,7 +73,6 @@
 
 .text-xl {
   font-size: 39px;
-  line-height: 1.1;
 }
 
 .text-l {
@@ -117,6 +116,10 @@
   font-size: 10px;
 }
 
+.line-height-s {
+  line-height: 1;
+}
+
 /* Components */
 .button-with-arrow {
   font-size: 12px;
@@ -139,11 +142,25 @@
 
 .tribo-act-banner {
   background-color: #ffda00;
+  padding-block: 30px;
 }
 
 .tribo-act-banner__container {
   display: grid;
   grid-template-columns: max-content 1fr;
+}
+
+.tribo-act-banner__logo-container {
+  display: flex;
+  gap: 20px;
+}
+
+.tribo-act-banner__logo-title {
+  margin-block: 15px 10px;
+}
+
+.tribo-act-banner__logo {
+  max-width: 93px;
 }
 
 /* Layouts  */
