@@ -202,55 +202,121 @@
             $term = get_queried_object();
             $headerImage = get_field('header_image');
         ?>
-            <div class="taxHeader" style="background:url('<?php echo $headerImage; ?>') center no-repeat;">
+            <?php
+            // Use fallback image if no header image is set
+            $headerImageUrl = $headerImage ?: get_site_url() . '/wp-content/uploads/2025/11/mega-menu-bg-img.jpg';
+            ?>
+            <div class="taxHeader" style="background:url('<?php echo esc_url($headerImageUrl); ?>') center no-repeat;">
                 <?php if (is_page('brand') || is_page('contact')): ?>
                     <h1 class="brandHero__heading white-text">
                         <?php echo get_field('hero_text'); ?>
                     </h1>
                 <?php endif; ?>
                 <div class="container">
-                    <div class="row">
-                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                            <div class="taxHeader__Content">
-                                <div class="taxHeader__Content__Inner">
-                                    <?php if (get_field('header_image_title')): ?>
-                                        <div class="taxHeader_Header_Wrapper__Inner">
-                                            <?php if (!is_page('brand') && !is_page('contact')): ?>
-                                                <h1>
-                                                    <?php echo get_field('header_image_title'); ?>
-                                                </h1>
-                                            <?php endif; ?>
-                                        </div>
-                                    <?php else: ?>
-                                        <div class="taxHeader_Header_Wrapper__Inner">
-                                            <?php if (!is_page('brand')  && !is_page('contact')): ?>
-                                                <h1>
-                                                    <?php echo get_the_title(); ?>
-                                                </h1>
-                                            <?php endif; ?>
-                                        </div>
-                                    <?php endif; ?>
-                                    <div class="taxHeader__Buttons d-none d-sm-flex d-md-flex d-lg-flex d-xl-flex">
-                                        <?php if (get_field('header_button_1_image', $term)): ?>
-                                            <a href="<?php echo get_field('header_button_1_link', $term); ?>">
-                                                <img src="<?php echo get_field('header_button_1_image'); ?>"
-                                                    class="img-responsive" />
-                                            </a>
-                                        <?php endif; ?>
+                    <?php if (is_page_template('page-templates/cyclon-new-category-landing-tpl.php')): ?>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <div class="taxHeader__Content">
+                                    <div class="taxHeader__Content__Inner">
+                                        <?php if (get_field('header_image_title')): ?>
+                                            <div class="taxHeader_Header_Wrapper__Inner">
+                                                <?php if (!is_page('brand') && !is_page('contact')): ?>
+                                                    <h1>
+                                                        <?php echo get_field('header_image_title'); ?>
 
-                                        <?php if (get_field('header_button_2_image', $term)): ?>
-                                            <a href="<?php echo get_field('header_button_2_link', $term); ?>">
-                                                <img src="<?php echo get_field('header_button_2_image'); ?>"
-                                                    class="img-responsive" />
-                                            </a>
+                                                    </h1>
+
+
+                                                <?php endif; ?>
+                                            </div>
+                                        <?php else: ?>
+                                            <div class="taxHeader_Header_Wrapper__Inner">
+                                                <?php if (!is_page('brand')  && !is_page('contact')): ?>
+                                                    <div>
+                                                        <h1 class="hero-new-category-landing__heading">
+                                                            <?php echo get_the_title(); ?>
+
+                                                        </h1>
+                                                        <div class="text-ml accent hero-new-category-landing__subheading">Advanced technology in every move</div>
+                                                    </div>
+                                                <?php endif; ?>
+                                            </div>
                                         <?php endif; ?>
+                                        <div class="taxHeader__Buttons d-none d-sm-flex d-md-flex d-lg-flex d-xl-flex">
+                                            <?php if (get_field('header_button_1_image', $term)): ?>
+                                                <a href="<?php echo get_field('header_button_1_link', $term); ?>">
+                                                    <img src="<?php echo get_field('header_button_1_image'); ?>"
+                                                        class="img-responsive" />
+                                                </a>
+                                            <?php endif; ?>
+
+                                            <?php if (get_field('header_button_2_image', $term)): ?>
+                                                <a href="<?php echo get_field('header_button_2_link', $term); ?>">
+                                                    <img src="<?php echo get_field('header_button_2_image'); ?>"
+                                                        class="img-responsive" />
+                                                </a>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <div class="taxHeader__Content">
+                                    <div class="taxHeader__Content__Inner">
+
+                                        <img src="<?php echo get_field('product_category_landing__right_image'); ?>" class="" />
+
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    <?php else: ?>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <div class="taxHeader__Content">
+                                    <div class="taxHeader__Content__Inner">
+                                        <?php if (get_field('header_image_title')): ?>
+                                            <div class="taxHeader_Header_Wrapper__Inner">
+                                                <?php if (!is_page('brand') && !is_page('contact')): ?>
+                                                    <h1>
+                                                        <?php echo get_field('header_image_title'); ?>
+
+                                                    </h1>
+                                                <?php endif; ?>
+                                            </div>
+                                        <?php else: ?>
+                                            <div class="taxHeader_Header_Wrapper__Inner">
+                                                <?php if (!is_page('brand')  && !is_page('contact')): ?>
+                                                    <h1>
+                                                        <?php echo get_the_title(); ?>
+
+                                                    </h1>
+                                                <?php endif; ?>
+                                            </div>
+                                        <?php endif; ?>
+                                        <div class="taxHeader__Buttons d-none d-sm-flex d-md-flex d-lg-flex d-xl-flex">
+                                            <?php if (get_field('header_button_1_image', $term)): ?>
+                                                <a href="<?php echo get_field('header_button_1_link', $term); ?>">
+                                                    <img src="<?php echo get_field('header_button_1_image'); ?>"
+                                                        class="img-responsive" />
+                                                </a>
+                                            <?php endif; ?>
+
+                                            <?php if (get_field('header_button_2_image', $term)): ?>
+                                                <a href="<?php echo get_field('header_button_2_link', $term); ?>">
+                                                    <img src="<?php echo get_field('header_button_2_image'); ?>"
+                                                        class="img-responsive" />
+                                                </a>
+                                            <?php endif; ?>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
             <div class="mobileTaxHeaderTitle">

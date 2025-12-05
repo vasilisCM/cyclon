@@ -1,3 +1,13 @@
+.hero-new-category-landing__heading {
+  margin: 0 !important;
+  padding: 0;
+}
+
+.hero-new-category-landing__subheading {
+  max-width: 250px;
+  margin-top: 20px;
+}
+
 .new-category-landing {
   padding-top: 0;
   background: revert;
