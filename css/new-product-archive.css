@@ -35,6 +35,71 @@
   padding-bottom: 16px;
 }
 
+/* Special Filters (Range) */
+.taxonomy-cyclon_range .product-filters__options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.taxonomy-cyclon_range .product-filters__option {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 8px;
+  border: 1px solid #dadada;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.taxonomy-cyclon_range .product-filters__option.active {
+  background-color: #001a61;
+}
+
+.taxonomy-cyclon_range .product-filters__option label {
+  font-size: 16px;
+}
+
+.taxonomy-cyclon_range .product-filters__option.eco label {
+  color: #00ce7c;
+}
+
+.taxonomy-cyclon_range .product-filters__option.evo label {
+  color: #ae9753;
+}
+
+.taxonomy-cyclon_range .product-filters__option.pro label {
+  color: #8c9091;
+}
+
+.taxonomy-cyclon_range .product-filters__option.max label {
+  color: #ff671c;
+}
+
+.taxonomy-cyclon_range .product-filters__option input {
+  display: none;
+}
+
+/* Special Filters (Approvals) */
+/* .product-filters__dropdown-wrapper {
+  margin-top: 20px;
+} */
+
+.product-filters__group.taxonomy-cyclon_new_product_acea,
+.product-filters__group.taxonomy-cyclon_new_product_oem {
+  padding-bottom: 0;
+}
+
+.product-filters__group select {
+  padding: 8px;
+  background-color: #d8d8d8;
+}
+
+.product-filters__dropdown {
+  width: 100%;
+  overflow-y: auto;
+}
+
 .selected-filters__heading {
   padding-bottom: 16px;
 }
@@ -80,6 +145,7 @@
   border-bottom: 1px solid #001a61;
 }
 
+.product-filters__group:nth-last-child(2),
 .product-filters__group:last-child {
   border-bottom: none;
 }

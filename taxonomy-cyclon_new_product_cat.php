@@ -29,7 +29,9 @@ get_header(); ?>
                 <div class="product-filters sticky">
                     <div lang="el" class="font-ferry black-weight lowercase product-filters__heading"><?php _e('Φιλτρα', 'cyclon'); ?></div>
                     <div class="product-filters__grid">
-                        <?php foreach ($cyclon_taxonomies as $taxonomy):
+                        <?php
+                        $dropdown_wrapper_opened = false;
+                        foreach ($cyclon_taxonomies as $taxonomy):
                             // Get terms only for products in current archive
                             $terms = array();
                             if (! empty($post_ids)) {
@@ -55,26 +57,68 @@ get_header(); ?>
                                 continue;
                             }
                         ?>
+                            <?php
+                            $is_dropdown = ($taxonomy->name === 'cyclon_new_product_acea' || $taxonomy->name === 'cyclon_new_product_oem');
+
+                            // Open wrapper before first dropdown
+                            if ($is_dropdown && !$dropdown_wrapper_opened) {
+                                echo '<div class="product-filters__dropdown-wrapper">
+                                <div class="bold text-s uppercase letter-spacing-medium product-filters__approvals-label">Approvals</div>';
+                                $dropdown_wrapper_opened = true;
+                            }
+
+                            // Close wrapper before non-dropdown elements
+                            if (!$is_dropdown && $dropdown_wrapper_opened) {
+                                echo '</div>';
+                                $dropdown_wrapper_opened = false;
+                            }
+                            ?>
+
                             <div class="product-filters__group taxonomy-<?php echo esc_attr($taxonomy->name); ?>">
-                                <div class="bold text-s uppercase letter-spacing-medium"><?php echo esc_html($taxonomy->labels->singular_name ?? $taxonomy->label); ?></div>
-                                <div class="product-filters__options">
-                                    <?php foreach ($terms as $term):
-                                        $checkbox_id = esc_attr($taxonomy->name . '-' . $term->slug);
-                                    ?>
-                                        <div class="product-filters__option">
-                                            <input
-                                                type="checkbox"
-                                                name="filters[<?php echo esc_attr($taxonomy->name); ?>][]"
-                                                id="<?php echo $checkbox_id; ?>"
-                                                value="<?php echo esc_attr($term->slug); ?>">
-                                            <label for="<?php echo $checkbox_id; ?>" class="text-s">
+                                <?php if (!$is_dropdown) { ?>
+                                    <div class="bold text-s uppercase letter-spacing-medium"><?php echo esc_html($taxonomy->labels->singular_name ?? $taxonomy->label); ?></div>
+                                <?php } ?>
+
+                                <?php if ($is_dropdown): ?>
+                                    <!-- Dropdown for ACEA and OEM -->
+                                    <select
+                                        name="filters[<?php echo esc_attr($taxonomy->name); ?>][]"
+                                        class="product-filters__dropdown text-s">
+                                        <option value="" disabled selected><?php echo esc_html($taxonomy->labels->singular_name ?? $taxonomy->label); ?></option>
+                                        <?php foreach ($terms as $term): ?>
+                                            <option value="<?php echo esc_attr($term->slug); ?>">
                                                 <?php echo esc_html($term->name); ?>
-                                            </label>
-                                        </div>
-                                    <?php endforeach; ?>
-                                </div>
+                                            </option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                <?php else: ?>
+                                    <!-- Checkboxes for other taxonomies -->
+                                    <div class="product-filters__options">
+                                        <?php foreach ($terms as $term):
+                                            $checkbox_id = esc_attr($taxonomy->name . '-' . $term->slug);
+                                        ?>
+                                            <div class="product-filters__option <?php echo esc_attr($term->slug); ?>">
+                                                <input
+                                                    type="checkbox"
+                                                    name="filters[<?php echo esc_attr($taxonomy->name); ?>][]"
+                                                    id="<?php echo $checkbox_id; ?>"
+                                                    value="<?php echo esc_attr($term->slug); ?>">
+                                                <label for="<?php echo $checkbox_id; ?>" class="text-s">
+                                                    <?php echo esc_html($term->name); ?>
+                                                </label>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                <?php endif; ?>
                             </div>
                         <?php endforeach; ?>
+
+                        <?php
+                        // Close wrapper if still open
+                        if ($dropdown_wrapper_opened) {
+                            echo '</div>';
+                        }
+                        ?>
                     </div>
                 </div>
             <?php endif; ?>
