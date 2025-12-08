@@ -975,16 +975,22 @@ const megaMenuItems = document.querySelectorAll(".mega-menu__item");
 const taxHeader = document.querySelector(".taxHeader");
 const main = document.querySelector("main");
 
-itemHasChildren.addEventListener("mouseover", () => {
-  submenu.classList.add("sub-menu--active");
-  megaMenu.classList.add("mega-menu--active");
-  if (taxHeader) {
-    taxHeader.style.filter = `blur(5px)`;
-    taxHeader.style.overflow = `hidden`;
-  }
-  if (main) {
-    main.style.filter = `blur(5px)`;
-    main.style.overflow = `hidden`;
+itemHasChildren.addEventListener("mouseover", (e) => {
+  // Only set default if no submenu item is currently hovered
+  if (!submenu.matches(":hover")) {
+    submenu.classList.add("sub-menu--active");
+    megaMenu.classList.add("mega-menu--active");
+    if (megaMenuItems[0]) {
+      megaMenuItems[0].classList.add("mega-menu__item--active");
+    }
+    if (taxHeader) {
+      taxHeader.style.filter = `blur(5px)`;
+      taxHeader.style.overflow = `hidden`;
+    }
+    if (main) {
+      main.style.filter = `blur(5px)`;
+      main.style.overflow = `hidden`;
+    }
   }
 });
 
@@ -1012,13 +1018,29 @@ submenu.addEventListener("mouseleave", () => {
 });
 
 subMenuItems.forEach((item, i) => {
-  item.addEventListener("mouseover", () => {
-    // Reset all mega menu items
-    megaMenuItems.forEach((item) => {
-      item.classList.remove("mega-menu__item--active");
+  item.addEventListener("mouseover", (e) => {
+    e.stopPropagation(); // Prevent event bubbling
+
+    // Get fresh NodeList to ensure we have all current elements
+    const currentMegaMenuItems = document.querySelectorAll(".mega-menu__item");
+
+    // Reset all mega menu items first (including the one set by itemHasChildren hover)
+    currentMegaMenuItems.forEach((megaItem) => {
+      // Force remove the class (works even if class doesn't exist)
+      megaItem.classList.remove("mega-menu__item--active");
+      // Double-check: if still present, remove it again
+      if (megaItem.classList.contains("mega-menu__item--active")) {
+        megaItem.classList.remove("mega-menu__item--active");
+      }
     });
 
-    megaMenuItems[i].classList.add("mega-menu__item--active");
+    // Small delay to ensure removal is processed before adding
+    setTimeout(() => {
+      // Then activate the corresponding mega menu item
+      if (currentMegaMenuItems[i]) {
+        currentMegaMenuItems[i].classList.add("mega-menu__item--active");
+      }
+    }, 0);
   });
 });
 
