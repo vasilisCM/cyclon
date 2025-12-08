@@ -166,7 +166,23 @@
                         </div>
                         <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
                             <div class="headerImage_Wrapper" style="max-width: 100%;">
-                                <img src="<?php echo $tax_right_image; ?>" class="img-fluid" />
+                                <?php if (is_tax('cyclon_new_product_cat')): ?>
+                                    <?php
+                                    $landing_page = get_field('landing_page', $term);
+                                    if ($landing_page) {
+                                        $page_id = url_to_postid($landing_page);
+                                        $header_image = get_field('product_category_landing__right_image', $page_id);
+                                    ?>
+                                        <img src="<?php echo $header_image; ?>" class="img-fluid" />
+                                    <?php
+                                    }
+
+                                    ?>
+
+
+                                <?php else: ?>
+                                    <img src="<?php echo $tax_right_image; ?>" class="img-fluid" />
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
