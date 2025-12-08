@@ -35,13 +35,17 @@
   color: #ae9753;
 }
 
+.tabs__button--evo,
+.tabs__button--eco {
+  background-color: #3b578d;
+}
+
 .tabs__button--pro {
   background-color: #28407a;
   color: #8c9091;
 }
 
 .tabs__button--eco {
-  background-color: #3b578d;
   color: #00ce7c;
 }
 
