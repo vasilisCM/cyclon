@@ -587,7 +587,17 @@ get_header(); ?>
             </div>
         <?php endif; ?>
 
+
     </section>
+
+
 </main>
+
+<?php
+$hasTriboActBanner = get_field('has_tribo_act_section');
+if ($hasTriboActBanner): ?>
+    <?php get_template_part('template-parts/components/tribo-act-banner', 'tpl'); ?>
+<?php endif; ?>
+
 <?php
 get_footer();
