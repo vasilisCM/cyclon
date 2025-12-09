@@ -10149,6 +10149,21 @@ html {
   height: 620px;
   background-size: cover !important;
 }
+
+.taxHeader:after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 620px;
+  inset: 0;
+  background-image: radial-gradient(
+    circle at 75% 35%,
+    #0066cd,
+    transparent 50%
+  );
+  z-index: 0;
+}
+
 @media (max-width: 767px) {
   .taxHeader {
     height: 681px;
@@ -10156,6 +10171,8 @@ html {
 }
 .taxHeader .container {
   height: 100%;
+  position: relative;
+  z-index: 1;
 }
 .taxHeader .row {
   height: 100%;
