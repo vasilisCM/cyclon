@@ -30,6 +30,10 @@
   display: none;
 }
 
+.no-padding {
+  padding: 0;
+}
+
 .absolute {
   position: absolute;
 }
@@ -80,7 +84,7 @@
 }
 
 .text-l {
-  font-size: 30px;
+  font-size: clamp(25px, calc((30 * 100vw) / 1280), 30px);
   line-height: 1.2;
 }
 
@@ -94,7 +98,7 @@
 }
 
 .text-ms {
-  font-size: 18px;
+  font-size: clamp(16px, calc((18 * 100vw) / 1280), 18px);
 }
 
 .text {

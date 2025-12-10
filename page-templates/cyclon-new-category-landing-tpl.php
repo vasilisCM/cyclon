@@ -121,7 +121,7 @@ get_header(); ?>
                             ?>
                                 <div class="<?php echo esc_attr($content_classes); ?> primary" id="tab-<?php echo esc_attr($range_term->slug); ?>">
 
-                                    <div class="text-center boxed-sm centered new-category-landing__dynamic-texts">
+                                    <div class="text-center boxed-sm centered new-category-landing__dynamic-texts no-padding">
                                         <!-- Product Category Description  -->
                                         <div class="text new-category-landing__dynamic-texts__description">
                                             <?php
@@ -171,7 +171,7 @@ get_header(); ?>
                                                         // Retrieve custom fields first
                                                         $range_code = get_field('range_code', get_the_ID());
                                                         $small_text_line = get_field('small_text_line', get_the_ID());
-                                                        $thumbnail_url = get_the_post_thumbnail_url(get_the_ID(), 'medium');
+                                                        $thumbnail_url = get_the_post_thumbnail_url(get_the_ID(), 'large');
                                                     ?>
                                                         <article class="new-category-product-card">
 
