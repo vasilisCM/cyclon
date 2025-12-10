@@ -10150,7 +10150,7 @@ html {
   background-size: cover !important;
 }
 
-.taxHeader:after {
+.page-template-cyclon-new-category-landing-tpl .taxHeader:after {
   content: "";
   position: absolute;
   width: 100%;
