@@ -11,6 +11,8 @@
 .new-category-landing {
   padding-top: 0;
   background: revert;
+  position: relative;
+  z-index: 2;
 }
 
 .new-category-landing__tabs {

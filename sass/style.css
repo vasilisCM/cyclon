@@ -10152,6 +10152,7 @@ html {
 
 .page-template-cyclon-new-category-landing-tpl .taxHeader:after {
   content: "";
+  pointer-events: none;
   position: absolute;
   width: 100%;
   height: 620px;
