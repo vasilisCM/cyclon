@@ -145,7 +145,12 @@
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transform: translateX(0);
   transition: all ease 300ms;
+}
+
+.button-with-arrow:hover::after {
+  transform: translateX(5px);
 }
 
 .tribo-act-banner {
