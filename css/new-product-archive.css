@@ -12,6 +12,69 @@
   font-family: "Ferry-Black", sans-serif;
 }
 
+/* Hero */
+.tax-cyclon_new_product_cat .taxHeader {
+  background-image: url("/wp-content/uploads/2025/12/cat-landing-hero-bg.jpg") !important;
+  height: clamp(270px, calc((500 * 100vw) / 1280), 500px);
+}
+
+.tax-cyclon_new_product_cat .taxHeader .row {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  align-items: center;
+  padding-top: clamp(75px, calc((150 * 100vw) / 1280), 150px);
+}
+
+.tax-cyclon_new_product_cat .taxHeader .row div {
+  width: 100%;
+}
+
+.tax-cyclon_new_product_cat .taxHeader .row h1 {
+  font-size: clamp(30px, calc((40 * 100vw) / 1280), 40px);
+  margin: 20px 0;
+}
+
+.tax-cyclon_new_product_cat .taxHeader .row .headerImage_Wrapper {
+  margin-top: 0;
+  height: clamp(170px, calc((250 * 100vw) / 1280), 250px);
+  text-align: center;
+}
+
+.tax-cyclon_new_product_cat .taxHeader .row .headerImage_Wrapper img {
+  max-height: 100%;
+}
+
+.page-template-cyclon-new-category-landing-tpl .taxHeader:after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  width: 100%;
+  height: 500px;
+  inset: 0;
+  background-image: radial-gradient(
+    circle at 75% 35%,
+    #0066cd,
+    transparent 50%
+  );
+  z-index: 0;
+}
+
+@media only screen and (max-width: 767px) {
+  /* .page-template-cyclon-new-category-landing-tpl .taxHeader {
+    height: clamp(520px, calc((620px * 100) / 767), 620px);
+    padding-top: 110px;
+  } */
+
+  .page-template-cyclon-new-category-landing-tpl .taxHeader:after {
+    height: clamp(500px, calc((500px * 100) / 767), 500px);
+    background-image: radial-gradient(
+      circle at 50% 75%,
+      #0066cd,
+      transparent 50%
+    );
+  }
+}
+
 /* Product Archive  */
 .cyclon_tax_wrapper {
   background: #fff;
