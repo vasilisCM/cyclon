@@ -16,6 +16,7 @@
 .tax-cyclon_new_product_cat .taxHeader {
   background-image: url("/wp-content/uploads/2025/12/cat-landing-hero-bg.jpg") !important;
   height: clamp(270px, calc((500 * 100vw) / 1280), 500px);
+  overflow: hidden;
 }
 
 .tax-cyclon_new_product_cat .taxHeader .row {
@@ -32,6 +33,7 @@
 .tax-cyclon_new_product_cat .taxHeader .row h1 {
   font-size: clamp(30px, calc((40 * 100vw) / 1280), 40px);
   margin: 20px 0;
+  max-width: 100%;
 }
 
 .tax-cyclon_new_product_cat .taxHeader .row .headerImage_Wrapper {
@@ -44,7 +46,7 @@
   max-height: 100%;
 }
 
-.page-template-cyclon-new-category-landing-tpl .taxHeader:after {
+.tax-cyclon_new_product_cat .taxHeader:after {
   content: "";
   pointer-events: none;
   position: absolute;
@@ -60,13 +62,18 @@
 }
 
 @media only screen and (max-width: 767px) {
-  /* .page-template-cyclon-new-category-landing-tpl .taxHeader {
-    height: clamp(520px, calc((620px * 100) / 767), 620px);
-    padding-top: 110px;
-  } */
+  .tax-cyclon_new_product_cat .taxHeader {
+    height: clamp(400px, calc((500 * 100vw) / 767), 500px);
+  }
 
-  .page-template-cyclon-new-category-landing-tpl .taxHeader:after {
-    height: clamp(500px, calc((500px * 100) / 767), 500px);
+  .tax-cyclon_new_product_cat .taxHeader .row {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding-top: 100px;
+  }
+
+  .tax-cyclon_new_product_cat .taxHeader:after {
+    height: clamp(400px, calc((500px * 100) / 767), 500px);
     background-image: radial-gradient(
       circle at 50% 75%,
       #0066cd,
