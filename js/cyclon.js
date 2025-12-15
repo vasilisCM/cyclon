@@ -980,9 +980,15 @@ itemHasChildren.addEventListener("mouseover", (e) => {
   if (!submenu.matches(":hover")) {
     submenu.classList.add("sub-menu--active");
     megaMenu.classList.add("mega-menu--active");
+    console.log("First submenu Item", subMenuItems[0]);
     if (megaMenuItems[0]) {
       megaMenuItems[0].classList.add("mega-menu__item--active");
     }
+
+    if (subMenuItems[0]) {
+      subMenuItems[0].classList.add("sub-menu__item--active");
+    }
+
     if (taxHeader) {
       taxHeader.style.filter = `blur(5px)`;
       taxHeader.style.overflow = `hidden`;
@@ -1020,6 +1026,8 @@ submenu.addEventListener("mouseleave", () => {
 subMenuItems.forEach((item, i) => {
   item.addEventListener("mouseover", (e) => {
     e.stopPropagation(); // Prevent event bubbling
+
+    item.classList.remove("sub-menu__item--active");
 
     // Get fresh NodeList to ensure we have all current elements
     const currentMegaMenuItems = document.querySelectorAll(".mega-menu__item");

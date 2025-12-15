@@ -339,9 +339,8 @@ li:has(.sub-menu) > a:after {
   transform: translateX(-50%) translateY(25px);
 }
 
-li:has(.sub-menu--active) > a:after {
-  opacity: 1;
-}
+
+
 
 .sub-menu {
   position: absolute;
@@ -399,6 +398,14 @@ li:has(.sub-menu--active) > a:after {
   width: calc(100% + 10px);
   z-index: -1;
   transition: 0.3s ease;
+}
+
+.sub-menu__item--active::after {
+  opacity: 1 !important;
+}
+
+.sub-menu__item--active a {
+  color: #001a61 !important;
 }
 
 .sub-menu li:hover::after {
