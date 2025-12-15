@@ -249,7 +249,7 @@
   background-size: cover;
   background-position: center;
   transition: all ease 300ms;
-  z-index: 800;
+  z-index: 500;
 }
 
 .cyclon__Header.solid-header + .mega-menu {
