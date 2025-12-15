@@ -964,23 +964,25 @@ jQuery(document).ready(function ($) {
 });
 
 // Custom Mega Menu Concept Maniax
-const itemHasChildren = document.querySelector(".menu-item-has-children");
-const megaMenuOverlay = document.querySelector(".mega-menu__overlay");
-const megaMenu = document.querySelector(".mega-menu");
-const submenu = document.querySelector(".sub-menu");
+const topLevelItems = document.querySelectorAll(".cyclon__Menu > li"); // Top Level Items
+console.log("Top Level Items", topLevelItems);
+const itemHasChildren = document.querySelector(".menu-item-has-children"); // Products
+const megaMenuOverlay = document.querySelector(".mega-menu__overlay"); // Overlay Blur
+const megaMenu = document.querySelector(".mega-menu"); // Mega Menu Container
+const submenu = document.querySelector(".sub-menu"); // Submenu Wordpress
 
-const subMenuItems = document.querySelectorAll(".sub-menu li");
-const megaMenuItems = document.querySelectorAll(".mega-menu__item");
+const subMenuItems = document.querySelectorAll(".sub-menu li"); // Submenu Items Wordpress list
+const megaMenuItems = document.querySelectorAll(".mega-menu__item"); // Mega Menu Items
 
-const taxHeader = document.querySelector(".taxHeader");
-const main = document.querySelector("main");
+const taxHeader = document.querySelector(".taxHeader"); // Hero
+const main = document.querySelector("main"); // Main <main/>
 
 itemHasChildren.addEventListener("mouseover", (e) => {
   // Only set default if no submenu item is currently hovered
   if (!submenu.matches(":hover")) {
     submenu.classList.add("sub-menu--active");
     megaMenu.classList.add("mega-menu--active");
-    console.log("First submenu Item", subMenuItems[0]);
+
     if (megaMenuItems[0]) {
       megaMenuItems[0].classList.add("mega-menu__item--active");
     }
@@ -1027,7 +1029,9 @@ subMenuItems.forEach((item, i) => {
   item.addEventListener("mouseover", (e) => {
     e.stopPropagation(); // Prevent event bubbling
 
-    item.classList.remove("sub-menu__item--active");
+    subMenuItems.forEach((subItem) => {
+      subItem.classList.remove("sub-menu__item--active");
+    });
 
     // Get fresh NodeList to ensure we have all current elements
     const currentMegaMenuItems = document.querySelectorAll(".mega-menu__item");
@@ -1050,6 +1054,43 @@ subMenuItems.forEach((item, i) => {
       }
     }, 0);
   });
+});
+
+// Hide Menu Logic (exclude the item that has children / opens mega menu)
+topLevelItems.forEach((item) => {
+  if (item !== itemHasChildren) {
+    item.addEventListener("mouseover", () => {
+      submenu.classList.remove("sub-menu--active");
+      megaMenu.classList.remove("mega-menu--active");
+      megaMenuOverlay.classList.remove("mega-menu__overlay--active");
+
+      if (taxHeader) {
+        taxHeader.style.filter = `none`;
+        taxHeader.style.overflow = ``;
+      }
+      if (main) {
+        main.style.filter = `none`;
+        main.style.overflow = ``;
+      }
+    });
+  }
+});
+
+main.addEventListener("mouseover", (e) => {
+  if (!e.target.closest(".cyclon__Menu > li.menu-item-has-children")) {
+    submenu.classList.remove("sub-menu--active");
+    megaMenu.classList.remove("mega-menu--active");
+    megaMenuOverlay.classList.remove("mega-menu__overlay--active");
+
+    if (taxHeader) {
+      taxHeader.style.filter = `none`;
+      taxHeader.style.overflow = ``;
+    }
+    if (main) {
+      main.style.filter = `none`;
+      main.style.overflow = ``;
+    }
+  }
 });
 
 // itemHasChildren.addEventListener("mouseleave", () => {
