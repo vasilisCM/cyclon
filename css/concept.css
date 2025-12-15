@@ -339,6 +339,9 @@ li:has(.sub-menu) > a:after {
   transform: translateX(-50%) translateY(25px);
 }
 
+li:has(.sub-menu--active) > a:after {
+  opacity: 1;
+}
 
 
 
