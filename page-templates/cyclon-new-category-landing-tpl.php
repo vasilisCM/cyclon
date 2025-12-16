@@ -155,7 +155,7 @@ get_header(); ?>
                                     </div>
 
                                     <!-- Products  -->
-                                    <div>
+                                    <div class="boxed centered no-padding">
                                         <?php if ($range_query->have_posts()) : ?>
                                             <?php
                                             // Fetch the color field from the range term
