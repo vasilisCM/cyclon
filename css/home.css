@@ -79,7 +79,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 10px;
-  font-size: 20px;
+  font-size: clamp(14px, calc((16 * 100vw) / 1380), 16px);
   text-transform: none;
   font-weight: 700;
   color: #001a61;
