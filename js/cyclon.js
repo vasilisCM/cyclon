@@ -965,7 +965,6 @@ jQuery(document).ready(function ($) {
 
 // Custom Mega Menu Concept Maniax
 const topLevelItems = document.querySelectorAll(".cyclon__Menu > li"); // Top Level Items
-console.log("Top Level Items", topLevelItems);
 const itemHasChildren = document.querySelector(".menu-item-has-children"); // Products
 const megaMenuOverlay = document.querySelector(".mega-menu__overlay"); // Overlay Blur
 const megaMenu = document.querySelector(".mega-menu"); // Mega Menu Container
@@ -1098,6 +1097,29 @@ main.addEventListener("mouseover", (e) => {
 //   submenu.style.opacity = "0";
 //   submenu.style.transform = "translateY(50px)";
 // });
+
+// Legacy Categories Tray
+const legacyCategoriesToggle = document.querySelector(
+  ".legacy-categories-tray__toggle"
+);
+const legacyCategoriesClose = document.querySelector(
+  ".legacy-categories-tray__close"
+);
+const legacyCategoriesContent = document.querySelector(
+  ".legacy-categories-tray__content"
+);
+
+legacyCategoriesToggle.addEventListener("click", () => {
+  legacyCategoriesContent.classList.toggle(
+    "legacy-categories-tray__content--active"
+  );
+});
+
+legacyCategoriesClose.addEventListener("click", () => {
+  legacyCategoriesContent.classList.remove(
+    "legacy-categories-tray__content--active"
+  );
+});
 
 // Product Category Tabs
 class Tabs {

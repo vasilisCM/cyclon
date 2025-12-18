@@ -108,8 +108,12 @@
             </div>
         </header>
 
+        <!-- Mega Menu  -->
         <?php include 'template-parts/header/mega-menu.php'; ?>
         <div class="mega-menu__overlay"></div>
+
+        <!-- Legacy Categories Tray  -->
+        <?php include 'template-parts/header/legacy-categories-tray.php'; ?>
 
 
 
