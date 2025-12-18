@@ -1,7 +1,10 @@
 <div class="legacy-categories-tray fixed">
     <div class="legacy-categories-tray__content">
         <div class="legacy-categories-tray__toggle">
-            <div class="legacy-categories-tray__title"><?php echo get_field('categories_tray_toggle', 'option'); ?></div>
+            <span>⛽</span>
+            <span class="text-s bold legacy-categories-tray__title"><?php echo get_field('categories_tray_toggle', 'option'); ?></span>
+            <span>🍔</span>
+
         </div>
 
         <div class="legacy-categories-tray__close hidden-desktop">
@@ -19,12 +22,12 @@
                                 <img src="<?php the_sub_field('image'); ?>" class="catBoxImage" />
                             </a>
                         </div>
-                        <div>
+                        <div class="legacy-categories-tray__category-text-container">
                             <a href="<?php the_sub_field('link'); ?>">
-                                <h2><?php the_sub_field('heading'); ?></h2>
+                                <div class="text bold"><?php the_sub_field('heading'); ?></div>
                             </a>
+                            <div class="text-s"><?php the_sub_field('subheading'); ?></div>
                         </div>
-                        <h4><?php the_sub_field('subheading'); ?></h4>
                     </div>
                 <?php endwhile; ?>
             <?php endif; ?>
