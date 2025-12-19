@@ -7,12 +7,12 @@
 
         </div>
 
-        <div class="legacy-categories-tray__close hidden-desktop">
-            &times;
-        </div>
+
 
         <div class="legacy-categories-tray__categories">
-
+            <div class="legacy-categories-tray__close hidden-desktop">
+                &times;
+            </div>
 
             <?php if (have_rows('categories_tray_list', 'option')): ?>
                 <?php while (have_rows('categories_tray_list', 'option')): the_row(); ?>
