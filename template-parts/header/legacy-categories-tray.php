@@ -16,19 +16,17 @@
 
             <?php if (have_rows('categories_tray_list', 'option')): ?>
                 <?php while (have_rows('categories_tray_list', 'option')): the_row(); ?>
-                    <div class="catBox legacy-categories-tray__category">
-                        <div class="catBox__Inner">
-                            <a href="<?php the_sub_field('link'); ?>">
-                                <img src="<?php the_sub_field('image'); ?>" class="catBoxImage" />
-                            </a>
-                        </div>
-                        <div class="legacy-categories-tray__category-text-container">
-                            <a href="<?php the_sub_field('link'); ?>">
+                    <a href="<?php the_sub_field('link'); ?>">
+                        <div class="legacy-categories-tray__category">
+                            <div class="legacy-categories-tray__category-img-container">
+                                <img src="<?php the_sub_field('image'); ?>" class="" />
+                            </div>
+                            <div class="legacy-categories-tray__category-text-container">
                                 <div class="text bold"><?php the_sub_field('heading'); ?></div>
-                            </a>
-                            <div class="text-s"><?php the_sub_field('subheading'); ?></div>
+                                <div class="text-s"><?php the_sub_field('subheading'); ?></div>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 <?php endwhile; ?>
             <?php endif; ?>
 
