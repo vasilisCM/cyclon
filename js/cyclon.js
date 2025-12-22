@@ -1121,6 +1121,49 @@ legacyCategoriesClose.addEventListener("click", () => {
   );
 });
 
+// Auto-open tray once per session to indicate its presence
+(function autoOpenLegacyCategoriesTray() {
+  // Check if already shown in this session
+  if (sessionStorage.getItem("legacyCategoriesTrayShown") === "true") {
+    return;
+  }
+
+  // Function to show and hide the tray
+  function showTrayBriefly() {
+    if (!legacyCategoriesContent) return;
+
+    // Open the tray
+    legacyCategoriesContent.classList.add(
+      "legacy-categories-tray__content--active"
+    );
+
+    // Close after 2 seconds
+    setTimeout(() => {
+      if (legacyCategoriesContent) {
+        legacyCategoriesContent.classList.remove(
+          "legacy-categories-tray__content--active"
+        );
+      }
+      // Mark as shown in session storage
+      sessionStorage.setItem("legacyCategoriesTrayShown", "true");
+    }, 2000);
+  }
+
+  // Try to show immediately if DOM is ready
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", showTrayBriefly);
+  } else {
+    showTrayBriefly();
+  }
+
+  // Fallback timeout in case DOM takes longer to load (e.g., 3 seconds max wait)
+  setTimeout(() => {
+    if (sessionStorage.getItem("legacyCategoriesTrayShown") !== "true") {
+      showTrayBriefly();
+    }
+  }, 3000);
+})();
+
 // Product Category Tabs
 class Tabs {
   constructor(
