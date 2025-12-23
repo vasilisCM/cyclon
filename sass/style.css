@@ -8254,7 +8254,7 @@ textarea {
 .cyclon__Menu li a:hover {
   color: #ffda00;
 }
-.cyclon__Menu li.current-menu-item a {
+.cyclon__Menu > li.current-menu-item a {
   background: #ffda00;
   color: #001a61;
 }
