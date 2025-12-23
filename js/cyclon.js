@@ -975,6 +975,21 @@ const megaMenuItems = document.querySelectorAll(".mega-menu__item"); // Mega Men
 
 const taxHeader = document.querySelector(".taxHeader"); // Hero
 const main = document.querySelector("main"); // Main <main/>
+const footer = document.querySelector(".site-footer"); // Footer
+const lubeFinder = document.querySelector(".lubeFinder"); // Lube Finder
+const newsletter = document.querySelector(".cyclonNewsletter"); // Newsletter
+const belowFooter = document.querySelector(".belowFooter"); // Below Footer
+const copyright = document.querySelector(".site-copyright"); // Copyright
+
+const footerElements = [
+  taxHeader,
+  main,
+  footer,
+  lubeFinder,
+  newsletter,
+  belowFooter,
+  copyright,
+];
 
 itemHasChildren.addEventListener("mouseover", (e) => {
   // Only set default if no submenu item is currently hovered
@@ -998,6 +1013,10 @@ itemHasChildren.addEventListener("mouseover", (e) => {
       main.style.filter = `blur(5px)`;
       main.style.overflow = `hidden`;
     }
+    footerElements.forEach((element) => {
+      element.style.filter = `blur(5px)`;
+      element.style.overflow = `hidden`;
+    });
   }
 });
 
@@ -1022,6 +1041,10 @@ submenu.addEventListener("mouseleave", () => {
     main.style.filter = `none`;
     main.style.overflow = ``;
   }
+  footerElements.forEach((element) => {
+    element.style.filter = `none`;
+    element.style.overflow = ``;
+  });
 });
 
 subMenuItems.forEach((item, i) => {
@@ -1071,6 +1094,10 @@ topLevelItems.forEach((item) => {
         main.style.filter = `none`;
         main.style.overflow = ``;
       }
+      footerElements.forEach((element) => {
+        element.style.filter = `none`;
+        element.style.overflow = ``;
+      });
     });
   }
 });
@@ -1089,6 +1116,10 @@ main.addEventListener("mouseover", (e) => {
       main.style.filter = `none`;
       main.style.overflow = ``;
     }
+    footerElements.forEach((element) => {
+      element.style.filter = `none`;
+      element.style.overflow = ``;
+    });
   }
 });
 
