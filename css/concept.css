@@ -212,11 +212,11 @@
 .tribo-act-banner__feature-image {
   top: 50%;
   right: 50%;
-  transform: translateX(100%) translateY(-42%);
+  transform: translateX(100%) translateY(-52%);
 }
 
 .tribo-act-banner__feature-image img {
-  max-height: clamp(70px, calc((100 * 100vw) / 1280), 100px);
+  max-height: clamp(80px, calc((100 * 100vw) / 1280), 100px);
 }
 
 .tribo-act-banner__feature-text {
