@@ -493,6 +493,10 @@ li:has(.sub-menu--active) > a:after {
   cursor: pointer;
 }
 
+.legacy-categories-tray__icon {
+  transform: rotate(90deg);
+}
+
 .legacy-categories-tray__content {
   position: relative;
   width: fit-content;
@@ -522,7 +526,7 @@ li:has(.sub-menu--active) > a:after {
   grid-template-columns: 5fr 8fr;
   max-width: 280px;
   min-height: revert;
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.9);
 }
 
 .legacy-categories-tray__category-img-container {

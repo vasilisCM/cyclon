@@ -1,9 +1,9 @@
 <div class="legacy-categories-tray fixed">
     <div class="legacy-categories-tray__content">
         <div class="legacy-categories-tray__toggle">
-            <span>⛽</span>
+            <span class="legacy-categories-tray__icon">⛽</span>
             <span class="text-s bold legacy-categories-tray__title"><?php echo get_field('categories_tray_toggle', 'option'); ?></span>
-            <span>🍔</span>
+            <span class="legacy-categories-tray__icon">🍔</span>
 
         </div>
 

@@ -138,6 +138,7 @@ textarea {
 [type="radio"] {
   box-sizing: border-box;
   padding: 0;
+  accent-color: #001a61;
 }
 [type="number"]::-webkit-inner-spin-button,
 [type="number"]::-webkit-outer-spin-button {
