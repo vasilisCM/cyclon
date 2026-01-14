@@ -175,6 +175,7 @@ get_header(); ?>
                     'taxonomy' => 'cyclon_new_product_cat',
                     'hide_empty' => false,
                     'number' => 0, // Get all terms, no limit
+                    'parent' => 0, // Only get parent categories (no child terms)
                 ));
 
                 // Sort terms by the custom order array
