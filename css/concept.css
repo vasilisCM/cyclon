@@ -474,18 +474,19 @@ li:has(.sub-menu--active) > a:after {
 
 .legacy-categories-tray__toggle {
   display: flex;
-  gap: 4px;
+  gap: 8px;
   align-items: center;
   position: absolute;
   top: 0;
   left: 0;
   margin-top: 50%;
-  transform: translateX(-120%) rotate(-90deg);
+  transform: translateX(-118%) rotate(-90deg);
   transform-origin: 100% 0%;
   padding: 10px 20px;
   cursor: pointer;
   background-color: #ffda00;
   border-radius: 12px 12px 0 0 ;
+  width: max-content;
 }
 
 .legacy-categories-tray__close {
@@ -507,7 +508,11 @@ li:has(.sub-menu--active) > a:after {
   transform: translateX(100%);
   transition: all ease 300ms;
 
-  }
+}
+ 
+.legacy-categories-tray__title {
+  margin-left: 12px;
+}
 
 .legacy-categories-tray__content--active {
   transform: translateX(0%);
