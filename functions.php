@@ -313,6 +313,11 @@ function cyclon_theme_scripts()
         wp_enqueue_style('new-product-landing', get_stylesheet_directory_uri() . '/css/new-product-landing.css', array(), time(), 'all');
     }
 
+    // New Product Single
+    if (is_singular('cyclon_new_product')) {
+        wp_enqueue_style('new-product-single', get_stylesheet_directory_uri() . '/css/single-product-new.css', array(), time(), 'all');
+    }
+
     wp_enqueue_script('gsap', get_template_directory_uri() . '/js/lib/gsap.min.js', array(), false, true);
     wp_enqueue_script('ScrollTrigger', get_template_directory_uri() . '/js/lib/ScrollTrigger.min.js', array(), false, true);
 

@@ -89,6 +89,10 @@
   font-family: "AeonikPro", sans-serif;
 }
 
+.text-2xl {
+  font-size: clamp(46px, calc((46 * 100vw) / 1280), 46px);
+}
+
 .text-xl {
   font-size: clamp(30px, calc((39 * 100vw) / 1280), 39px);
 }
