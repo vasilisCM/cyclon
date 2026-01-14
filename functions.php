@@ -417,7 +417,7 @@ function get_mapping_info()
     $cat = [];
     $oil_category_links = $specific_row['oil_category_product'];
     foreach ($oil_category_links as $oil_category_link) {
-        $term = get_term($oil_category_link, 'cyclon_product_cat');
+        $term = get_term($oil_category_link, 'cyclon_new_product_cat');
         $link = get_term_link($term);
         array_push($cat, $term->name);
         array_push($cat, $link);
