@@ -509,18 +509,25 @@ function getUrlParams() {
   return filters;
 }
 
-function updateUrlFromCheckboxes() {
+function updateUrlFromFilters() {
   const filters = {};
   const taxonomies = cyclonFilters?.taxonomies || [];
 
-  // Collect checked values for each taxonomy
+  // Collect values from both checkboxes and dropdowns
   taxonomies.forEach((taxonomy) => {
-    const checked = Array.from(
-      document.querySelectorAll(`input[name="filters[${taxonomy}][]"]:checked`)
-    ).map((cb) => cb.value);
-
-    if (checked.length > 0) {
-      filters[taxonomy] = checked.join(",");
+    // Check for checkboxes first
+    const checkboxes = document.querySelectorAll(`input[name="filters[${taxonomy}][]"]:checked`);
+    if (checkboxes.length > 0) {
+      const checked = Array.from(checkboxes).map((cb) => cb.value);
+      if (checked.length > 0) {
+        filters[taxonomy] = checked.join(",");
+      }
+    } else {
+      // Check for dropdown (select)
+      const dropdown = document.querySelector(`select[name="filters[${taxonomy}][]"]`);
+      if (dropdown && dropdown.value && dropdown.value !== "") {
+        filters[taxonomy] = dropdown.value;
+      }
     }
   });
 
@@ -550,11 +557,12 @@ function updateUrlFromCheckboxes() {
   applyFiltersFromUrl();
 }
 
-function syncCheckboxesFromUrl() {
+function syncFiltersFromUrl() {
   const urlFilters = getUrlParams();
   const taxonomies = cyclonFilters?.taxonomies || [];
 
   taxonomies.forEach((taxonomy) => {
+    // Sync checkboxes
     const checkboxes = document.querySelectorAll(
       `input[name="filters[${taxonomy}][]"]`
     );
@@ -563,6 +571,14 @@ function syncCheckboxesFromUrl() {
     checkboxes.forEach((checkbox) => {
       checkbox.checked = urlValues.includes(checkbox.value);
     });
+
+    // Sync dropdowns
+    const dropdown = document.querySelector(`select[name="filters[${taxonomy}][]"]`);
+    if (dropdown && urlValues.length > 0) {
+      dropdown.value = urlValues[0]; // Dropdowns only support single selection
+    } else if (dropdown) {
+      dropdown.selectedIndex = 0; // Reset to first option
+    }
   });
 
   // Update selected filters display
@@ -600,7 +616,9 @@ function updateSelectedFiltersDisplay() {
     const urlValues = urlFilters[taxonomy] || [];
 
     urlValues.forEach((termSlug) => {
-      // Find the checkbox and its label to get the term name
+      let termName = termSlug;
+
+      // Try to find the checkbox and its label first
       const checkbox = document.querySelector(
         `input[name="filters[${taxonomy}][]"][value="${termSlug}"]`
       );
@@ -609,35 +627,43 @@ function updateSelectedFiltersDisplay() {
         const label = checkbox
           .closest(".product-filters__option")
           ?.querySelector("label");
-        const termName = label ? label.textContent.trim() : termSlug;
-        const taxonomyLabel = taxonomyLabels[taxonomy] || taxonomy;
-
-        const filterItem = document.createElement("div");
-        filterItem.className = "selected-filters__item";
-
-        // const taxonomySpan = document.createElement("span");
-        // taxonomySpan.className = "selected-filters__taxonomy";
-        // taxonomySpan.textContent = taxonomyLabel + ":";
-
-        const termSpan = document.createElement("span");
-        termSpan.className = "selected-filters__term";
-        termSpan.textContent = termName;
-
-        const removeBtn = document.createElement("div");
-        removeBtn.type = "button";
-        removeBtn.className = "selected-filters__remove";
-        removeBtn.setAttribute("data-taxonomy", taxonomy);
-        removeBtn.setAttribute("data-term", termSlug);
-        removeBtn.setAttribute("aria-label", "Remove filter");
-        removeBtn.textContent = "×";
-
-        // filterItem.appendChild(taxonomySpan);
-        filterItem.appendChild(termSpan);
-        filterItem.appendChild(removeBtn);
-
-        selectedFiltersList.appendChild(filterItem);
-        hasActiveFilters = true;
+        termName = label ? label.textContent.trim() : termSlug;
+      } else {
+        // If not a checkbox, check for dropdown option
+        const dropdown = document.querySelector(`select[name="filters[${taxonomy}][]"]`);
+        if (dropdown) {
+          const option = dropdown.querySelector(`option[value="${termSlug}"]`);
+          termName = option ? option.textContent.trim() : termSlug;
+        }
       }
+
+      const taxonomyLabel = taxonomyLabels[taxonomy] || taxonomy;
+
+      const filterItem = document.createElement("div");
+      filterItem.className = "selected-filters__item";
+
+      // const taxonomySpan = document.createElement("span");
+      // taxonomySpan.className = "selected-filters__taxonomy";
+      // taxonomySpan.textContent = taxonomyLabel + ":";
+
+      const termSpan = document.createElement("span");
+      termSpan.className = "selected-filters__term";
+      termSpan.textContent = termName;
+
+      const removeBtn = document.createElement("div");
+      removeBtn.type = "button";
+      removeBtn.className = "selected-filters__remove";
+      removeBtn.setAttribute("data-taxonomy", taxonomy);
+      removeBtn.setAttribute("data-term", termSlug);
+      removeBtn.setAttribute("aria-label", "Remove filter");
+      removeBtn.textContent = "×";
+
+      // filterItem.appendChild(taxonomySpan);
+      filterItem.appendChild(termSpan);
+      filterItem.appendChild(removeBtn);
+
+      selectedFiltersList.appendChild(filterItem);
+      hasActiveFilters = true;
     });
   });
 
@@ -648,18 +674,25 @@ function updateSelectedFiltersDisplay() {
 function clearAllFilters() {
   const taxonomies = cyclonFilters?.taxonomies || [];
 
-  // Uncheck all filter checkboxes
+  // Clear all filter checkboxes and dropdowns
   taxonomies.forEach((taxonomy) => {
+    // Uncheck checkboxes
     const checkboxes = document.querySelectorAll(
       `input[name="filters[${taxonomy}][]"]:checked`
     );
     checkboxes.forEach((checkbox) => {
       checkbox.checked = false;
     });
+
+    // Reset dropdowns
+    const dropdown = document.querySelector(`select[name="filters[${taxonomy}][]"]`);
+    if (dropdown) {
+      dropdown.selectedIndex = 0;
+    }
   });
 
   // Update URL (which will trigger filter update)
-  updateUrlFromCheckboxes();
+  updateUrlFromFilters();
 }
 
 function removeFilter(taxonomy, termSlug) {
@@ -670,9 +703,16 @@ function removeFilter(taxonomy, termSlug) {
 
   if (checkbox) {
     checkbox.checked = false;
-    // Update URL (which will trigger filter update)
-    updateUrlFromCheckboxes();
+  } else {
+    // If not a checkbox, check for dropdown
+    const dropdown = document.querySelector(`select[name="filters[${taxonomy}][]"]`);
+    if (dropdown && dropdown.value === termSlug) {
+      dropdown.selectedIndex = 0; // Reset to first option
+    }
   }
+
+  // Update URL (which will trigger filter update)
+  updateUrlFromFilters();
 }
 
 // Function Call
@@ -721,16 +761,23 @@ function applyFiltersFromUrl() {
   filterProducts(options);
 }
 
-// Initialize: Set up checkbox listeners and URL sync
+// Initialize: Set up checkbox and dropdown listeners and URL sync
 document.addEventListener("DOMContentLoaded", () => {
-  // Sync checkboxes (UI) from URL on page load
-  syncCheckboxesFromUrl();
+  // Sync filters (checkboxes and dropdowns) from URL on page load
+  syncFiltersFromUrl();
 
   // Listen for checkbox changes to modify the URL
   document
     .querySelectorAll('input[type="checkbox"][name^="filters["]')
     .forEach((checkbox) => {
-      checkbox.addEventListener("change", updateUrlFromCheckboxes);
+      checkbox.addEventListener("change", updateUrlFromFilters);
+    });
+
+  // Listen for dropdown changes to modify the URL
+  document
+    .querySelectorAll('select[name^="filters["]')
+    .forEach((dropdown) => {
+      dropdown.addEventListener("change", updateUrlFromFilters);
     });
 
   // Clear all filters button
@@ -754,7 +801,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("popstate", () => {
     archiveBasePath = getArchiveBasePath();
     currentArchivePage = getCurrentArchivePage();
-    syncCheckboxesFromUrl();
+    syncFiltersFromUrl();
     applyFiltersFromUrl();
     initPinElements();
     ScrollTrigger.refresh();

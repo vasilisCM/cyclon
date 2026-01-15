@@ -102,6 +102,7 @@ get_header(); ?>
                                     <select
                                         name="filters[<?php echo esc_attr($taxonomy->name); ?>][]"
                                         class="product-filters__dropdown text-s">
+                                        <option value="">All</option>
                                         <?php foreach ($terms as $term): ?>
                                             <option value="<?php echo esc_attr($term->slug); ?>">
                                                 <?php echo esc_html($term->name); ?>
