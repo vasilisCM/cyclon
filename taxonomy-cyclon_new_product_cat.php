@@ -20,8 +20,8 @@ get_header(); ?>
                 'cyclon_range',
                 'cyclon_product_grade',
                 'cyclon_product_type',
-                'cyclon_new_product_acea',
-                'cyclon_new_product_oem',
+              
+                'cyclon_specifications',
                 'cyclon_new_product_cat', // Subcategories as Applications
             );
             $cyclon_taxonomies = array_map('get_taxonomy', $allowed_taxonomies);
@@ -73,7 +73,7 @@ get_header(); ?>
                             }
                         ?>
                             <?php
-                            $is_dropdown = ($taxonomy->name === 'cyclon_new_product_acea' || $taxonomy->name === 'cyclon_new_product_oem');
+                            $is_dropdown = ($taxonomy->name === 'cyclon_new_product_acea' || $taxonomy->name === 'cyclon_new_product_oem' || $taxonomy->name === 'cyclon_specifications');
 
                             // Open wrapper before first dropdown
                             if ($is_dropdown && !$dropdown_wrapper_opened) {
@@ -98,11 +98,10 @@ get_header(); ?>
                                 <?php } ?>
 
                                 <?php if ($is_dropdown): ?>
-                                    <!-- Dropdown for ACEA and OEM -->
+                                    <!-- Dropdown for ACEA, OEM, and Specifications -->
                                     <select
                                         name="filters[<?php echo esc_attr($taxonomy->name); ?>][]"
                                         class="product-filters__dropdown text-s">
-                                        <option value="" disabled selected><?php echo esc_html($taxonomy->labels->singular_name ?? $taxonomy->label); ?></option>
                                         <?php foreach ($terms as $term): ?>
                                             <option value="<?php echo esc_attr($term->slug); ?>">
                                                 <?php echo esc_html($term->name); ?>

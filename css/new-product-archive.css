@@ -128,6 +128,7 @@
 
 .taxonomy-cyclon_range .product-filters__option label {
   font-size: 16px;
+  cursor: pointer;
 }
 
 .taxonomy-cyclon_range .product-filters__option.eco label {

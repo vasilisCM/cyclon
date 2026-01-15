@@ -352,6 +352,7 @@ function cyclon_theme_scripts()
                 'cyclon_product_type',
                 'cyclon_new_product_acea',
                 'cyclon_new_product_oem',
+                'cyclon_specifications',
                 'cyclon_new_product_cat', // Subcategories as Applications
             )
         ));
