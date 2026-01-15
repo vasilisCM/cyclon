@@ -21,6 +21,71 @@ function cyclon_limit_product_archive_posts($query)
 
 add_action('pre_get_posts', 'cyclon_limit_product_archive_posts');
 
+// Improve search to use OR logic instead of AND (more user-friendly)
+function cyclon_search_or_logic($search, $query)
+{
+    global $wpdb;
+
+    if (!$query->is_search() || is_admin()) {
+        return $search;
+    }
+
+    // Get search terms
+    $search_terms = $query->get('search_terms');
+    if (empty($search_terms)) {
+        return $search;
+    }
+
+    // Build OR search query
+    $search = '';
+    $searchand = '';
+    
+    foreach ($search_terms as $term) {
+        $term = $wpdb->esc_like($term);
+        $term = '%' . $term . '%';
+        $search .= "{$searchand}(({$wpdb->posts}.post_title LIKE '{$term}') OR ({$wpdb->posts}.post_content LIKE '{$term}'))";
+        $searchand = ' OR ';
+    }
+
+    if (!empty($search)) {
+        $search = " AND ({$search}) ";
+    }
+
+    return $search;
+}
+
+add_filter('posts_search', 'cyclon_search_or_logic', 500, 2);
+
+// Order search results by relevance (most matching words first)
+function cyclon_search_orderby_relevance($orderby, $query)
+{
+    global $wpdb;
+
+    if (!$query->is_search() || is_admin()) {
+        return $orderby;
+    }
+
+    $search_terms = $query->get('search_terms');
+    if (empty($search_terms)) {
+        return $orderby;
+    }
+
+    // Calculate relevance score
+    $relevance = '';
+    foreach ($search_terms as $term) {
+        $term = $wpdb->esc_like($term);
+        $term = '%' . $term . '%';
+        $relevance .= "+ (CASE WHEN {$wpdb->posts}.post_title LIKE '{$term}' THEN 2 ELSE 0 END)";
+        $relevance .= "+ (CASE WHEN {$wpdb->posts}.post_content LIKE '{$term}' THEN 1 ELSE 0 END)";
+    }
+
+    $orderby = "({$relevance}) DESC, {$wpdb->posts}.post_date DESC";
+
+    return $orderby;
+}
+
+add_filter('posts_orderby', 'cyclon_search_orderby_relevance', 500, 2);
+
 /**
  * Sets up theme defaults and registers support for various WordPress features.
  *
