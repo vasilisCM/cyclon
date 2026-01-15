@@ -964,22 +964,22 @@ jQuery(document).ready(function ($) {
 });
 
 // Custom Mega Menu Concept Maniax
-const topLevelItems = document.querySelectorAll(".cyclon__Menu > li"); // Top Level Items
-const itemHasChildren = document.querySelector(".menu-item-has-children"); // Products
-const megaMenuOverlay = document.querySelector(".mega-menu__overlay"); // Overlay Blur
-const megaMenu = document.querySelector(".mega-menu"); // Mega Menu Container
-const submenu = document.querySelector(".sub-menu"); // Submenu Wordpress
+const topLevelItems = document.querySelectorAll(".cyclon__Menu > li");
+const itemHasChildren = document.querySelector(".menu-item-has-children");
+const megaMenuOverlay = document.querySelector(".mega-menu__overlay");
+const megaMenu = document.querySelector(".mega-menu");
+const submenu = document.querySelector(".sub-menu");
 
-const subMenuItems = document.querySelectorAll(".sub-menu li"); // Submenu Items Wordpress list
-const megaMenuItems = document.querySelectorAll(".mega-menu__item"); // Mega Menu Items
+const subMenuItems = document.querySelectorAll(".sub-menu li");
+const megaMenuItems = document.querySelectorAll(".mega-menu__item");
 
-const taxHeader = document.querySelector(".taxHeader"); // Hero
-const main = document.querySelector("main"); // Main <main/>
-const footer = document.querySelector(".site-footer"); // Footer
-const lubeFinder = document.querySelector(".lubeFinder"); // Lube Finder
-const newsletter = document.querySelector(".cyclonNewsletter"); // Newsletter
-const belowFooter = document.querySelector(".belowFooter"); // Below Footer
-const copyright = document.querySelector(".site-copyright"); // Copyright
+const taxHeader = document.querySelector(".taxHeader");
+const main = document.querySelector("main");
+const footer = document.querySelector(".site-footer");
+const lubeFinder = document.querySelector(".lubeFinder");
+const newsletter = document.querySelector(".cyclonNewsletter");
+const belowFooter = document.querySelector(".belowFooter");
+const copyright = document.querySelector(".site-copyright");
 
 const footerElements = [
   taxHeader,
@@ -989,139 +989,147 @@ const footerElements = [
   newsletter,
   belowFooter,
   copyright,
-];
+].filter(Boolean); // Remove null elements
 
-itemHasChildren.addEventListener("mouseover", (e) => {
-  // Only set default if no submenu item is currently hovered
-  if (!submenu.matches(":hover")) {
-    submenu.classList.add("sub-menu--active");
-    megaMenu.classList.add("mega-menu--active");
-
-    if (megaMenuItems[0]) {
-      megaMenuItems[0].classList.add("mega-menu__item--active");
-    }
-
-    if (subMenuItems[0]) {
-      subMenuItems[0].classList.add("sub-menu__item--active");
-    }
-
-    if (taxHeader) {
-      taxHeader.style.filter = `blur(5px)`;
-      taxHeader.style.overflow = `hidden`;
-    }
-    if (main) {
-      main.style.filter = `blur(5px)`;
-      main.style.overflow = `hidden`;
-    }
-    footerElements.forEach((element) => {
-      element.style.filter = `blur(5px)`;
-      element.style.overflow = `hidden`;
-    });
+// Helper functions to reduce duplication
+function applyBlurToBackground() {
+  if (taxHeader) {
+    taxHeader.style.filter = "blur(5px)";
+    taxHeader.style.overflow = "hidden";
   }
-});
+  if (main) {
+    main.style.filter = "blur(5px)";
+    main.style.overflow = "hidden";
+  }
+  footerElements.forEach((element) => {
+    if (element) {
+      element.style.filter = "blur(5px)";
+      element.style.overflow = "hidden";
+      element.style.pointerEvents = "none";
+    }
+  });
+}
 
-// submenu.addEventListener("mouseover", () => {
-//   megaMenu.classList.add("mega-menu--active");
-//   megaMenuOverlay.classList.add("mega-menu__overlay--active");
-// });
+function removeBlurFromBackground() {
+  if (taxHeader) {
+    taxHeader.style.filter = "none";
+    taxHeader.style.overflow = "";
+  }
+  if (main) {
+    main.style.filter = "none";
+    main.style.overflow = "";
+  }
+  footerElements.forEach((element) => {
+    if (element) {
+      element.style.filter = "none";
+      element.style.overflow = "";
+      element.style.pointerEvents = "";
+    }
+  });
+}
 
-submenu.addEventListener("mouseleave", () => {
-  megaMenu.classList.remove("mega-menu--active");
-  megaMenuOverlay.classList.remove("mega-menu__overlay--active");
+function showMegaMenu() {
+  if (!submenu || !megaMenu) return;
+  
+  submenu.classList.add("sub-menu--active");
+  megaMenu.classList.add("mega-menu--active");
+  
+  // Enable pointer events for menu
+  submenu.style.pointerEvents = "auto";
+  megaMenu.style.pointerEvents = "auto";
+  
+  if (megaMenuOverlay) {
+    megaMenuOverlay.classList.add("mega-menu__overlay--active");
+  }
+
+  // Set first items as active by default
+  if (megaMenuItems[0]) {
+    megaMenuItems[0].classList.add("mega-menu__item--active");
+  }
+  if (subMenuItems[0]) {
+    subMenuItems[0].classList.add("sub-menu__item--active");
+  }
+
+  applyBlurToBackground();
+}
+
+function hideMegaMenu() {
+  if (!submenu || !megaMenu) return;
+  
   submenu.classList.remove("sub-menu--active");
+  megaMenu.classList.remove("mega-menu--active");
+  
+  // Disable pointer events when hidden - fixes the blocking issue
+  submenu.style.pointerEvents = "none";
+  megaMenu.style.pointerEvents = "none";
+  
+  if (megaMenuOverlay) {
+    megaMenuOverlay.classList.remove("mega-menu__overlay--active");
+  }
 
+  // Clear all active states
   megaMenuItems.forEach((item) => {
     item.classList.remove("mega-menu__item--active");
   });
-  if (taxHeader) {
-    taxHeader.style.filter = `none`;
-    taxHeader.style.overflow = ``;
-  }
-  if (main) {
-    main.style.filter = `none`;
-    main.style.overflow = ``;
-  }
-  footerElements.forEach((element) => {
-    element.style.filter = `none`;
-    element.style.overflow = ``;
+  subMenuItems.forEach((item) => {
+    item.classList.remove("sub-menu__item--active");
   });
-});
 
-subMenuItems.forEach((item, i) => {
-  item.addEventListener("mouseover", (e) => {
-    e.stopPropagation(); // Prevent event bubbling
+  removeBlurFromBackground();
+}
 
-    subMenuItems.forEach((subItem) => {
-      subItem.classList.remove("sub-menu__item--active");
-    });
-
-    // Get fresh NodeList to ensure we have all current elements
-    const currentMegaMenuItems = document.querySelectorAll(".mega-menu__item");
-
-    // Reset all mega menu items first (including the one set by itemHasChildren hover)
-    currentMegaMenuItems.forEach((megaItem) => {
-      // Force remove the class (works even if class doesn't exist)
-      megaItem.classList.remove("mega-menu__item--active");
-      // Double-check: if still present, remove it again
-      if (megaItem.classList.contains("mega-menu__item--active")) {
-        megaItem.classList.remove("mega-menu__item--active");
-      }
-    });
-
-    // Small delay to ensure removal is processed before adding
-    setTimeout(() => {
-      // Then activate the corresponding mega menu item
-      if (currentMegaMenuItems[i]) {
-        currentMegaMenuItems[i].classList.add("mega-menu__item--active");
-      }
-    }, 0);
+// Only attach event listeners if required elements exist
+if (itemHasChildren && submenu && megaMenu && main) {
+  itemHasChildren.addEventListener("mouseover", (e) => {
+    // Only set default if no submenu item is currently hovered
+    if (!submenu.matches(":hover")) {
+      showMegaMenu();
+    }
   });
-});
 
-// Hide Menu Logic (exclude the item that has children / opens mega menu)
-topLevelItems.forEach((item) => {
-  if (item !== itemHasChildren) {
-    item.addEventListener("mouseover", () => {
-      submenu.classList.remove("sub-menu--active");
-      megaMenu.classList.remove("mega-menu--active");
-      megaMenuOverlay.classList.remove("mega-menu__overlay--active");
+  submenu.addEventListener("mouseleave", () => {
+    hideMegaMenu();
+  });
 
-      if (taxHeader) {
-        taxHeader.style.filter = `none`;
-        taxHeader.style.overflow = ``;
-      }
-      if (main) {
-        main.style.filter = `none`;
-        main.style.overflow = ``;
-      }
-      footerElements.forEach((element) => {
-        element.style.filter = `none`;
-        element.style.overflow = ``;
+  subMenuItems.forEach((item, i) => {
+    item.addEventListener("mouseover", (e) => {
+      e.stopPropagation();
+
+      // Remove active class from all submenu items
+      subMenuItems.forEach((subItem) => {
+        subItem.classList.remove("sub-menu__item--active");
       });
-    });
-  }
-});
 
-main.addEventListener("mouseover", (e) => {
-  if (!e.target.closest(".cyclon__Menu > li.menu-item-has-children")) {
-    submenu.classList.remove("sub-menu--active");
-    megaMenu.classList.remove("mega-menu--active");
-    megaMenuOverlay.classList.remove("mega-menu__overlay--active");
+      // Add active to current item
+      item.classList.add("sub-menu__item--active");
 
-    if (taxHeader) {
-      taxHeader.style.filter = `none`;
-      taxHeader.style.overflow = ``;
-    }
-    if (main) {
-      main.style.filter = `none`;
-      main.style.overflow = ``;
-    }
-    footerElements.forEach((element) => {
-      element.style.filter = `none`;
-      element.style.overflow = ``;
+      // Update corresponding mega menu item
+      megaMenuItems.forEach((megaItem) => {
+        megaItem.classList.remove("mega-menu__item--active");
+      });
+      
+      if (megaMenuItems[i]) {
+        megaMenuItems[i].classList.add("mega-menu__item--active");
+      }
     });
-  }
-});
+  });
+
+  // Hide menu when hovering other top-level items
+  topLevelItems.forEach((item) => {
+    if (item !== itemHasChildren) {
+      item.addEventListener("mouseover", () => {
+        hideMegaMenu();
+      });
+    }
+  });
+
+  // Hide menu when hovering main content
+  main.addEventListener("mouseover", (e) => {
+    if (!e.target.closest(".cyclon__Menu > li.menu-item-has-children")) {
+      hideMegaMenu();
+    }
+  });
+}
 
 // itemHasChildren.addEventListener("mouseleave", () => {
 //   submenu.style.visibility = "hidden";
