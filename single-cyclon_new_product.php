@@ -34,6 +34,18 @@ if (have_posts()): while (have_posts()): the_post();
                          
                                 <!-- Info  -->
                                 <div class="single-product-new__info">
+
+                                      <?php
+                                      $categories = get_the_terms(get_the_ID(), 'cyclon_new_product_cat');
+                                      if ($categories && !is_wp_error($categories)):
+                                          $category = reset($categories); // Get the first category
+                                      ?>
+                                      <div>
+                                        <span>Category:</span>
+                                        <span class="bold"><?php echo esc_html($category->name); ?></span>
+                                      </div>
+                                      <?php endif; ?>
+
                                     <div>
                                         <?php if (get_field('single_product__previous_name')): ?>
                                                 <div>
@@ -116,14 +128,25 @@ if (have_posts()): while (have_posts()): the_post();
                                         <?php the_content(); ?>
                                     </div>
 
+                                    <?php
+                                    $specifications = get_the_terms(get_the_ID(), 'cyclon_specifications');
+                                    if ($specifications && !is_wp_error($specifications)):
+                                    ?>
                                     <div>
-
-                                            <div>
-                                                <div>Specificaitons</div>
-                                                <div class="bold">Pending...</div>
+                                        <div>
+                                            <div>Specifications</div>
+                                            <div class="bold">
+                                                <?php
+                                                $spec_names = array();
+                                                foreach ($specifications as $spec) {
+                                                    $spec_names[] = esc_html($spec->name);
+                                                }
+                                                echo implode(', ', $spec_names);
+                                                ?>
                                             </div>
-                                     
+                                        </div>
                                     </div>
+                                    <?php endif; ?>
 
                                     <div>
                                         <?php if (get_field('single_product__packaging')): ?>
