@@ -1005,7 +1005,7 @@ function applyBlurToBackground() {
     if (element) {
       element.style.filter = "blur(5px)";
       element.style.overflow = "hidden";
-      element.style.pointerEvents = "none";
+      // Don't set pointer-events: none - we need these to receive hover events to close the menu
     }
   });
 }
@@ -1023,7 +1023,6 @@ function removeBlurFromBackground() {
     if (element) {
       element.style.filter = "none";
       element.style.overflow = "";
-      element.style.pointerEvents = "";
     }
   });
 }
@@ -1037,10 +1036,6 @@ function showMegaMenu() {
   // Enable pointer events for menu
   submenu.style.pointerEvents = "auto";
   megaMenu.style.pointerEvents = "auto";
-  
-  if (megaMenuOverlay) {
-    megaMenuOverlay.classList.add("mega-menu__overlay--active");
-  }
 
   // Set first items as active by default
   if (megaMenuItems[0]) {
@@ -1062,10 +1057,6 @@ function hideMegaMenu() {
   // Disable pointer events when hidden - fixes the blocking issue
   submenu.style.pointerEvents = "none";
   megaMenu.style.pointerEvents = "none";
-  
-  if (megaMenuOverlay) {
-    megaMenuOverlay.classList.remove("mega-menu__overlay--active");
-  }
 
   // Clear all active states
   megaMenuItems.forEach((item) => {
@@ -1127,6 +1118,17 @@ if (itemHasChildren && submenu && megaMenu && main) {
   main.addEventListener("mouseover", (e) => {
     if (!e.target.closest(".cyclon__Menu > li.menu-item-has-children")) {
       hideMegaMenu();
+    }
+  });
+
+  // Hide menu when hovering any blurred element (footer, taxHeader, etc.)
+  footerElements.forEach((element) => {
+    if (element) {
+      element.addEventListener("mouseover", (e) => {
+        if (!e.target.closest(".cyclon__Menu > li.menu-item-has-children")) {
+          hideMegaMenu();
+        }
+      });
     }
   });
 }

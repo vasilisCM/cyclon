@@ -173,36 +173,41 @@ get_header(); ?>
                                                         $small_text_line = get_field('small_text_line', get_the_ID());
                                                         $thumbnail_url = get_the_post_thumbnail_url(get_the_ID(), 'large');
                                                     ?>
-                                                        <article class="new-category-product-card">
+                                                        <a href="<?php the_permalink(); ?>" class="new-category-product-card">
 
                                                             <?php if ($thumbnail_url) : ?>
-                                                                <!-- <a href="<?php the_permalink(); ?>" class="new-category-product-card__img-container"> -->
                                                                 <div class="new-category-product-card__img-container">
                                                                     <img src="<?php echo esc_url($thumbnail_url); ?>" alt="<?php echo esc_attr(get_the_title()); ?>">
-
                                                                 </div>
                                                             <?php endif; ?>
                                                             <div class="new-category-product-card__text-container">
                                                                 <div>
                                                                     <div class="sans regular range-group__title uppercase text-ms">Cyclon <?php echo esc_html($range_term->name); ?></div>
-                                                                    <!-- <h5 class="text-l regular primary sans new-category-product-card__title">
-                                                                        <a href="<?php // the_permalink(); 
-                                                                                    ?>"><?php // the_title(); 
-                                                                                        ?></a>
-                                                                    </h5> -->
                                                                     <h5 class="text-l regular primary sans new-category-product-card__title">
                                                                         <?php the_title(); ?>
                                                                     </h5>
                                                                     <?php if ($range_code) : ?>
                                                                         <div class="text-l regular sans new-category-product-card__code" style="color: <?php echo esc_attr($range_color); ?>;"><?php echo esc_html($range_code); ?></div>
                                                                     <?php endif; ?>
-
                                                                 </div>
                                                                 <?php if ($small_text_line) : ?>
                                                                     <div class="text-s new-category-product-card__text"><?php echo esc_html($small_text_line); ?></div>
                                                                 <?php endif; ?>
+
+                                                                <?php
+                                                                $content = strip_tags(get_the_content());
+                                                                $words = preg_split('/\s+/', $content, -1, PREG_SPLIT_NO_EMPTY);
+                                                                $short_content = implode(' ', array_slice($words, 0, 20));
+                                                                ?>
+                                                                <div class="text-s info product-card__info">
+                                                                    <?php echo esc_html($short_content); ?><?php if (count($words) > 20) echo '...'; ?>
+                                                                </div>
+
+                                                                <h4 class="home-categories__category-heading">
+                                                                    <span></span>    
+                                                                </h4>
                                                             </div>
-                                                        </article>
+                                                        </a>
                                                     <?php endwhile; ?>
                                                 </div>
                                             </div>

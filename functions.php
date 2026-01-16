@@ -15,6 +15,10 @@ function cyclon_limit_product_archive_posts($query)
     }
 
     if ($query->is_tax('cyclon_product_cat')) {
+        $query->set('posts_per_page', -1);
+    }
+
+    if ($query->is_tax('cyclon_new_product_cat')) {
         $query->set('posts_per_page', 8);
     }
 }

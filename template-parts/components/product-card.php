@@ -1,4 +1,4 @@
-<div class="product-card">
+<a href="<?php the_permalink(); ?>" class="primary product-card">
     <!-- <?php // if (get_field('vehicle_type_icon')): 
             ?>
         <img src="<?php // echo get_field('vehicle_type_icon'); 
@@ -58,6 +58,20 @@
             <div class="text-s info product-card__info"><?php echo get_field('small_text_line'); ?></div>
         <?php endif; ?>
 
+       
+
+        <?php
+        $content = strip_tags(get_the_content());
+        $words = preg_split('/\s+/', $content, -1, PREG_SPLIT_NO_EMPTY);
+        $short_content = implode(' ', array_slice($words, 0, 20));
+        ?>
+        <div class="text-s info product-card__info">
+            <?php echo esc_html($short_content); ?><?php if (count($words) > 20) echo '...'; ?>
+        </div>
+
+        <h4 class="home-categories__category-heading">
+                                  <span></span>    
+                                </h4>
+
     </div>
-    <a href="<?php the_permalink(); ?>" class="product-card__link productCard__Link"></a>
-</div>
+</a>

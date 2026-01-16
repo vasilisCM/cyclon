@@ -773,6 +773,41 @@ document.addEventListener("DOMContentLoaded", () => {
       checkbox.addEventListener("change", updateUrlFromFilters);
     });
 
+  // Special handling for cyclon_range: make the entire div clickable
+  document
+    .querySelectorAll('.taxonomy-cyclon_range .product-filters__option')
+    .forEach((optionDiv) => {
+      // Set initial active state based on checkbox
+      const checkbox = optionDiv.querySelector('input[type="checkbox"]');
+      if (checkbox && checkbox.checked) {
+        optionDiv.classList.add('active');
+      }
+      
+      optionDiv.addEventListener("click", (e) => {
+        // Don't trigger if clicking on the checkbox or label directly
+        // (let the native behavior handle it)
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'LABEL') {
+          return;
+        }
+        
+        // Find and toggle the checkbox
+        if (checkbox) {
+          checkbox.checked = !checkbox.checked;
+          // Toggle active class
+          optionDiv.classList.toggle('active', checkbox.checked);
+          // Manually trigger the change event
+          checkbox.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+      });
+      
+      // Also update active class when checkbox changes (for label clicks)
+      if (checkbox) {
+        checkbox.addEventListener('change', () => {
+          optionDiv.classList.toggle('active', checkbox.checked);
+        });
+      }
+    });
+
   // Listen for dropdown changes to modify the URL
   document
     .querySelectorAll('select[name^="filters["]')

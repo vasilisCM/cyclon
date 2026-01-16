@@ -126,6 +126,10 @@
   background-color: #001a61;
 }
 
+.taxonomy-cyclon_range .product-filters__option.active label {
+  color: #ffffff !important;
+}
+
 .taxonomy-cyclon_range .product-filters__option label {
   font-size: 16px;
   cursor: pointer;
@@ -278,7 +282,17 @@
   align-items: center;
   padding: 20px;
   border: 1px solid #dadada;
+  text-decoration: none;
+  color: #001A61;
+  /* color: inherit; */
+  transition: all 0.3s ease;
+
+  & * {
+    color: #001A61;
+  }
 }
+
+
 
 @media (min-width: 1025px) {
   .product-card {
@@ -306,6 +320,29 @@
 
 .productCard__Image img {
   margin-top: revert;
+}
+
+.home-categories__category-heading span {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  font-size: clamp(14px, calc((16 * 100vw) / 1380), 16px);
+  text-transform: none;
+  font-weight: 700;
+  color: #001a61;
+}
+
+.home-categories__category-heading span::after {
+  content: "\e900";
+  font-family: "icomoon";
+  font-variant: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin-left: auto;
+  /* visibility: hidden; */
+  /* opacity: 0; */
+  transition: all ease 300ms;
 }
 
 /* Skeleton  */
