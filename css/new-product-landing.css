@@ -23,6 +23,10 @@
   margin-top: clamp(20px, calc((80 * 100vw) / 1380), 80px);
 }
 
+.page-template-cyclon-new-category-landing-tpl .taxHeader__Content {
+  justify-content: left;
+}
+
 @media only screen and (max-width: 767px) {
   .page-template-cyclon-new-category-landing-tpl .taxHeader {
     height: clamp(520px, calc((620 * 100vw) / 767), 620px);
@@ -231,5 +235,4 @@
   margin-top: 40px;
   background-color: white;
   text-transform: uppercase;
- 
 }

@@ -235,42 +235,42 @@ get_header(); ?>
             }
         }
         ?>
-         <?php
-         $associated_cat_id = get_field('product_category_landing__assosiated_category');
-         $has_products = false;
-         
-         if ($associated_cat_id) {
-             // Check if there are any products in this category
-             $check_products_query = new WP_Query(array(
-                 'post_type' => 'cyclon_new_product',
-                 'posts_per_page' => 1,
-                 'tax_query' => array(
-                     array(
-                         'taxonomy' => 'cyclon_new_product_cat',
-                         'field'    => 'term_id',
-                         'terms'    => $associated_cat_id,
-                     ),
-                 ),
-             ));
-             
-             $has_products = $check_products_query->have_posts();
-             wp_reset_postdata();
-             
-             if ($has_products) {
-                 $category_link = get_term_link($associated_cat_id, 'cyclon_new_product_cat');
-                 if (!is_wp_error($category_link)) {
-         ?>
-         <div class="text-center">
-            <a class="mButton primary product-category-landing__cta"
-                href="<?php echo esc_url($category_link); ?>">
-                View Products
-            </a>
-        </div>
-         <?php
-                 }
-             }
-         }
-         ?> 
+        <?php
+        $associated_cat_id = get_field('product_category_landing__assosiated_category');
+        $has_products = false;
+
+        if ($associated_cat_id) {
+            // Check if there are any products in this category
+            $check_products_query = new WP_Query(array(
+                'post_type' => 'cyclon_new_product',
+                'posts_per_page' => 1,
+                'tax_query' => array(
+                    array(
+                        'taxonomy' => 'cyclon_new_product_cat',
+                        'field'    => 'term_id',
+                        'terms'    => $associated_cat_id,
+                    ),
+                ),
+            ));
+
+            $has_products = $check_products_query->have_posts();
+            wp_reset_postdata();
+
+            if ($has_products) {
+                $category_link = get_term_link($associated_cat_id, 'cyclon_new_product_cat');
+                if (!is_wp_error($category_link)) {
+        ?>
+                    <div class="text-center">
+                        <a class="mButton primary product-category-landing__cta"
+                            href="<?php echo esc_url($category_link); ?>">
+                            View Products
+                        </a>
+                    </div>
+        <?php
+                }
+            }
+        }
+        ?>
     </section>
 
     <?php if (get_field('mapping_information')): ?>
@@ -527,94 +527,98 @@ get_header(); ?>
         </section>
     <?php endif; ?>
 
-    <section class="features">
+    <?php
+    $hasFeatures = get_field('has_features');
+    if ($hasFeatures): ?>
+
+        <section class="features">
 
 
 
-        <!-- This is going to override the below features -->
+            <!-- This is going to override the below features -->
 
-        <?php if (have_rows('new_features')):
-            while (have_rows('new_features')): the_row('new_features');
+            <?php if (have_rows('new_features')):
+                while (have_rows('new_features')): the_row('new_features');
 
-                if (get_row_layout() == 'left_image_feature'):
-                    get_template_part('template-parts/layouts/acf-left-image', 'tpl');
-                elseif (get_row_layout() == 'right_image_feature'):
-                    get_template_part('template-parts/layouts/acf-right-image', 'tpl');
-                elseif (get_row_layout() == 'tribo_act_feature'):
-                    get_template_part('template-parts/layouts/acf-tribo', 'tpl');
-                elseif (get_row_layout() == 'video_section_feature'):
-                    get_template_part('template-parts/layouts/acf-video-section', 'tpl');
-                endif;
-            endwhile;
-        endif;
-        ?>
+                    if (get_row_layout() == 'left_image_feature'):
+                        get_template_part('template-parts/layouts/acf-left-image', 'tpl');
+                    elseif (get_row_layout() == 'right_image_feature'):
+                        get_template_part('template-parts/layouts/acf-right-image', 'tpl');
+                    elseif (get_row_layout() == 'tribo_act_feature'):
+                        get_template_part('template-parts/layouts/acf-tribo', 'tpl');
+                    elseif (get_row_layout() == 'video_section_feature'):
+                        get_template_part('template-parts/layouts/acf-video-section', 'tpl');
+                    endif;
+                endwhile;
+            endif;
+            ?>
 
 
-        <?php
-        $feature1 = get_field('feature_1');
-        $feature2 = get_field('feature_2');
-        ?>
-        <?php if (array_filter($feature1)): ?>
-            <div class="feature feature--leftImage">
-                <div class="container">
-                    <div class="row align-items-center">
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                            <div class="feature__Content">
-                                <h3><?php echo $feature1['feature_title']; ?></h3>
-                                <p>
-                                    <?php echo $feature1['feature_content']; ?>
-                                </p>
+            <?php
+            $feature1 = get_field('feature_1');
+            $feature2 = get_field('feature_2');
+            ?>
+            <?php if (array_filter($feature1)): ?>
+                <div class="feature feature--leftImage">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                <div class="feature__Content">
+                                    <h3><?php echo $feature1['feature_title']; ?></h3>
+                                    <p>
+                                        <?php echo $feature1['feature_content']; ?>
+                                    </p>
 
-                                <a class="mButton mButton--blueButton"
-                                    href="<?php echo $feature1['feature_button_url']; ?>">
-                                    <?php echo $feature1['feature_button_text']; ?>
-                                </a>
+                                    <a class="mButton mButton--blueButton"
+                                        href="<?php echo $feature1['feature_button_url']; ?>">
+                                        <?php echo $feature1['feature_button_text']; ?>
+                                    </a>
 
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                            <div class="feature__Image">
-                                <img src="<?php echo $feature1['feature_image']; ?>" class="img-fluid" />
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                <div class="feature__Image">
+                                    <img src="<?php echo $feature1['feature_image']; ?>" class="img-fluid" />
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        <?php endif; ?>
+            <?php endif; ?>
 
-        <?php if (array_filter($feature2)): ?>
-            <div class="feature feature--rightImage">
-                <div class="container">
-                    <div class="row align-items-center">
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                            <div class="feature__Image">
-                                <img src="<?php echo $feature2['feature_image']; ?>" class="img-fluid" />
+            <?php if (array_filter($feature2)): ?>
+                <div class="feature feature--rightImage">
+                    <div class="container">
+                        <div class="row align-items-center">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                <div class="feature__Image">
+                                    <img src="<?php echo $feature2['feature_image']; ?>" class="img-fluid" />
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                            <div class="feature__Content">
-                                <h3><?php echo $feature2['feature_title']; ?></h3>
-                                <p>
-                                    <?php echo $feature2['feature_content']; ?>
-                                </p>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                <div class="feature__Content">
+                                    <h3><?php echo $feature2['feature_title']; ?></h3>
+                                    <p>
+                                        <?php echo $feature2['feature_content']; ?>
+                                    </p>
 
-                                <a class="mButton mButton--blueButton"
-                                    href="<?php echo $feature2['feature_button_url']; ?>">
-                                    <?php echo $feature2['feature_button_text']; ?>
-                                </a>
+                                    <a class="mButton mButton--blueButton"
+                                        href="<?php echo $feature2['feature_button_url']; ?>">
+                                        <?php echo $feature2['feature_button_text']; ?>
+                                    </a>
 
+                                </div>
                             </div>
-                        </div>
 
+                        </div>
                     </div>
                 </div>
-            </div>
-        <?php endif; ?>
+            <?php endif; ?>
 
 
-    </section>
+        </section>
 
-
+    <?php endif; ?>
 </main>
 
 <?php
