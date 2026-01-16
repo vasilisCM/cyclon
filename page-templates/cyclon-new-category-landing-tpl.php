@@ -235,18 +235,42 @@ get_header(); ?>
             }
         }
         ?>
-        <!-- <div class="text-center">
-            <a class="mButton product-category-landing__cta"
-                href="<?php // echo esc_url($filtered_saloon_url); 
-                        ?>"
-                data-base-url="<?php // echo esc_url($saloon_btn_link); 
-                                ?>"
-                data-active-range="<?php // echo esc_attr($default_range_slug); 
-                                    ?>">
-                <?php // echo esc_html(get_field('saloon_btn_text')); 
-                ?>
+         <?php
+         $associated_cat_id = get_field('product_category_landing__assosiated_category');
+         $has_products = false;
+         
+         if ($associated_cat_id) {
+             // Check if there are any products in this category
+             $check_products_query = new WP_Query(array(
+                 'post_type' => 'cyclon_new_product',
+                 'posts_per_page' => 1,
+                 'tax_query' => array(
+                     array(
+                         'taxonomy' => 'cyclon_new_product_cat',
+                         'field'    => 'term_id',
+                         'terms'    => $associated_cat_id,
+                     ),
+                 ),
+             ));
+             
+             $has_products = $check_products_query->have_posts();
+             wp_reset_postdata();
+             
+             if ($has_products) {
+                 $category_link = get_term_link($associated_cat_id, 'cyclon_new_product_cat');
+                 if (!is_wp_error($category_link)) {
+         ?>
+         <div class="text-center">
+            <a class="mButton primary product-category-landing__cta"
+                href="<?php echo esc_url($category_link); ?>">
+                View Products
             </a>
-        </div> -->
+        </div>
+         <?php
+                 }
+             }
+         }
+         ?> 
     </section>
 
     <?php if (get_field('mapping_information')): ?>
