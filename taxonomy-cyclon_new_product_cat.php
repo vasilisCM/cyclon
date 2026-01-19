@@ -12,6 +12,23 @@ get_header(); ?>
             // Get current category term
             $current_term = get_queried_object();
 
+            // Get all products in the current category to determine which filter terms are actually used
+            $category_products_query = new WP_Query(array(
+                'post_type' => 'cyclon_new_product',
+                'posts_per_page' => -1,
+                'fields' => 'ids',
+                'tax_query' => array(
+                    array(
+                        'taxonomy' => 'cyclon_new_product_cat',
+                        'field'    => 'term_id',
+                        'terms'    => $current_term->term_id,
+                    ),
+                ),
+            ));
+            
+            $category_product_ids = $category_products_query->posts;
+            wp_reset_postdata();
+
             $allowed_taxonomies = array(
                 'cyclon_range',
                 'cyclon_product_grade',
@@ -29,7 +46,7 @@ get_header(); ?>
                         <?php
                         $dropdown_wrapper_opened = false;
                         foreach ($cyclon_taxonomies as $taxonomy):
-                            // Get ALL terms for this taxonomy in the current category context
+                            // Get ONLY terms that are used by products in the current category
                             $terms = array();
                             
                             // Special handling for cyclon_new_product_cat - show only subcategories
@@ -38,16 +55,30 @@ get_header(); ?>
                                     $terms = get_terms(array(
                                         'taxonomy'   => $taxonomy->name,
                                         'parent'     => $current_term->term_id,
-                                        'hide_empty' => true, // Only show terms that have products
+                                        'hide_empty' => true,
                                     ));
                                 }
                             } else {
-                                // Get all terms for this taxonomy that have products in this category
-                                // This will be filtered by JS based on actual availability from API
-                                $terms = get_terms(array(
-                                    'taxonomy'   => $taxonomy->name,
-                                    'hide_empty' => true, // Only show terms that have products
-                                ));
+                                // Get terms that are actually used by products in this category
+                                if (!empty($category_product_ids)) {
+                                    $term_ids = array();
+                                    foreach ($category_product_ids as $product_id) {
+                                        $product_terms = wp_get_object_terms($product_id, $taxonomy->name, array('fields' => 'ids'));
+                                        if (!is_wp_error($product_terms)) {
+                                            $term_ids = array_merge($term_ids, $product_terms);
+                                        }
+                                    }
+                                    
+                                    // Get unique term IDs and fetch full term objects
+                                    $term_ids = array_unique($term_ids);
+                                    if (!empty($term_ids)) {
+                                        $terms = get_terms(array(
+                                            'taxonomy'   => $taxonomy->name,
+                                            'include'    => $term_ids,
+                                            'hide_empty' => true,
+                                        ));
+                                    }
+                                }
                             }
 
                             if (is_wp_error($terms) || empty($terms)) {

@@ -108,12 +108,48 @@ function custom_filter_products()
             $query->the_post();
             $post_id = get_the_ID();
 
+            // Get truncated content (20 words like in PHP template)
+            $content = strip_tags(get_the_content());
+            $words = preg_split('/\s+/', $content, -1, PREG_SPLIT_NO_EMPTY);
+            $short_content = implode(' ', array_slice($words, 0, 20));
+            if (count($words) > 20) {
+                $short_content .= '...';
+            }
+            
+            // Get range taxonomy for display and color
+            $range_display = '';
+            $range_color = '';
+            $range_terms = get_the_terms($post_id, 'cyclon_range');
+            if (!empty($range_terms) && !is_wp_error($range_terms)) {
+                $term_names = wp_list_pluck($range_terms, 'name');
+                $range_display = implode(', ', $term_names);
+                
+                // Get color from first range term
+                $color = get_field('color', $range_terms[0]);
+                if ($color) {
+                    $range_color = $color;
+                }
+            }
+            
+            // Get product grade with color from range taxonomy
+            $grade_data = null;
+            $grade_terms = get_the_terms($post_id, 'cyclon_product_grade');
+            if (!empty($grade_terms) && !is_wp_error($grade_terms)) {
+                $grade_data = array(
+                    'name' => $grade_terms[0]->name,
+                    'color' => $range_color,
+                );
+            }
+            
             // Build product data
             $products[] = array(
                 'id' => $post_id,
                 'title' => get_the_title(),
                 'image' => get_the_post_thumbnail_url($post_id, 'full'),
                 'permalink' => get_permalink(),
+                'content_excerpt' => $short_content,
+                'grade' => $grade_data,
+                'range_display' => $range_display,
             );
 
             // Add ACF field values to the last product in the array

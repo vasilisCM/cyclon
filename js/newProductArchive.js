@@ -79,16 +79,19 @@ function updateFilterOptions(availableFilters) {
   console.log("📊 Updating filter options with available filters:", availableFilters);
   
   // Check if any filters are currently active
+  // Don't count "All" options (empty value checkboxes) as active filters
   const hasActiveFilters = Array.from(
     document.querySelectorAll('input[type="checkbox"][name^="filters["]:checked, select[name^="filters["]')
   ).some((input) => {
     if (input.tagName === 'SELECT') {
       return input.value && input.value !== "";
     }
-    return input.checked;
+    // For checkboxes, only count as active if checked AND has a non-empty value
+    return input.checked && input.value !== "";
   });
 
   console.log("🔍 Has active filters:", hasActiveFilters);
+  console.log("📋 Available filters from API:", availableFilters);
 
   // Handle dropdown filters (for legacy support)
   document.querySelectorAll(".woo-filters select").forEach((select) => {
@@ -137,10 +140,6 @@ function updateFilterOptions(availableFilters) {
   const taxonomies = cyclonFilters?.taxonomies || [];
   
   taxonomies.forEach((taxonomy) => {
-    // ALWAYS keep cyclon_range enabled for better UX
-    // Users should be able to switch ranges freely
-    const alwaysEnabled = taxonomy === 'cyclon_range';
-    
     // Handle checkboxes
     const checkboxes = document.querySelectorAll(
       `input[name="filters[${taxonomy}][]"]`
@@ -151,8 +150,8 @@ function updateFilterOptions(availableFilters) {
         const termSlug = checkbox.value;
         const optionDiv = checkbox.closest('.product-filters__option');
         
-        // If always enabled OR no active filters OR term is available, enable it
-        if (alwaysEnabled) {
+        // ALWAYS enable "All" options (empty value checkboxes like "All Ranges")
+        if (termSlug === "") {
           checkbox.disabled = false;
           if (optionDiv) {
             optionDiv.style.opacity = '1';
@@ -191,9 +190,7 @@ function updateFilterOptions(availableFilters) {
       Array.from(dropdown.options).forEach((option) => {
         if (option.value === "") return; // Skip "All" option
         
-        if (alwaysEnabled) {
-          option.disabled = false;
-        } else if (hasActiveFilters && availableFilters[taxonomy]) {
+        if (hasActiveFilters && availableFilters[taxonomy]) {
           const isAvailable = availableFilters[taxonomy].hasOwnProperty(option.value);
           option.disabled = !isAvailable && option.value !== dropdown.value;
         } else {
@@ -467,6 +464,22 @@ async function filterProducts({
         // if (featuredImageCaptionElement)
         //   featuredImageCaptionElement.innerHTML = post.image_caption;
 
+        // Range Display (e.g., "Cyclon EVO")
+        const rangeElement = template.querySelector(".text-ms.uppercase");
+        if (rangeElement && post.range_display) {
+          // Keep the "Cyclon " prefix and add the range
+          rangeElement.innerHTML = `<span>Cyclon </span>${post.range_display}`;
+        }
+
+        // Product Grade with color
+        const gradeElement = template.querySelector(".product-card__grade");
+        if (gradeElement && post.grade) {
+          gradeElement.textContent = post.grade.name;
+          if (post.grade.color) {
+            gradeElement.style.color = post.grade.color;
+          }
+        }
+
         // ACF
         elementInfo.forEach(({ mapping, classList, parent }) => {
           let value = post.custom_fields[mapping.fieldName];
@@ -509,6 +522,26 @@ async function filterProducts({
             targetContainer.appendChild(newElement);
           }
         });
+
+        // Content Excerpt - Add after ACF processing
+        if (post.content_excerpt) {
+          const productCardContent = template.querySelector(".productCard__Content");
+          if (productCardContent) {
+            // Create the content excerpt div
+            const excerptDiv = document.createElement("div");
+            excerptDiv.className = "text-s info product-card__info";
+            excerptDiv.textContent = post.content_excerpt;
+            
+            // Find the last h4 element to insert before it
+            const h4Element = productCardContent.querySelector("h4.home-categories__category-heading");
+            if (h4Element) {
+              productCardContent.insertBefore(excerptDiv, h4Element);
+            } else {
+              // Fallback: append at the end if h4 not found
+              productCardContent.appendChild(excerptDiv);
+            }
+          }
+        }
 
         if (makeWholePostLink) {
           const linkElement = template.querySelector(permalinkSelector);
@@ -966,7 +999,8 @@ document.addEventListener("DOMContentLoaded", () => {
             rangeCheckboxes.forEach((cb) => {
               if (cb !== allRangesCheckbox && cb.checked) {
                 cb.checked = false;
-                cb.closest('.product-filters__option')?.classList.remove('active');
+                // Dispatch change event to trigger active class update
+                cb.dispatchEvent(new Event('change', { bubbles: true }));
               }
             });
           }
@@ -974,7 +1008,8 @@ document.addEventListener("DOMContentLoaded", () => {
           // A specific range was clicked - uncheck "All Ranges"
           if (checkbox.checked && allRangesCheckbox.checked) {
             allRangesCheckbox.checked = false;
-            allRangesCheckbox.closest('.product-filters__option')?.classList.remove('active');
+            // Dispatch change event to trigger active class update
+            allRangesCheckbox.dispatchEvent(new Event('change', { bubbles: true }));
           }
           
           // If no ranges are selected, check "All Ranges"
@@ -983,7 +1018,8 @@ document.addEventListener("DOMContentLoaded", () => {
           );
           if (!anyRangeChecked) {
             allRangesCheckbox.checked = true;
-            allRangesCheckbox.closest('.product-filters__option')?.classList.add('active');
+            // Dispatch change event to trigger active class update
+            allRangesCheckbox.dispatchEvent(new Event('change', { bubbles: true }));
           }
         }
       });

@@ -510,7 +510,7 @@ function cyclon_product_range()
         'show_tagcloud'              => true,
     );
 
-    register_taxonomy('cyclon_range', array('cyclon_product', 'cyclon_new_product'), $args);
+    register_taxonomy('cyclon_range', array('cyclon_new_product'), $args);
 }
 add_action('init', 'cyclon_product_range', 0);
 
