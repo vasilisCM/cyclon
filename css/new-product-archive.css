@@ -155,6 +155,26 @@
   display: none;
 }
 
+.taxonomy-cyclon_range .product-filters__option.all-option {
+  grid-column: 1 / -1;
+  justify-content: center;
+  background-color: #f5f5f5;
+  border: 2px solid #001a61;
+}
+
+.taxonomy-cyclon_range .product-filters__option.all-option.active {
+  background-color: #001a61;
+}
+
+.taxonomy-cyclon_range .product-filters__option.all-option label {
+  color: #001a61;
+  font-weight: 700;
+}
+
+.taxonomy-cyclon_range .product-filters__option.all-option.active label {
+  color: #ffffff;
+}
+
 /* Special Filters (Approvals) */
 /* .product-filters__dropdown-wrapper {
   margin-top: 20px;

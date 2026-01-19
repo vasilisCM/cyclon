@@ -75,14 +75,22 @@ function custom_filter_products()
                     $term_slugs = array($term_slugs);
                 }
 
-                $debug_info['applied_filters'][$taxonomy] = $term_slugs;
+                // Filter out empty values (for "All" options like "All Ranges")
+                $term_slugs = array_filter($term_slugs, function($slug) {
+                    return !empty($slug);
+                });
 
-                $args['tax_query'][] = array(
-                    'taxonomy' => $taxonomy,
-                    'field' => 'slug',
-                    'terms' => array_map('sanitize_text_field', $term_slugs),
-                    'operator' => 'IN',
-                );
+                // Only add tax query if there are actual term slugs after filtering
+                if (!empty($term_slugs)) {
+                    $debug_info['applied_filters'][$taxonomy] = $term_slugs;
+
+                    $args['tax_query'][] = array(
+                        'taxonomy' => $taxonomy,
+                        'field' => 'slug',
+                        'terms' => array_map('sanitize_text_field', $term_slugs),
+                        'operator' => 'IN',
+                    );
+                }
             }
         }
     }

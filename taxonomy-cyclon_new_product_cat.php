@@ -108,6 +108,24 @@ get_header(); ?>
                                                 </label>
                                             </div>
                                         <?php endforeach; ?>
+                                        
+                                        <?php 
+                                        // Add "All" option for cyclon_range (at the end)
+                                        if ($taxonomy->name === 'cyclon_range'):
+                                            $all_checkbox_id = esc_attr($taxonomy->name . '-all');
+                                        ?>
+                                            <div class="product-filters__option all-option active">
+                                                <input
+                                                    type="checkbox"
+                                                    name="filters[<?php echo esc_attr($taxonomy->name); ?>][]"
+                                                    id="<?php echo $all_checkbox_id; ?>"
+                                                    value=""
+                                                    checked>
+                                                <label for="<?php echo $all_checkbox_id; ?>" class="text-s">
+                                                    <?php _e('ALL RANGES', 'cyclon'); ?>
+                                                </label>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
                                 <?php endif; ?>
                             </div>
