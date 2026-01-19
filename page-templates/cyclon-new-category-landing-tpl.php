@@ -186,6 +186,16 @@ get_header(); ?>
                                                                     <h5 class="text-l regular primary sans new-category-product-card__title">
                                                                         <?php the_title(); ?>
                                                                     </h5>
+                                                                    <?php
+                                                                    $grade_terms = get_the_terms(get_the_ID(), 'cyclon_product_grade');
+                                                                    if (!empty($grade_terms) && !is_wp_error($grade_terms)) {
+                                                                        $color_style = '';
+                                                                        if ($range_color) {
+                                                                            $color_style = ' style="color: ' . esc_attr($range_color) . ';"';
+                                                                        }
+                                                                    ?>
+                                                                        <div class="text-l uppercase product-card__grade"<?php echo $color_style; ?>><?php echo $grade_terms[0]->name; ?></div>
+                                                                    <?php } ?>
                                                                     <?php if ($range_code) : ?>
                                                                         <div class="text-l regular sans new-category-product-card__code" style="color: <?php echo esc_attr($range_color); ?>;"><?php echo esc_html($range_code); ?></div>
                                                                     <?php endif; ?>

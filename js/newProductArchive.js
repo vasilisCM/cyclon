@@ -76,11 +76,21 @@ function storeInitialFilterOptions() {
 }
 
 function updateFilterOptions(availableFilters) {
-  // Check if any filters are currently active (have selected values)
+  console.log("📊 Updating filter options with available filters:", availableFilters);
+  
+  // Check if any filters are currently active
   const hasActiveFilters = Array.from(
-    document.querySelectorAll(".woo-filters select")
-  ).some((select) => select.value && select.value !== "");
+    document.querySelectorAll('input[type="checkbox"][name^="filters["]:checked, select[name^="filters["]')
+  ).some((input) => {
+    if (input.tagName === 'SELECT') {
+      return input.value && input.value !== "";
+    }
+    return input.checked;
+  });
 
+  console.log("🔍 Has active filters:", hasActiveFilters);
+
+  // Handle dropdown filters (for legacy support)
   document.querySelectorAll(".woo-filters select").forEach((select) => {
     const attribute = select.name;
     const filterItem = select.closest(".woo-filters__item");
@@ -120,6 +130,64 @@ function updateFilterOptions(availableFilters) {
       if (filterItem) {
         filterItem.style.display = "block";
       }
+    }
+  });
+
+  // Handle checkbox and dropdown filters (new product archive)
+  const taxonomies = cyclonFilters?.taxonomies || [];
+  
+  taxonomies.forEach((taxonomy) => {
+    // Handle checkboxes
+    const checkboxes = document.querySelectorAll(
+      `input[name="filters[${taxonomy}][]"]`
+    );
+    
+    if (checkboxes.length > 0) {
+      checkboxes.forEach((checkbox) => {
+        const termSlug = checkbox.value;
+        const optionDiv = checkbox.closest('.product-filters__option');
+        
+        // If there are active filters and this term is not available, disable it
+        if (hasActiveFilters && availableFilters[taxonomy]) {
+          const isAvailable = availableFilters[taxonomy].hasOwnProperty(termSlug);
+          checkbox.disabled = !isAvailable && !checkbox.checked;
+          
+          // Add visual feedback
+          if (optionDiv) {
+            if (checkbox.disabled) {
+              optionDiv.style.opacity = '0.5';
+              optionDiv.style.pointerEvents = 'none';
+            } else {
+              optionDiv.style.opacity = '1';
+              optionDiv.style.pointerEvents = 'auto';
+            }
+          }
+          
+          console.log(`  ${taxonomy} - ${termSlug}: ${isAvailable ? 'available' : 'disabled'}`);
+        } else {
+          // No active filters, enable all
+          checkbox.disabled = false;
+          if (optionDiv) {
+            optionDiv.style.opacity = '1';
+            optionDiv.style.pointerEvents = 'auto';
+          }
+        }
+      });
+    }
+    
+    // Handle dropdowns
+    const dropdown = document.querySelector(`select[name="filters[${taxonomy}][]"]`);
+    if (dropdown) {
+      Array.from(dropdown.options).forEach((option) => {
+        if (option.value === "") return; // Skip "All" option
+        
+        if (hasActiveFilters && availableFilters[taxonomy]) {
+          const isAvailable = availableFilters[taxonomy].hasOwnProperty(option.value);
+          option.disabled = !isAvailable && option.value !== dropdown.value;
+        } else {
+          option.disabled = false;
+        }
+      });
     }
   });
 }
@@ -761,10 +829,45 @@ function applyFiltersFromUrl() {
   filterProducts(options);
 }
 
+// Fetch initial available filters on page load
+async function fetchInitialAvailableFilters() {
+  try {
+    const urlWords = window.location.pathname.split("/");
+    const postCategory = urlWords[2];
+    
+    const formData = new FormData();
+    formData.append("action", "filter_products");
+    formData.append("postType", "cyclon_new_product");
+    formData.append("customTaxonomy", "cyclon_new_product_cat");
+    formData.append("termSlugs", postCategory);
+    formData.append("postsNumber", -1); // Get all to check availability
+    formData.append("page", 1);
+    
+    const response = await fetch(wpAjax.ajaxUrl, {
+      method: "POST",
+      body: formData,
+    });
+    
+    if (response.ok) {
+      const data = await response.json();
+      if (data.available_filters) {
+        console.log("📥 Initial available filters loaded:", data.available_filters);
+        // Don't update filter options on initial load - show all by default
+        // They will be filtered when user applies filters
+      }
+    }
+  } catch (error) {
+    console.error("Error fetching initial filters:", error);
+  }
+}
+
 // Initialize: Set up checkbox and dropdown listeners and URL sync
 document.addEventListener("DOMContentLoaded", () => {
   // Sync filters (checkboxes and dropdowns) from URL on page load
   syncFiltersFromUrl();
+  
+  // Fetch initial available filters (but don't disable anything yet)
+  // fetchInitialAvailableFilters();
 
   // Listen for checkbox changes to modify the URL
   document
