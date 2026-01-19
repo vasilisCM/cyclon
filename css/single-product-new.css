@@ -1,10 +1,18 @@
 .single-cyclon_new_product .cyclon__Menu li a {
   color: #001a61;
-  transform: 0.3s ease;
+  transition: 0.3s ease;
 }
 
 .single-cyclon_new_product .solid-header .cyclon__Menu li a {
   color: #b9bfcb;
+}
+
+.single-cyclon_new_product .sub-menu li a {
+  color: #b9bfcb;
+}
+
+.single-cyclon_new_product .sub-menu li:hover a {
+  color: #001a61;
 }
 
 .cyclon_single_product_new {

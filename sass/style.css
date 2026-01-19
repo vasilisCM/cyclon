@@ -10549,10 +10549,10 @@ html {
 .facetwp-facet-yourfacetname .facetwp-counter {
   display: none;
 }
-.single-cyclon_product .cyclon__Header {
+/* .single-cyclon_product .cyclon__Header {
   position: relative;
   background: #e9e9e9;
-}
+} */
 .single-cyclon_product .main-navigation li a {
   color: #001a61;
 }
@@ -10561,18 +10561,28 @@ html {
 }
 .single-cyclon_product .solid-header .main-navigation li a,
 .single-post .solid-header .main-navigation li a {
-  color: #fff;
+  color: #b9bfcb;
 }
 .single-cyclon_product .solid-header .main-navigation li a:hover,
 .single-post .solid-header .main-navigation li a:hover {
   color: #ffda00;
 }
+
+.single-cyclon_product .sub-menu li a {
+  color: #b9bfcb;
+}
+
+.single-cyclon_product .sub-menu li:hover a {
+  color: #001a61;
+}
+
 .single-cyclon_product .logoLink img {
   box-shadow: none;
 }
 .cyclon_single_product {
   padding: 15px 0 80px 0;
   background: #e9e9e9;
+  padding-top: 250px;
 }
 @media (max-width: 767px) {
   .cyclon_single_product {
