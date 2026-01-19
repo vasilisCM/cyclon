@@ -8259,6 +8259,14 @@ textarea {
   background: #ffda00;
   color: #001a61;
 }
+
+.page-template-cyclon-new-category-landing-tpl .menu-item-has-children > a,
+.single-cyclon_new_product .menu-item-has-children > a,
+.tax-cyclon_new_product_cat .menu-item-has-children > a {
+  background: #ffda00;
+  color: #001a61 !important;
+}
+
 .menu-toggle,
 .main-navigation.toggled ul {
   display: block;
@@ -10580,15 +10588,10 @@ html {
   box-shadow: none;
 }
 .cyclon_single_product {
-  padding: 15px 0 80px 0;
+  padding: clamp(100px, 24.4vw, 250px) 0 clamp(15px, 7.8125vw, 80px) 0;
   background: #e9e9e9;
-  padding-top: 250px;
 }
-@media (max-width: 767px) {
-  .cyclon_single_product {
-    padding: 15px 0 15px 0;
-  }
-}
+
 .cyclon_single_product #breadcrumbs {
   font-size: 12px;
   line-height: 23px;
