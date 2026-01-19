@@ -1,4 +1,10 @@
-.single-cyclon_new_product {
+.single-cyclon_new_product .cyclon__Menu li a {
+  color: #001a61;
+  transform: 0.3s ease;
+}
+
+.single-cyclon_new_product .solid-header .cyclon__Menu li a {
+  color: #b9bfcb;
 }
 
 .cyclon_single_product_new {
