@@ -97,8 +97,8 @@
 .product-filters {
   background: revert;
   padding: revert;
-  max-height: 80vh;
-  overflow-y: auto;
+  /* max-height: 80vh;
+  overflow-y: auto; */
 }
 
 .product-filters__heading {
@@ -283,16 +283,14 @@
   padding: 20px;
   border: 1px solid #dadada;
   text-decoration: none;
-  color: #001A61;
+  color: #001a61;
   /* color: inherit; */
   transition: all 0.3s ease;
 
   & * {
-    color: #001A61;
+    color: #001a61;
   }
 }
-
-
 
 @media (min-width: 1025px) {
   .product-card {
