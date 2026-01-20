@@ -46,6 +46,16 @@ if (have_posts()): while (have_posts()): the_post();
                                 </div>
                             <?php endif; ?>
 
+                            <?php if ($category): ?>
+                                <div>
+                                  <?php 
+                                  $category_image = get_field('new_product_category_image_single', $category);
+                                  if ($category_image): ?>
+                                      <img src="<?php echo esc_url($category_image); ?>" alt="<?php echo esc_attr(get_the_title()); ?>">
+                                  <?php endif; ?>
+                                </div>
+                            <?php endif; ?>
+
                             <div>
                                 <?php if (get_field('single_product__previous_name')): ?>
                                     <div>
