@@ -129,6 +129,10 @@
   }
 }
 
+.text-sm {
+  font-size: 14px;
+}
+
 .text-s {
   font-size: 12px;
   line-height: 1.3;

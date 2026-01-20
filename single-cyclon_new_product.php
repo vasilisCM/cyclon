@@ -33,21 +33,20 @@ if (have_posts()): while (have_posts()): the_post();
                         </div>
 
                         <!-- Info  -->
-                        <div class="single-product-new__info">
-
+                        <div class="primary single-product-new__info">
+<div class="single-product-new__category-info">
                             <?php
                             $categories = get_the_terms(get_the_ID(), 'cyclon_new_product_cat');
                             if ($categories && !is_wp_error($categories)):
                                 $category = reset($categories); // Get the first category
                             ?>
-                                <div>
-                                    <span>Category:</span>
+                                <div class="text-s primary single-product-new__category-name">
                                     <span class="bold"><?php echo esc_html($category->name); ?></span>
                                 </div>
                             <?php endif; ?>
 
                             <?php if ($category): ?>
-                                <div>
+                                <div class="single-product-new__category-image">
                                   <?php 
                                   $category_image = get_field('new_product_category_image_single', $category);
                                   if ($category_image): ?>
@@ -55,24 +54,9 @@ if (have_posts()): while (have_posts()): the_post();
                                   <?php endif; ?>
                                 </div>
                             <?php endif; ?>
-
-                            <div>
-                                <?php if (get_field('single_product__previous_name')): ?>
-                                    <div>
-                                        <span>Previous Name:</span>
-                                        <span class="bold"><?php echo get_field('single_product__previous_name'); ?></span>
-                                    </div>
-                                <?php endif; ?>
-
-                                <?php if (get_field('single_product__previous_code')): ?>
-                                    <div>
-                                        <span>Previous Code:</span>
-                                        <span class="bold"><?php echo get_field('single_product__previous_code'); ?></span>
-                                    </div>
-                                <?php endif; ?>
                             </div>
 
-                            <div>
+                            <div class="primary">
                                 <h1 class="text-2xl primary single-product-new__title">
                                     <span>Cyclon </span>
                                     <?php
@@ -84,36 +68,58 @@ if (have_posts()): while (have_posts()): the_post();
                                     <span><?php the_title(); ?></span>
                                 </h1>
 
-                                <?php if (get_field('range_code')): ?>
-                                    <div class="text-xl single-product-new__range-code">
-                                        <?php echo get_field('range_code'); ?>
+                                <?php
+                                $grade_terms = get_the_terms(get_the_ID(), 'cyclon_product_grade');
+                                if (!empty($grade_terms) && !is_wp_error($grade_terms)) {
+                                    // Get color from cyclon_range taxonomy term
+                                    $range_terms = get_the_terms(get_the_ID(), 'cyclon_range');
+                                    $color_style = '';
+                                    if (!empty($range_terms) && !is_wp_error($range_terms)) {
+                                        $color = get_field('color', $range_terms[0]);
+                                        if ($color) {
+                                            $color_style = ' style="color: ' . esc_attr($color) . ';"';
+                                        }
+                                    }
+                                ?>
+                                    <div class="text-xl single-product-new__range-code" <?php echo $color_style; ?>>
+                                        <?php echo esc_html($grade_terms[0]->name); ?>
                                     </div>
-                                <?php endif; ?>
+                                <?php } ?>
 
                                 <div class="text">
                                     <?php if (get_field('single_product__parent_code')): ?>
-                                        <div>
+                                        <div class="text-sm">
                                             <span>Parent Code:</span>
-                                            <span class="bold"><?php echo get_field('single_product__parent_code'); ?></span>
+                                            <span><?php echo get_field('single_product__parent_code'); ?></span>
                                         </div>
                                     <?php endif; ?>
                                 </div>
                             </div>
 
+                            <div class="single-product-new__previous-info uppercase">
+                                <?php if (get_field('single_product__previous_name')): ?>
+                                 
+                                        <span class="text-s">Replaces</span>
+                                        <div class="text accent">
+                                            <span><?php echo get_field('single_product__previous_name'); ?></span>
+                                            <span><?php echo get_field('single_product__previous_code'); ?></span> 
+                                        </div>
+                                        
+                                <?php endif; ?>
+                            </div>
+
                             <!-- Additional fields  -->
-                            <div>
+                            <div class="text-ms single-product-new__bullets">
                                 <?php if (get_field('single_product_new__banner_1')): ?>
-                                    <div>
-                                        <span>Banner 1:</span>
-                                        <span class="bold"><?php echo get_field('single_product_new__banner_1'); ?></span>
-                                    </div>
+                                    <li>
+                                        <span><?php echo get_field('single_product_new__banner_1'); ?></span>
+                                    </li>
                                 <?php endif; ?>
 
                                 <?php if (get_field('single_product_new__banner_2')): ?>
-                                    <div>
-                                        <span>Banner 2:</span>
-                                        <span class="bold"><?php echo get_field('single_product_new__banner_2'); ?></span>
-                                    </div>
+                                    <li>
+                                        <span><?php echo get_field('single_product_new__banner_2'); ?></span>
+                                    </li>
                                 <?php endif; ?>
 
                                 <?php
@@ -124,17 +130,16 @@ if (have_posts()): while (have_posts()): the_post();
                                         $type_names[] = $type->name;
                                     }
                                 ?>
-                                    <div>
-                                        <span>Banner 3 (Type):</span>
-                                        <span class="bold"><?php echo implode(', ', $type_names); ?></span>
-                                    </div>
+                                    <li>
+                                        <span><?php echo implode(', ', $type_names); ?></span>
+                                    </li>
                                 <?php endif; ?>
 
 
                             </div>
 
 
-                            <div class="text single-product-new__content">
+                            <div class="text-sm single-product-new__content">
                                 <?php the_content(); ?>
                             </div>
 
@@ -144,8 +149,8 @@ if (have_posts()): while (have_posts()): the_post();
                             ?>
                                 <div>
                                     <div>
-                                        <div>Specifications</div>
-                                        <div class="bold">
+                                        <div class="text-s bold">Specifications</div>
+                                        <div class="text-ms">
                                             <?php
                                             $spec_names = array();
                                             foreach ($specifications as $spec) {
@@ -161,15 +166,15 @@ if (have_posts()): while (have_posts()): the_post();
                             <div>
                                 <?php if (get_field('single_product__packaging')): ?>
                                     <div>
-                                        <div>Packaging</div>
-                                        <div class="bold"><?php echo get_field('single_product__packaging'); ?></div>
+                                        <div class="text-s bold">Packaging</div>
+                                        <div class="text-ms"><?php echo get_field('single_product__packaging'); ?></div>
                                     </div>
                                 <?php endif; ?>
                             </div>
 
                             <!-- PDFs  -->
                             <?php if (have_rows('technical_guides')): ?>
-                                <div class="product-buttons">
+                                <div class="product-buttons single-product-new__technical-guides">
                                     <?php while (have_rows('technical_guides')): the_row(); ?>
                                         <a href="<?php echo get_sub_field('guide_pdf'); ?>" class="product-pill" target="_blank">
                                             <span class="product-pill__title">
@@ -211,125 +216,121 @@ if (have_posts()): while (have_posts()): the_post();
             </div>
         </main>
 
-        <div class="cyclon_single__relatedWrapper">
-            <h3 class="relatedTitle text-center"><?php echo esc_html__('Similar Products', 'cyclon'); ?></h3>
+        <?php
+        // Build related products query
+        $rel = get_field('related_glue');
+        $relatedArgs = array();
+        
+        if (!empty($rel['select_glue'])):
+            $postTermsObj = wp_get_post_terms(get_the_ID(), 'cyclon_product_cat');
 
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <?php
-                        $rel = get_field('related_glue');
+            $cyclonTypes = array();
+            $cyclonGrades = array();
+            $cyclonSoaps = array();
+            $cyclonNlgi = array();
 
-                        if (!empty($rel['select_glue'])):
-                            $postTermsObj = wp_get_post_terms(get_the_ID(), 'cyclon_product_cat');
+            $relatedArgs = array(
+                'post_type' => 'cyclon_product',
+                'posts_per_page' => 10,
+                'post__not_in' => [get_the_ID()]
+            );
+            foreach ($rel['select_glue'] as $r) {
+                if ($r == 'type') {
+                    $postTypesObj = wp_get_post_terms(get_the_ID(), 'cyclon_product_type');
 
-                            $cyclonTypes = array();
-                            $cyclonGrades = array();
-                            $cyclonSoaps = array();
-                            $cyclonNlgi = array();
+                    foreach ($postTypesObj as $pg) {
+                        $cyclonTypes[] = $pg->term_id;
+                    }
+                    if (!empty($postTypesObj)):
+                        $postTerms = $postTypesObj[0]->term_id;
 
-                            $relatedArgs = array(
-                                'post_type' => 'cyclon_product',
-                                'posts_per_page' => 10,
-                                'post__not_in' => [get_the_ID()]
-                            );
-                            foreach ($rel['select_glue'] as $r) {
-                                if ($r == 'type') {
-                                    $postTypesObj = wp_get_post_terms(get_the_ID(), 'cyclon_product_type');
+                        $relatedArgs['tax_query'][] = array(
+                            'relation' => 'AND',
+                            array(
+                                'taxonomy' => 'cyclon_product_type',
+                                'field' => 'term_id',
+                                'terms' => $cyclonTypes
+                            ),
+                            array(
+                                'taxonomy' => 'cyclon_product_cat',
+                                'field' => 'term_id',
+                                'terms' => $postTermsObj[0]->term_id
+                            )
+                        );
+                    endif;
+                }
+                if ($r == 'grade') {
+                    $postGradesObj = wp_get_post_terms(get_the_ID(), 'cyclon_product_grade');
+                    foreach ($postGradesObj as $pg) {
+                        $cyclonGrades[] = $pg->term_id;
+                    }
+                    if (!empty($postGradesObj)):
 
-                                    foreach ($postTypesObj as $pg) {
-                                        $cyclonTypes[] = $pg->term_id;
-                                    }
-                                    if (!empty($postTypesObj)):
-                                        $postTerms = $postTypesObj[0]->term_id;
+                        $postGrades = $postGradesObj[0]->term_id;
+                        $relatedArgs['tax_query'][] = array(
+                            'relation' => 'AND',
+                            array(
+                                'taxonomy' => 'cyclon_product_grade',
+                                'field' => 'term_id',
+                                'terms' => $cyclonGrades,
+                            ),
+                            array(
+                                'taxonomy' => 'cyclon_product_cat',
+                                'field' => 'term_id',
+                                'terms' => $postTermsObj[0]->term_id
+                            ),
+                        );
+                    endif;
+                }
+                if ($r == 'soap') {
+                    $postSoapsObj = wp_get_post_terms(get_the_ID(), 'cyclon_product_soap');
+                    if (!empty($postSoapsObj)):
+                        echo $postSoaps = $postSoapsObj[0]->term_id;
+                    endif;
+                }
+                if ($r == 'nlgi') {
+                    $postNlgiObj = wp_get_post_terms(get_the_ID(), 'cyclon_product_nlgi');
+                    if (!empty($postNlgiObj)):
+                        echo $postNlgi = $postNlgiObj[0]->term_id;
+                    endif;
+                }
+            }
 
-                                        $relatedArgs['tax_query'][] = array(
-                                            'relation' => 'AND',
-                                            array(
-                                                'taxonomy' => 'cyclon_product_type',
-                                                'field' => 'term_id',
-                                                'terms' => $cyclonTypes
-                                            ),
-                                            array(
-                                                'taxonomy' => 'cyclon_product_cat',
-                                                'field' => 'term_id',
-                                                'terms' => $postTermsObj[0]->term_id
-                                            )
-                                        );
-                                    endif;
-                                }
-                                if ($r == 'grade') {
-                                    $postGradesObj = wp_get_post_terms(get_the_ID(), 'cyclon_product_grade');
-                                    foreach ($postGradesObj as $pg) {
-                                        $cyclonGrades[] = $pg->term_id;
-                                    }
-                                    if (!empty($postGradesObj)):
+        else:
 
-                                        $postGrades = $postGradesObj[0]->term_id;
-                                        $relatedArgs['tax_query'][] = array(
-                                            'relation' => 'AND',
-                                            array(
-                                                'taxonomy' => 'cyclon_product_grade',
-                                                'field' => 'term_id',
-                                                'terms' => $cyclonGrades,
-                                            ),
-                                            array(
-                                                'taxonomy' => 'cyclon_product_cat',
-                                                'field' => 'term_id',
-                                                'terms' => $postTermsObj[0]->term_id
-                                            ),
-                                        );
-                                    endif;
-                                }
-                                if ($r == 'soap') {
-                                    $postSoapsObj = wp_get_post_terms(get_the_ID(), 'cyclon_product_soap');
-                                    if (!empty($postSoapsObj)):
-                                        echo $postSoaps = $postSoapsObj[0]->term_id;
-                                    endif;
-                                }
-                                if ($r == 'nlgi') {
-                                    $postNlgiObj = wp_get_post_terms(get_the_ID(), 'cyclon_product_nlgi');
-                                    if (!empty($postNlgiObj)):
-                                        echo $postNlgi = $postNlgiObj[0]->term_id;
-                                    endif;
-                                }
-                            }
+            $postTermsObj = wp_get_post_terms(get_the_ID(), 'cyclon_product_cat');
 
-                        //print_r($relatedArgs);
+            if (!empty($postTermsObj)):
+                $postTerms = $postTermsObj[0]->term_id;
+            endif;
 
+            $relatedArgs = array(
+                'post_type' => 'cyclon_product',
+                'posts_per_page' => 10,
+                'post__not_in' => [get_the_ID()],
+                'tax_query' => array(
+                    'relation' => 'AND',
+                    array(
+                        'taxonomy' => 'cyclon_product_cat',
+                        'field' => 'term_id',
+                        'terms' => $postTerms
+                    ),
 
+                )
+            );
+        endif;
 
-                        else:
+        // Execute query
+        $relatedQuery = new WP_Query($relatedArgs);
 
-                            $postTermsObj = wp_get_post_terms(get_the_ID(), 'cyclon_product_cat');
+        // Only render section if there are related products
+        if ($relatedQuery->have_posts()): ?>
+            <div class="cyclon_single__relatedWrapper">
+                <h3 class="relatedTitle text-center"><?php echo esc_html__('Similar Products', 'cyclon'); ?></h3>
 
-                            if (!empty($postTermsObj)):
-                                $postTerms = $postTermsObj[0]->term_id;
-                            endif;
-                            //                        if (!empty($postTermsObj)):
-                            //                            $postTypes = $postTypesObj[0]->term_id;
-                            //                        endif;
-
-                            $relatedArgs = array(
-                                'post_type' => 'cyclon_product',
-                                'posts_per_page' => 10,
-                                'post__not_in' => [get_the_ID()],
-                                'tax_query' => array(
-                                    'relation' => 'AND',
-                                    array(
-                                        'taxonomy' => 'cyclon_product_cat',
-                                        'field' => 'term_id',
-                                        'terms' => $postTerms
-                                    ),
-
-                                )
-                            );
-                        endif;
-
-
-                        $relatedQuery = new WP_Query($relatedArgs);
-
-                        if ($relatedQuery->have_posts()): ?>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-md-12 col-sm-12 col-xs-12">
 
                             <div class="relatedProducts__SuperWrapper">
                                 <div class="relatedProducts__Wrapper swiper">
@@ -356,23 +357,21 @@ if (have_posts()): while (have_posts()): the_post();
                                                     <a href="<?php the_permalink(); ?>" class="productCard__Link"></a>
                                                 </div>
                                             </div>
-                                        <?php endwhile; ?>
+                                        <?php endwhile; 
+                                        wp_reset_postdata(); ?>
 
                                     </div>
-
 
                                 </div>
                                 <div class="swiper-pagination"></div>
                                 <div class="swiper-button-prev"></div>
                                 <div class="swiper-button-next"></div>
                             </div>
-                        <?php endif; ?>
+                        </div>
                     </div>
                 </div>
             </div>
-
-
-        </div>
+        <?php endif; ?>
 
 <?php endwhile;
 endif; ?>
