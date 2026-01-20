@@ -90,7 +90,7 @@
 }
 
 .text-2xl {
-  font-size: clamp(46px, calc((46 * 100vw) / 1280), 46px);
+  font-size: clamp(36px, calc((46 * 100vw) / 1280), 46px);
 }
 
 .text-xl {
