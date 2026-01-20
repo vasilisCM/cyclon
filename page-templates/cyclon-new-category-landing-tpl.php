@@ -277,7 +277,7 @@ get_header(); ?>
         ?>
                     <div class="text-center">
                         <a class="mButton primary product-category-landing__cta"
-                            href="<?php echo esc_url($category_link); ?>">
+                            href="<?php echo esc_url($category_link); ?>?cyclon_range=evo">
                             View Products
                         </a>
                     </div>

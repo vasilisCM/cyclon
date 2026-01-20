@@ -84,6 +84,25 @@ get_header(); ?>
                             if (is_wp_error($terms) || empty($terms)) {
                                 continue;
                             }
+
+                            // Custom ordering for cyclon_range taxonomy
+                            if ($taxonomy->name === 'cyclon_range') {
+                                $order = array('evo', 'pro', 'eco', 'max');
+                                usort($terms, function($a, $b) use ($order) {
+                                    $pos_a = array_search(strtolower($a->slug), $order);
+                                    $pos_b = array_search(strtolower($b->slug), $order);
+                                    
+                                    // If both found, sort by position
+                                    if ($pos_a !== false && $pos_b !== false) {
+                                        return $pos_a - $pos_b;
+                                    }
+                                    // If only one found, prioritize it
+                                    if ($pos_a !== false) return -1;
+                                    if ($pos_b !== false) return 1;
+                                    // If neither found, maintain original order
+                                    return 0;
+                                });
+                            }
                         ?>
                             <?php
                             $is_dropdown = ($taxonomy->name === 'cyclon_new_product_acea' || $taxonomy->name === 'cyclon_new_product_oem' || $taxonomy->name === 'cyclon_specifications');
