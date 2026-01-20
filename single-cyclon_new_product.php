@@ -221,108 +221,35 @@ if (have_posts()): while (have_posts()): the_post();
         </main>
 
         <?php
-        // Build related products query
-        $rel = get_field('related_glue');
-        $relatedArgs = array();
+        // Build related products query - get products from same category
+        // Prioritize child categories (more specific) over parent categories
+        $category_terms = wp_get_post_terms(get_the_ID(), 'cyclon_new_product_cat');
         
-        if (!empty($rel['select_glue'])):
-            $postTermsObj = wp_get_post_terms(get_the_ID(), 'cyclon_product_cat');
-
-            $cyclonTypes = array();
-            $cyclonGrades = array();
-            $cyclonSoaps = array();
-            $cyclonNlgi = array();
-
-            $relatedArgs = array(
-                'post_type' => 'cyclon_product',
-                'posts_per_page' => 10,
-                'post__not_in' => [get_the_ID()]
+        $relatedArgs = array(
+            'post_type' => 'cyclon_new_product',
+            'posts_per_page' => 10,
+            'post__not_in' => [get_the_ID()],
+        );
+        
+        // Add taxonomy query if category exists
+        if (!empty($category_terms) && !is_wp_error($category_terms)) {
+            // Filter to get only child categories (those with a parent)
+            $child_categories = array_filter($category_terms, function($term) {
+                return $term->parent > 0; // Has a parent, so it's a child category
+            });
+            
+            // Use child categories if they exist, otherwise use all categories
+            $terms_to_use = !empty($child_categories) ? $child_categories : $category_terms;
+            $term_ids = wp_list_pluck($terms_to_use, 'term_id');
+            
+            $relatedArgs['tax_query'] = array(
+                array(
+                    'taxonomy' => 'cyclon_new_product_cat',
+                    'field' => 'term_id',
+                    'terms' => $term_ids,
+                ),
             );
-            foreach ($rel['select_glue'] as $r) {
-                if ($r == 'type') {
-                    $postTypesObj = wp_get_post_terms(get_the_ID(), 'cyclon_product_type');
-
-                    foreach ($postTypesObj as $pg) {
-                        $cyclonTypes[] = $pg->term_id;
-                    }
-                    if (!empty($postTypesObj)):
-                        $postTerms = $postTypesObj[0]->term_id;
-
-                        $relatedArgs['tax_query'][] = array(
-                            'relation' => 'AND',
-                            array(
-                                'taxonomy' => 'cyclon_product_type',
-                                'field' => 'term_id',
-                                'terms' => $cyclonTypes
-                            ),
-                            array(
-                                'taxonomy' => 'cyclon_product_cat',
-                                'field' => 'term_id',
-                                'terms' => $postTermsObj[0]->term_id
-                            )
-                        );
-                    endif;
-                }
-                if ($r == 'grade') {
-                    $postGradesObj = wp_get_post_terms(get_the_ID(), 'cyclon_product_grade');
-                    foreach ($postGradesObj as $pg) {
-                        $cyclonGrades[] = $pg->term_id;
-                    }
-                    if (!empty($postGradesObj)):
-
-                        $postGrades = $postGradesObj[0]->term_id;
-                        $relatedArgs['tax_query'][] = array(
-                            'relation' => 'AND',
-                            array(
-                                'taxonomy' => 'cyclon_product_grade',
-                                'field' => 'term_id',
-                                'terms' => $cyclonGrades,
-                            ),
-                            array(
-                                'taxonomy' => 'cyclon_product_cat',
-                                'field' => 'term_id',
-                                'terms' => $postTermsObj[0]->term_id
-                            ),
-                        );
-                    endif;
-                }
-                if ($r == 'soap') {
-                    $postSoapsObj = wp_get_post_terms(get_the_ID(), 'cyclon_product_soap');
-                    if (!empty($postSoapsObj)):
-                        echo $postSoaps = $postSoapsObj[0]->term_id;
-                    endif;
-                }
-                if ($r == 'nlgi') {
-                    $postNlgiObj = wp_get_post_terms(get_the_ID(), 'cyclon_product_nlgi');
-                    if (!empty($postNlgiObj)):
-                        echo $postNlgi = $postNlgiObj[0]->term_id;
-                    endif;
-                }
-            }
-
-        else:
-
-            $postTermsObj = wp_get_post_terms(get_the_ID(), 'cyclon_product_cat');
-
-            if (!empty($postTermsObj)):
-                $postTerms = $postTermsObj[0]->term_id;
-            endif;
-
-            $relatedArgs = array(
-                'post_type' => 'cyclon_product',
-                'posts_per_page' => 10,
-                'post__not_in' => [get_the_ID()],
-                'tax_query' => array(
-                    'relation' => 'AND',
-                    array(
-                        'taxonomy' => 'cyclon_product_cat',
-                        'field' => 'term_id',
-                        'terms' => $postTerms
-                    ),
-
-                )
-            );
-        endif;
+        }
 
         // Execute query
         $relatedQuery = new WP_Query($relatedArgs);
