@@ -83,6 +83,15 @@
   padding: 0;
 }
 
+.single-product-new__toggle-content {
+  cursor: pointer;
+  padding-bottom: 40px;
+}
+
+.single-product-new__previous-info {
+  margin-top: -40px;
+}
+
 .single-product-new__bullets {
 border-block: solid 1px rgba(0, 0, 0, 0.1);
 padding-block: 20px;
@@ -100,4 +109,12 @@ padding-block: 20px;
   margin-top: 0px;
 }
 
+.product-pill--primary {
+  background-color: #001a61 !important;
+  color: white !important;
+}
+
+.product-pill--primary .product-pill__title, .product-pill--primary .product-pill__subtitle, .product-pill--primary .product-pill__subtitle::after {
+  color: white !important;
+}
 

@@ -138,9 +138,13 @@ if (have_posts()): while (have_posts()): the_post();
 
                             </div>
 
-
-                            <div class="text-sm single-product-new__content">
-                                <?php the_content(); ?>
+                            <div>
+                                <div class="text-sm single-product-new__content">
+                                    <?php the_content(); ?>
+                                </div>
+                                <div class="text-sm bold single-product-new__toggle-content" aria-expanded="false">
+                                    Show more...
+                                    </div>
                             </div>
 
                             <?php
@@ -187,9 +191,9 @@ if (have_posts()): while (have_posts()): the_post();
                                     <?php endwhile; ?>
                                 </div>
                             <?php endif; ?>
-                            <div>
+                            
                                 <div class="product-buttons">
-                                    <a href="/" class="product-pill" target="_blank">
+                                    <a href="/" class="product-pill product-pill--primary" target="_blank">
                                         <span class="product-pill__title">
                                             <?php _e('Product Catalogue', 'cyclon'); ?>
                                         </span>
@@ -208,7 +212,7 @@ if (have_posts()): while (have_posts()): the_post();
                                         </span>
                                     </a>
                                 </div>
-                            </div>
+                            
                         </div>
                     </div>
                 </div>

@@ -385,6 +385,7 @@ function cyclon_theme_scripts()
     // New Product Single
     if (is_singular('cyclon_new_product')) {
         wp_enqueue_style('new-product-single', get_stylesheet_directory_uri() . '/css/single-product-new.css', array(), time(), 'all');
+        wp_enqueue_script('new-product-single', get_stylesheet_directory_uri() . '/js/newSingleProduct.js', array('jquery'), time(), true);
     }
 
     wp_enqueue_script('gsap', get_template_directory_uri() . '/js/lib/gsap.min.js', array(), false, true);
