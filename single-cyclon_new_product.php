@@ -22,38 +22,45 @@ if (have_posts()): while (have_posts()): the_post();
                             }
                         }
 
-                        $bg_style = $has_bg_image ? ' style="background-image: url(/wp-content/uploads/2026/01/product-bg-img.svg);"' : '';
+                        // $bg_style = $has_bg_image ? ' style="background-image: url(/wp-content/uploads/2026/01/product-bg-img.svg);"' : '';
+                        $bg_style = $has_bg_image ? ' /wp-content/uploads/2026/01/product-bg-img.svg)' : '';
                         ?>
 
                         <!-- Image  -->
-                        <div class="single-product-new__img-container" <?php echo $bg_style; ?>>
+                        <div class="single-product-new__img-container relative">
                             <?php if (has_post_thumbnail()): ?>
                                 <img src="<?php the_post_thumbnail_url('full'); ?>" alt="<?php the_title(); ?>">
+                            <?php endif; ?>
+
+                            <?php if ($has_bg_image == true): ?>
+                                <div class="single-product-new__img-bg-img absolute">
+                                    <img src="<?php echo $bg_style; ?>" alt="">
+                                </div>
                             <?php endif; ?>
                         </div>
 
                         <!-- Info  -->
                         <div class="primary single-product-new__info">
-<div class="single-product-new__category-info">
-                            <?php
-                            $categories = get_the_terms(get_the_ID(), 'cyclon_new_product_cat');
-                            if ($categories && !is_wp_error($categories)):
-                                $category = reset($categories); // Get the first category
-                            ?>
-                                <div class="text-s primary single-product-new__category-name">
-                                    <span class="bold"><?php echo esc_html($category->name); ?></span>
-                                </div>
-                            <?php endif; ?>
+                            <div class="single-product-new__category-info">
+                                <?php
+                                $categories = get_the_terms(get_the_ID(), 'cyclon_new_product_cat');
+                                if ($categories && !is_wp_error($categories)):
+                                    $category = reset($categories); // Get the first category
+                                ?>
+                                    <div class="text-s primary single-product-new__category-name">
+                                        <span class="bold"><?php echo esc_html($category->name); ?></span>
+                                    </div>
+                                <?php endif; ?>
 
-                            <?php if ($category): ?>
-                                <div class="single-product-new__category-image">
-                                  <?php 
-                                  $category_image = get_field('new_product_category_image_single', $category);
-                                  if ($category_image): ?>
-                                      <img src="<?php echo esc_url($category_image); ?>" alt="<?php echo esc_attr(get_the_title()); ?>">
-                                  <?php endif; ?>
-                                </div>
-                            <?php endif; ?>
+                                <?php if ($category): ?>
+                                    <div class="single-product-new__category-image">
+                                        <?php
+                                        $category_image = get_field('new_product_category_image_single', $category);
+                                        if ($category_image): ?>
+                                            <img src="<?php echo esc_url($category_image); ?>" alt="<?php echo esc_attr(get_the_title()); ?>">
+                                        <?php endif; ?>
+                                    </div>
+                                <?php endif; ?>
                             </div>
 
                             <div class="primary">
@@ -98,13 +105,13 @@ if (have_posts()): while (have_posts()): the_post();
 
                             <div class="single-product-new__previous-info uppercase">
                                 <?php if (get_field('single_product__previous_name')): ?>
-                                 
-                                        <span class="text-s">Replaces</span>
-                                        <div class="text accent">
-                                            <span><?php echo get_field('single_product__previous_name'); ?></span>
-                                            <span><?php echo get_field('single_product__previous_code'); ?></span> 
-                                        </div>
-                                        
+
+                                    <span class="text-s">Replaces</span>
+                                    <div class="text accent">
+                                        <span><?php echo get_field('single_product__previous_name'); ?></span>
+                                        <span><?php echo get_field('single_product__previous_code'); ?></span>
+                                    </div>
+
                                 <?php endif; ?>
                             </div>
 
@@ -139,12 +146,18 @@ if (have_posts()): while (have_posts()): the_post();
                             </div>
 
                             <div>
-                                <div class="text-sm single-product-new__content">
+                                <div class="text-ms single-product-new__content">
                                     <?php the_content(); ?>
                                 </div>
-                                <div class="text-sm bold single-product-new__toggle-content" aria-expanded="false">
-                                    Show more...
+
+                                <div class="single-product-new__toggle">
+                                    <div class="show-more-line"></div>
+                                    <div class="text-ms text-center single-product-new__toggle-content" aria-expanded="false">
+                                        Show more
                                     </div>
+                                    <div class="show-more-line"></div>
+                                </div>
+
                             </div>
 
                             <?php
@@ -176,22 +189,22 @@ if (have_posts()): while (have_posts()): the_post();
                                 <?php endif; ?>
                             </div>
 
-                            <!-- PDFs  -->
-                            <?php if (have_rows('technical_guides')): ?>
-                                <div class="product-buttons single-product-new__technical-guides">
-                                    <?php while (have_rows('technical_guides')): the_row(); ?>
-                                        <a href="<?php echo get_sub_field('guide_pdf'); ?>" class="product-pill" target="_blank">
-                                            <span class="product-pill__title">
-                                                <?php echo get_sub_field('guide_name'); ?>
-                                            </span>
-                                            <span class="product-pill__subtitle">
-                                                <?php echo get_sub_field('guide_type'); ?>
-                                            </span>
-                                        </a>
-                                    <?php endwhile; ?>
-                                </div>
-                            <?php endif; ?>
-                            
+                            <div class="product-buttons__container">
+                                <!-- PDFs  -->
+                                <?php if (have_rows('technical_guides')): ?>
+                                    <div class="product-buttons single-product-new__technical-guides">
+                                        <?php while (have_rows('technical_guides')): the_row(); ?>
+                                            <a href="<?php echo get_sub_field('guide_pdf'); ?>" class="product-pill" target="_blank">
+                                                <span class="product-pill__title">
+                                                    <?php echo get_sub_field('guide_name'); ?>
+                                                </span>
+                                                <span class="product-pill__subtitle">
+                                                    <?php echo get_sub_field('guide_type'); ?>
+                                                </span>
+                                            </a>
+                                        <?php endwhile; ?>
+                                    </div>
+                                <?php endif; ?>
                                 <div class="product-buttons">
                                     <a href="/" class="product-pill product-pill--primary" target="_blank">
                                         <span class="product-pill__title">
@@ -212,7 +225,7 @@ if (have_posts()): while (have_posts()): the_post();
                                         </span>
                                     </a>
                                 </div>
-                            
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -224,24 +237,24 @@ if (have_posts()): while (have_posts()): the_post();
         // Build related products query - get products from same category
         // Prioritize child categories (more specific) over parent categories
         $category_terms = wp_get_post_terms(get_the_ID(), 'cyclon_new_product_cat');
-        
+
         $relatedArgs = array(
             'post_type' => 'cyclon_new_product',
             'posts_per_page' => 10,
             'post__not_in' => [get_the_ID()],
         );
-        
+
         // Add taxonomy query if category exists
         if (!empty($category_terms) && !is_wp_error($category_terms)) {
             // Filter to get only child categories (those with a parent)
-            $child_categories = array_filter($category_terms, function($term) {
+            $child_categories = array_filter($category_terms, function ($term) {
                 return $term->parent > 0; // Has a parent, so it's a child category
             });
-            
+
             // Use child categories if they exist, otherwise use all categories
             $terms_to_use = !empty($child_categories) ? $child_categories : $category_terms;
             $term_ids = wp_list_pluck($terms_to_use, 'term_id');
-            
+
             $relatedArgs['tax_query'] = array(
                 array(
                     'taxonomy' => 'cyclon_new_product_cat',
@@ -288,7 +301,7 @@ if (have_posts()): while (have_posts()): the_post();
                                                     <a href="<?php the_permalink(); ?>" class="productCard__Link"></a>
                                                 </div>
                                             </div>
-                                        <?php endwhile; 
+                                        <?php endwhile;
                                         wp_reset_postdata(); ?>
 
                                     </div>

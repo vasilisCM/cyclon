@@ -8249,7 +8249,7 @@ textarea {
 }
 @media (max-width: 1080px) and (min-width: 992px) {
   .cyclon__Menu li a {
-    padding: 7px 0;
+    padding: 7px;
   }
 }
 .cyclon__Menu li a:hover {

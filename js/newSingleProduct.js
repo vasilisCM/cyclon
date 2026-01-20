@@ -32,11 +32,11 @@
             
             if (isExpanded) {
                 contentElement.innerHTML = '<p>' + truncatedText + '</p>';
-                toggleButton.textContent = 'Show more...';
+                toggleButton.textContent = 'Show more';
                 toggleButton.setAttribute('aria-expanded', 'false');
             } else {
                 contentElement.innerHTML = fullContent;
-                toggleButton.textContent = 'Show less...';
+                toggleButton.textContent = 'Show less';
                 toggleButton.setAttribute('aria-expanded', 'true');
             }
         });
