@@ -26,6 +26,15 @@
   color: #001a61;
 }
 
+.single-cyclon_new_product .mobile-trigger svg path {
+  stroke: #001a61;
+}
+
+.single-cyclon_new_product .solid-header .mobile-trigger svg path, 
+.single-cyclon_new_product:has( > div.menu-is-visible) .mobile-trigger svg path {
+  stroke: #b9bfcb;
+}
+
 .cyclon_single_product_new {
   padding-top: 160px;
 }
