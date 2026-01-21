@@ -80,11 +80,7 @@ get_header(); ?>
 
                         <div class="tabs__contents">
                             <?php
-                            $range_descriptions = get_field('product_category_landing__range_descriptions');
-                            $evo = $range_descriptions['evo'];
-                            $pro = $range_descriptions['pro'];
-                            $eco = $range_descriptions['eco'];
-                            $max = $range_descriptions['max'];
+
 
                             $tab_index = 0;
                             foreach ($range_terms as $range_term) :
@@ -150,19 +146,10 @@ get_header(); ?>
 
                                         <div>
                                             <div class="text-l regular sans normal">
-
-                                                <?php if ($range_descriptions[$range_term->slug]['heading']) : ?>
-                                                    <?php echo $range_descriptions[$range_term->slug]['heading']; ?>
-                                                <?php else : ?>
-                                                    <?php echo esc_html($range_term->name); ?> Line
-                                                <?php endif; ?>
+                                                <?php echo esc_html($range_term->name); ?> Line
                                             </div>
-                                            <div class="text-m"><?php
-                                                                if ($range_descriptions[$range_term->slug]['text']) : ?>
-                                                    <?php echo $range_descriptions[$range_term->slug]['text']; ?>
-                                                <?php else : ?>
-                                                    <?php echo esc_html($range_term->description); ?>
-                                                <?php endif; ?>
+                                            <div class="text-m">
+                                                <?php echo wpautop($range_term->description); ?>
                                             </div>
                                         </div>
                                     </div>
@@ -295,7 +282,7 @@ get_header(); ?>
         ?>
                     <div class="text-center">
                         <a class="mButton primary product-category-landing__cta"
-                            href="<?php echo esc_url($category_link); ?>?cyclon_range=evo">
+                            href="<?php echo esc_url($category_link); ?>">
                             View Products
                         </a>
                     </div>
