@@ -14,7 +14,8 @@
   color: #b9bfcb;
 }
 
-.single-cyclon_new_product .solid-header .search-form label:after {
+.single-cyclon_new_product .solid-header .search-form label:after,
+.single-cyclon_new_product:has( > div.menu-is-visible) .search-form label:after {
   filter: invert(0);
 }
 
