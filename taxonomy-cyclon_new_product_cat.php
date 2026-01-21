@@ -196,6 +196,8 @@ get_header(); ?>
 
             if (have_posts()): ?>
                 <div class="container product-grid">
+                    
+                   
                     <div class="selected-filters" style="display: none;">
                         <div lang="el" class="font-ferry text selected-filters__heading"><?php _e('Επιλεγμενα Φιλτρα', 'cyclon'); ?></div>
 
@@ -205,6 +207,17 @@ get_header(); ?>
                             </div>
                             <div type="button" class="text-xs uppercase selected-filters__clear-all"><?php _e('Διαγραφη ολων', 'cyclon'); ?></div>
                         </div>
+                    </div>
+
+                    <div class="product-count">
+                        <?php 
+                        global $wp_query;
+                        $total_products = $wp_query->found_posts;
+                        $product_count_text = $total_products === 1 
+                            ? sprintf(__('%d product', 'cyclon'), $total_products)
+                            : sprintf(__('%d products', 'cyclon'), $total_products);
+                        ?>
+                        <span class="text-s uppercase product-count__number"><?php echo esc_html($product_count_text); ?></span>
                     </div>
 
                     <div class="archive-grid relative">

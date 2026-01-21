@@ -201,6 +201,17 @@ function updateFilterOptions(availableFilters) {
   });
 }
 
+// Emphasize current pagination link
+function highlightCurrentPagination() {
+  const paginationContainer = document.querySelector(".archive-grid__bottom");
+  if (!paginationContainer) return;
+
+  paginationContainer.querySelectorAll(".page-numbers.current").forEach((link) => {
+    link.style.textDecoration = "underline";
+    link.style.fontWeight = "600";
+  });
+}
+
 // Main function
 async function filterProducts({
   html: {
@@ -346,7 +357,7 @@ async function filterProducts({
 
     // Update product count display
     const productCountElement = document.querySelector(
-      ".woo-sorting__product-count"
+      ".product-count__number"
     );
     if (productCountElement) {
       const totalProducts = data.total_products || data.products.length;
@@ -568,6 +579,7 @@ async function filterProducts({
     const paginationContainer = document.querySelector(".archive-grid__bottom");
     if (paginationContainer && "pagination_html" in data) {
       paginationContainer.innerHTML = data.pagination_html || "";
+      highlightCurrentPagination();
     }
 
     if (typeof ScrollTrigger !== "undefined") {
@@ -1064,4 +1076,5 @@ document.addEventListener("DOMContentLoaded", () => {
   updateSelectedFiltersDisplay();
   initPinElements();
   ScrollTrigger.refresh();
+  highlightCurrentPagination();
 });

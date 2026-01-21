@@ -287,13 +287,13 @@
     margin: 0;
   }
 
-  li:first-child {
+  /* li:first-child {
     margin-right: auto;
   }
 
   li:last-child {
     margin-left: auto;
-  }
+  } */
 }
 
 /* Product Card  */
