@@ -95,29 +95,42 @@ get_header(); ?>
 
                                 // Get the associated category ID from the field
                                 $associated_cat_id = get_field('product_category_landing__assosiated_category');
-
-                                $tax_query = array(
-                                    'relation' => 'AND',
-                                    array(
-                                        'taxonomy' => 'cyclon_range',
-                                        'field'    => 'term_id',
-                                        'terms'    => $range_term->term_id,
-                                    ),
-                                );
-
-                                if ($associated_cat_id) {
-                                    $tax_query[] = array(
-                                        'taxonomy' => 'cyclon_new_product_cat',
-                                        'field'    => 'term_id',
-                                        'terms'    => $associated_cat_id,
-                                    );
+                                /**
+                                 * Featured products (ACF) instead of WP_Query
+                                 * Group field: new_product_landing_featured_products
+                                 * Subfields (Page Link, multiple): EVO, PRO, ECO, MAX
+                                 *
+                                 * We normalize whatever Page Link returns (ID | Post Object | URL)
+                                 * into an array of product post IDs.
+                                 */
+                                $featured_group = get_field('new_product_landing_featured_products');
+                                $range_key = sanitize_key($range_term->slug); // expected: evo|pro|eco|max
+                                $featured_raw = (is_array($featured_group) && isset($featured_group[$range_key])) ? $featured_group[$range_key] : array();
+                                if (!is_array($featured_raw)) {
+                                    $featured_raw = array($featured_raw);
                                 }
 
-                                $range_query = new WP_Query(array(
-                                    'post_type' => 'cyclon_new_product',
-                                    'posts_per_page' => 3,
-                                    'tax_query' => $tax_query,
-                                ));
+                                $featured_product_ids = array();
+                                foreach ($featured_raw as $item) {
+                                    $post_id = 0;
+
+                                    if (is_numeric($item)) {
+                                        $post_id = (int) $item;
+                                    } elseif (is_object($item) && isset($item->ID)) {
+                                        $post_id = (int) $item->ID;
+                                    } elseif (is_string($item) && $item !== '') {
+                                        $post_id = (int) url_to_postid($item);
+                                    }
+
+                                    if ($post_id > 0) {
+                                        $featured_product_ids[] = $post_id;
+                                    }
+                                }
+
+                                $featured_product_ids = array_values(array_unique($featured_product_ids));
+                                if (count($featured_product_ids) > 3) {
+                                    $featured_product_ids = array_slice($featured_product_ids, 0, 3);
+                                }
                             ?>
                                 <div class="<?php echo esc_attr($content_classes); ?> primary" id="tab-<?php echo esc_attr($range_term->slug); ?>">
 
@@ -156,7 +169,7 @@ get_header(); ?>
 
                                     <!-- Products  -->
                                     <div class="boxed centered no-padding">
-                                        <?php if ($range_query->have_posts()) : ?>
+                                        <?php if (!empty($featured_product_ids)) : ?>
                                             <?php
                                             // Fetch the color field from the range term
                                             $range_color = get_field('color', $range_term);
@@ -165,29 +178,34 @@ get_header(); ?>
 
                                                 <div class="new-category-product-grid">
                                                     <?php
-                                                    while ($range_query->have_posts()) :
-                                                        $range_query->the_post();
+                                                    foreach ($featured_product_ids as $featured_product_id) :
+                                                        $post_obj = get_post($featured_product_id);
+                                                        if (!$post_obj) {
+                                                            continue;
+                                                        }
+
+                                                        setup_postdata($post_obj);
 
                                                         // Retrieve custom fields first
-                                                        $range_code = get_field('range_code', get_the_ID());
-                                                        $small_text_line = get_field('small_text_line', get_the_ID());
-                                                        $thumbnail_url = get_the_post_thumbnail_url(get_the_ID(), 'large');
+                                                        $range_code = get_field('range_code', $featured_product_id);
+                                                        $small_text_line = get_field('small_text_line', $featured_product_id);
+                                                        $thumbnail_url = get_the_post_thumbnail_url($featured_product_id, 'large');
                                                     ?>
-                                                        <a href="<?php the_permalink(); ?>" class="new-category-product-card">
+                                                        <a href="<?php echo esc_url(get_permalink($featured_product_id)); ?>" class="new-category-product-card">
 
                                                             <?php if ($thumbnail_url) : ?>
                                                                 <div class="new-category-product-card__img-container">
-                                                                    <img src="<?php echo esc_url($thumbnail_url); ?>" alt="<?php echo esc_attr(get_the_title()); ?>">
+                                                                    <img src="<?php echo esc_url($thumbnail_url); ?>" alt="<?php echo esc_attr(get_the_title($featured_product_id)); ?>">
                                                                 </div>
                                                             <?php endif; ?>
                                                             <div class="new-category-product-card__text-container">
                                                                 <div>
                                                                     <div class="sans regular range-group__title uppercase text-ms">Cyclon <?php echo esc_html($range_term->name); ?></div>
                                                                     <h5 class="text-l regular primary sans new-category-product-card__title">
-                                                                        <?php the_title(); ?>
+                                                                        <?php echo esc_html(get_the_title($featured_product_id)); ?>
                                                                     </h5>
                                                                     <?php
-                                                                    $grade_terms = get_the_terms(get_the_ID(), 'cyclon_product_grade');
+                                                                    $grade_terms = get_the_terms($featured_product_id, 'cyclon_product_grade');
                                                                     if (!empty($grade_terms) && !is_wp_error($grade_terms)) {
                                                                         $color_style = '';
                                                                         if ($range_color) {
@@ -205,7 +223,7 @@ get_header(); ?>
                                                                 <?php endif; ?>
 
                                                                 <?php
-                                                                $content = strip_tags(get_the_content());
+                                                                $content = strip_tags(get_post_field('post_content', $featured_product_id));
                                                                 $words = preg_split('/\s+/', $content, -1, PREG_SPLIT_NO_EMPTY);
                                                                 $short_content = implode(' ', array_slice($words, 0, 20));
                                                                 ?>
@@ -218,7 +236,7 @@ get_header(); ?>
                                                                 </h4>
                                                             </div>
                                                         </a>
-                                                    <?php endwhile; ?>
+                                                    <?php endforeach; ?>
                                                 </div>
                                             </div>
                                         <?php else : ?>

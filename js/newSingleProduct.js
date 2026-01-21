@@ -2,7 +2,7 @@
     'use strict';
 
     // Configuration
-    const TRUNCATE_WORDS = 35;
+    const TRUNCATE_WORDS = 40;
 
     function initContentTruncation() {
         const contentElement = document.querySelector('.single-product-new__content');
