@@ -6,6 +6,28 @@ if (have_posts()): while (have_posts()): the_post();
         <main id="primary" class="main-content cyclon_single_product_new">
             <div class="cyclon_product__Inner">
                 <div class="container">
+                    <!-- Product Category -->
+                    <div class="single-product-new__category-info">
+                        <?php
+                        $categories = get_the_terms(get_the_ID(), 'cyclon_new_product_cat');
+                        if ($categories && !is_wp_error($categories)):
+                            $category = reset($categories); // Get the first category
+                        ?>
+                            <div class="text-s primary single-product-new__category-name">
+                                <span class="bold"><?php echo esc_html($category->name); ?></span>
+                            </div>
+                        <?php endif; ?>
+
+                        <?php if ($category): ?>
+                            <div class="single-product-new__category-image">
+                                <?php
+                                $category_image = get_field('new_product_category_image_single', $category);
+                                if ($category_image): ?>
+                                    <img src="<?php echo esc_url($category_image); ?>" alt="<?php echo esc_attr(get_the_title()); ?>">
+                                <?php endif; ?>
+                            </div>
+                        <?php endif; ?>
+                    </div>
                     <div class="single-product-new__grid">
                         <?php
                         // Categories that should have background image
@@ -41,27 +63,7 @@ if (have_posts()): while (have_posts()): the_post();
 
                         <!-- Info  -->
                         <div class="primary single-product-new__info">
-                            <div class="single-product-new__category-info">
-                                <?php
-                                $categories = get_the_terms(get_the_ID(), 'cyclon_new_product_cat');
-                                if ($categories && !is_wp_error($categories)):
-                                    $category = reset($categories); // Get the first category
-                                ?>
-                                    <div class="text-s primary single-product-new__category-name">
-                                        <span class="bold"><?php echo esc_html($category->name); ?></span>
-                                    </div>
-                                <?php endif; ?>
 
-                                <?php if ($category): ?>
-                                    <div class="single-product-new__category-image">
-                                        <?php
-                                        $category_image = get_field('new_product_category_image_single', $category);
-                                        if ($category_image): ?>
-                                            <img src="<?php echo esc_url($category_image); ?>" alt="<?php echo esc_attr(get_the_title()); ?>">
-                                        <?php endif; ?>
-                                    </div>
-                                <?php endif; ?>
-                            </div>
 
                             <div class="primary">
                                 <h1 class="text-2xl primary single-product-new__title">
@@ -104,17 +106,15 @@ if (have_posts()): while (have_posts()): the_post();
                                 </div>
                             </div>
 
-                            <div class="single-product-new__previous-info uppercase">
-                                <?php if (get_field('single_product__previous_name')): ?>
-
+                            <?php if (get_field('single_product__previous_name')): ?>
+                                <div class="single-product-new__previous-info uppercase">
                                     <span class="text-s">Replaces</span>
                                     <div class="text accent">
                                         <span><?php echo get_field('single_product__previous_name'); ?></span>
                                         <span><?php echo get_field('single_product__previous_code'); ?></span>
                                     </div>
-
-                                <?php endif; ?>
-                            </div>
+                                </div>
+                            <?php endif; ?>
 
                             <!-- Additional fields  -->
                             <div class="text-ms single-product-new__bullets">
@@ -153,8 +153,10 @@ if (have_posts()): while (have_posts()): the_post();
 
                                 <div class="single-product-new__toggle">
                                     <div class="show-more-line"></div>
-                                    <div class="text-ms text-center single-product-new__toggle-content" aria-expanded="false">
-                                        Show more
+                                    <div>
+                                        <div class="text-ms text-center single-product-new__toggle-content" aria-expanded="false">
+                                            Show more
+                                        </div>
                                     </div>
                                     <div class="show-more-line"></div>
                                 </div>
