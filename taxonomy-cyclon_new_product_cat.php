@@ -164,7 +164,7 @@ get_header(); ?>
                                         if ($taxonomy->name === 'cyclon_range'):
                                             $all_checkbox_id = esc_attr($taxonomy->name . '-all');
                                         ?>
-                                            <div class="product-filters__option all-option active">
+                                            <div class="product-filters__option all-option">
                                                 <input
                                                     type="checkbox"
                                                     name="filters[<?php echo esc_attr($taxonomy->name); ?>][]"
