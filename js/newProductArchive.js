@@ -862,6 +862,17 @@ function clearAllFilters() {
     }
   });
 
+  // Special handling for cyclon_range: reset active classes and set "All Ranges" to active
+  const allRangesCheckbox = document.querySelector('input[name="filters[cyclon_range][]"][value=""]');
+  if (allRangesCheckbox) {
+    resetCyclonRangeActiveClasses();
+    allRangesCheckbox.checked = true;
+    const allOptionDiv = allRangesCheckbox.closest('.product-filters__option');
+    if (allOptionDiv) {
+      allOptionDiv.classList.add('active');
+    }
+  }
+
   // Update URL (which will trigger filter update)
   updateUrlFromFilters();
 }
@@ -973,10 +984,14 @@ document.addEventListener("DOMContentLoaded", () => {
   // fetchInitialAvailableFilters();
 
   // Listen for checkbox changes to modify the URL
+  // Note: cyclon_range checkboxes are handled separately below
   document
     .querySelectorAll('input[type="checkbox"][name^="filters["]')
     .forEach((checkbox) => {
-      checkbox.addEventListener("change", updateUrlFromFilters);
+      // Skip cyclon_range checkboxes - they're handled in the special logic below
+      if (!checkbox.name.includes('filters[cyclon_range]')) {
+        checkbox.addEventListener("change", updateUrlFromFilters);
+      }
     });
 
   // Special handling for cyclon_range: make the entire div clickable
@@ -1033,8 +1048,9 @@ document.addEventListener("DOMContentLoaded", () => {
         resetCyclonRangeActiveClasses();
         
         if (checkbox === allRangesCheckbox) {
-          // "All Ranges" was clicked - uncheck all other ranges
+          // "All Ranges" was clicked
           if (checkbox.checked) {
+            // Uncheck all other ranges BEFORE updateUrlFromFilters runs
             rangeCheckboxes.forEach((cb) => {
               if (cb !== allRangesCheckbox && cb.checked) {
                 cb.checked = false;
@@ -1050,39 +1066,61 @@ document.addEventListener("DOMContentLoaded", () => {
             if (allOptionDiv) {
               allOptionDiv.classList.add('active');
             }
-          }
-        } else {
-          // A specific range was clicked - uncheck "All Ranges"
-          if (checkbox.checked && allRangesCheckbox.checked) {
-            allRangesCheckbox.checked = false;
-            // Remove active class from "All Ranges" option
-            const allOptionDiv = allRangesCheckbox.closest('.product-filters__option');
-            if (allOptionDiv) {
-              allOptionDiv.classList.remove('active');
+          } else {
+            // "All Ranges" was unchecked - ensure at least one range is selected
+            // If no other ranges are checked, check "All Ranges" again
+            const anyRangeChecked = Array.from(rangeCheckboxes).some(
+              (cb) => cb !== allRangesCheckbox && cb.checked
+            );
+            if (!anyRangeChecked) {
+              allRangesCheckbox.checked = true;
+              const allOptionDiv = allRangesCheckbox.closest('.product-filters__option');
+              if (allOptionDiv) {
+                allOptionDiv.classList.add('active');
+              }
+              // Don't call updateUrlFromFilters here since we're keeping "All Ranges" checked
+              return;
             }
           }
-          
-          // Add active class to the checked range option
+        } else {
+          // A specific range was clicked
           if (checkbox.checked) {
+            // Uncheck "All Ranges" if it's checked
+            if (allRangesCheckbox.checked) {
+              allRangesCheckbox.checked = false;
+              // Remove active class from "All Ranges" option
+              const allOptionDiv = allRangesCheckbox.closest('.product-filters__option');
+              if (allOptionDiv) {
+                allOptionDiv.classList.remove('active');
+              }
+            }
+            // Add active class to the checked range option
             const optionDiv = checkbox.closest('.product-filters__option');
             if (optionDiv) {
               optionDiv.classList.add('active');
             }
-          }
-          
-          // If no ranges are selected, check "All Ranges"
-          const anyRangeChecked = Array.from(rangeCheckboxes).some(
-            (cb) => cb !== allRangesCheckbox && cb.checked
-          );
-          if (!anyRangeChecked) {
-            allRangesCheckbox.checked = true;
-            // Add active class to "All Ranges" option
-            const allOptionDiv = allRangesCheckbox.closest('.product-filters__option');
-            if (allOptionDiv) {
-              allOptionDiv.classList.add('active');
+          } else {
+            // A specific range was unchecked
+            // If no ranges are selected, check "All Ranges"
+            const anyRangeChecked = Array.from(rangeCheckboxes).some(
+              (cb) => cb !== allRangesCheckbox && cb.checked
+            );
+            if (!anyRangeChecked) {
+              allRangesCheckbox.checked = true;
+              // Add active class to "All Ranges" option
+              const allOptionDiv = allRangesCheckbox.closest('.product-filters__option');
+              if (allOptionDiv) {
+                allOptionDiv.classList.add('active');
+              }
+              // Don't call updateUrlFromFilters here since we're keeping "All Ranges" checked
+              return;
             }
           }
         }
+        
+        // After handling the range logic, update URL and filters
+        // This ensures all checkboxes are in the correct state before updating
+        updateUrlFromFilters();
       });
     });
   }
