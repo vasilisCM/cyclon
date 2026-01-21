@@ -328,6 +328,11 @@
 
 .mega-menu-panel__media--primary {
   grid-column: 2;
+  text-align: center;
+}
+
+.mega-menu-panel__media--primary img {
+  max-width: 80%;
 }
 
 .mega-menu-panel__content {
