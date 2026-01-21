@@ -264,7 +264,7 @@
 .mega-menu {
   position: fixed;
   inset-inline: 0;
-  top: clamp(110px, 10.87vw, 155px);
+  top: clamp(110px, 10.87vw, 154px);
   min-height: clamp(600px, 45.9vw, 620px);
   visibility: hidden;
   opacity: 0;
