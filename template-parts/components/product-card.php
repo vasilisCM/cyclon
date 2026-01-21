@@ -19,14 +19,11 @@
     <div class="productCard__Content">
         <div class="text-ms uppercase">
             <span>Cyclon </span>
-            <?php if (get_field('range_code')): ?>
-                <?php
-                $terms = get_the_terms(get_the_ID(), 'cyclon_range');
-                if (!empty($terms) && !is_wp_error($terms)) :
-                    $term_names = wp_list_pluck($terms, 'name');
-                ?>
-                    <?php echo esc_html(implode(', ', $term_names)); ?>
-                <?php endif; ?>
+            <?php
+            $product_range = wp_get_post_terms(get_the_ID(), 'cyclon_range');
+            if (!empty($product_range) && !is_wp_error($product_range)):
+            ?>
+                <span><?php echo $product_range[0]->name; ?> </span>
             <?php endif; ?>
         </div>
         <div class="text-l uppercase product-card__title"><?php the_title(); ?></div>
