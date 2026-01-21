@@ -66,6 +66,7 @@ if (have_posts()): while (have_posts()): the_post();
                             <div class="primary">
                                 <h1 class="text-2xl primary single-product-new__title">
                                     <span>Cyclon </span>
+                                    <br>
                                     <?php
                                     $product_range = wp_get_post_terms(get_the_ID(), 'cyclon_range');
                                     if (!empty($product_range) && !is_wp_error($product_range)):
