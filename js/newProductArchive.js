@@ -346,7 +346,7 @@ async function filterProducts({
 
     // Update product count display
     const productCountElement = document.querySelector(
-      ".woo-sorting__product-count"
+      ".product-count__number"
     );
     if (productCountElement) {
       const totalProducts = data.total_products || data.products.length;
