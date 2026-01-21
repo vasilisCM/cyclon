@@ -14,6 +14,7 @@ function getCurrentArchivePage(pathname = window.location.pathname) {
 let archiveBasePath = getArchiveBasePath();
 let currentArchivePage = getCurrentArchivePage();
 let filterPinTrigger = null;
+let persistentTemplateClone = null; // Store template clone for reuse across AJAX calls
 
 // Stick To top
 function initPinElements() {
@@ -76,24 +77,13 @@ function storeInitialFilterOptions() {
 }
 
 function updateFilterOptions(availableFilters) {
-  console.log("📊 Updating filter options with available filters:", availableFilters);
+  console.log("📊 Available filters from API (for reference only):", availableFilters);
   
-  // Check if any filters are currently active
-  // Don't count "All" options (empty value checkboxes) as active filters
-  const hasActiveFilters = Array.from(
-    document.querySelectorAll('input[type="checkbox"][name^="filters["]:checked, select[name^="filters["]')
-  ).some((input) => {
-    if (input.tagName === 'SELECT') {
-      return input.value && input.value !== "";
-    }
-    // For checkboxes, only count as active if checked AND has a non-empty value
-    return input.checked && input.value !== "";
-  });
+  // Note: We no longer disable/hide filter options based on available_filters.
+  // All filter options remain enabled, allowing users to make any combination.
+  // If a combination results in no products, we'll show a "no products found" message.
 
-  console.log("🔍 Has active filters:", hasActiveFilters);
-  console.log("📋 Available filters from API:", availableFilters);
-
-  // Handle dropdown filters (for legacy support)
+  // Handle dropdown filters (for legacy support) - just restore initial options
   document.querySelectorAll(".woo-filters select").forEach((select) => {
     const attribute = select.name;
     const filterItem = select.closest(".woo-filters__item");
@@ -109,15 +99,7 @@ function updateFilterOptions(availableFilters) {
         if (optionData.value === selectedValue) {
           option.selected = true;
         }
-
-        // If filters are active and this term isn't available, disable it
-        if (hasActiveFilters && availableFilters[attribute]) {
-          const isAvailable = availableFilters[attribute].hasOwnProperty(
-            optionData.value
-          );
-          option.disabled = !isAvailable && optionData.value !== ""; // Don't disable empty option
-        }
-
+        // All options remain enabled - no disabling logic
         select.appendChild(option);
       });
 
@@ -137,65 +119,33 @@ function updateFilterOptions(availableFilters) {
   });
 
   // Handle checkbox and dropdown filters (new product archive)
+  // All options remain enabled - no disabling logic
   const taxonomies = cyclonFilters?.taxonomies || [];
   
   taxonomies.forEach((taxonomy) => {
-    // Handle checkboxes
+    // Handle checkboxes - ensure all are enabled
     const checkboxes = document.querySelectorAll(
       `input[name="filters[${taxonomy}][]"]`
     );
     
     if (checkboxes.length > 0) {
       checkboxes.forEach((checkbox) => {
-        const termSlug = checkbox.value;
         const optionDiv = checkbox.closest('.product-filters__option');
         
-        // ALWAYS enable "All" options (empty value checkboxes like "All Ranges")
-        if (termSlug === "") {
-          checkbox.disabled = false;
-          if (optionDiv) {
-            optionDiv.style.opacity = '1';
-            optionDiv.style.pointerEvents = 'auto';
-          }
-        } else if (hasActiveFilters && availableFilters[taxonomy]) {
-          const isAvailable = availableFilters[taxonomy].hasOwnProperty(termSlug);
-          checkbox.disabled = !isAvailable && !checkbox.checked;
-          
-          // Add visual feedback
-          if (optionDiv) {
-            if (checkbox.disabled) {
-              optionDiv.style.opacity = '0.5';
-              optionDiv.style.pointerEvents = 'none';
-            } else {
-              optionDiv.style.opacity = '1';
-              optionDiv.style.pointerEvents = 'auto';
-            }
-          }
-          
-          console.log(`  ${taxonomy} - ${termSlug}: ${isAvailable ? 'available' : 'disabled'}`);
-        } else {
-          // No active filters, enable all
-          checkbox.disabled = false;
-          if (optionDiv) {
-            optionDiv.style.opacity = '1';
-            optionDiv.style.pointerEvents = 'auto';
-          }
+        // Always enable all checkboxes
+        checkbox.disabled = false;
+        if (optionDiv) {
+          optionDiv.style.opacity = '1';
+          optionDiv.style.pointerEvents = 'auto';
         }
       });
     }
     
-    // Handle dropdowns
+    // Handle dropdowns - ensure all options are enabled
     const dropdown = document.querySelector(`select[name="filters[${taxonomy}][]"]`);
     if (dropdown) {
       Array.from(dropdown.options).forEach((option) => {
-        if (option.value === "") return; // Skip "All" option
-        
-        if (hasActiveFilters && availableFilters[taxonomy]) {
-          const isAvailable = availableFilters[taxonomy].hasOwnProperty(option.value);
-          option.disabled = !isAvailable && option.value !== dropdown.value;
-        } else {
-          option.disabled = false;
-        }
+        option.disabled = false;
       });
     }
   });
@@ -384,18 +334,36 @@ async function filterProducts({
     // const totalProducts = data.totalProducts;
     console.log(productsInfo);
 
-    const templateElement = document.querySelector(productSelector);
-    if (!templateElement) {
-      console.error("No product template found.");
+    // Get template element - try DOM first (to get latest structure), fallback to stored template
+    let templateElement = document.querySelector(productSelector);
+    let templateClone = null;
+    
+    if (templateElement) {
+      // Fresh template from DOM - clone and store it
+      templateClone = templateElement.cloneNode(true);
+      persistentTemplateClone = templateClone.cloneNode(true); // Store for future use
+    } else if (persistentTemplateClone) {
+      // No template in DOM, use stored one
+      templateClone = persistentTemplateClone.cloneNode(true);
+      console.log("Using stored template clone (no template in DOM)");
+    } else {
+      // No template available at all
+      console.error("No product template found and no stored template available.");
       return;
     }
-    const templateClone = templateElement.cloneNode(true);
 
+    // Clear container (template is now safely stored)
     Array.from(container.children).forEach((child) => {
       if (!child.classList.contains(loaderClass)) {
         child.remove();
       }
     });
+
+    // Hide "no products found" message if it exists
+    const existingNoProductsMessage = container.querySelector(".archive-grid__no-products");
+    if (existingNoProductsMessage) {
+      existingNoProductsMessage.style.display = "none";
+    }
 
     if (productsInfo.length > 0) {
       productsInfo.forEach((post) => {
@@ -574,10 +542,36 @@ async function filterProducts({
         loaderOverlay.classList.add("invisible");
       }
       //   loader.replaceWith(button);
+    } else {
+      // No products found - show message
+      loader.classList.add("hidden");
+
+      // Hide the loading overlay
+      if (loaderOverlay) {
+        loaderOverlay.classList.add("invisible");
+      }
+
+      // Create or update "no products found" message
+      let noProductsMessage = container.querySelector(".archive-grid__no-products");
+      if (!noProductsMessage) {
+        noProductsMessage = document.createElement("div");
+        noProductsMessage.className = "archive-grid__no-products";
+        container.appendChild(noProductsMessage);
+      }
+      noProductsMessage.textContent = "No products found matching your filters. Please try adjusting your selection.";
+      noProductsMessage.style.display = "block";
+      noProductsMessage.style.padding = "2rem";
+      noProductsMessage.style.textAlign = "center";
+
+      // Hide pagination when no products
+      const paginationContainer = document.querySelector(".archive-grid__bottom");
+      if (paginationContainer) {
+        paginationContainer.innerHTML = "";
+      }
     }
 
     const paginationContainer = document.querySelector(".archive-grid__bottom");
-    if (paginationContainer && "pagination_html" in data) {
+    if (paginationContainer && "pagination_html" in data && productsInfo.length > 0) {
       paginationContainer.innerHTML = data.pagination_html || "";
       highlightCurrentPagination();
     }

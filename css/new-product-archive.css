@@ -259,6 +259,10 @@
   gap: 8px;
 }
 
+.archive-grid__no-products {
+  grid-column: span 2;
+}
+
 .archive-grid {
   display: grid;
   gap: 20px;
