@@ -284,25 +284,33 @@ if (have_posts()): while (have_posts()): the_post();
                                     <div class="relatedProducts__Inner swiper-wrapper">
                                         <?php while ($relatedQuery->have_posts()): $relatedQuery->the_post(); ?>
                                             <div class="swiper-slide">
-                                                <div class="relatedProduct productCard">
+                                                <!-- <div class="relatedProduct productCard">
                                                     <div class="productCard__Image">
                                                         <?php
-                                                        $im = get_the_post_thumbnail_url(get_the_ID(), 'full');
-                                                        if (!empty($im)): ?>
-                                                            <img src="<?php echo $im; ?>"
+                                                        //$im = get_the_post_thumbnail_url(get_the_ID(), 'full');
+                                                        //if (!empty($im)): 
+                                                        ?>
+                                                            <img src="<?php //echo $im; 
+                                                                        ?>"
                                                                 class="img-fluid" />
-                                                        <?php else: ?>
+                                                        <?php //else: 
+                                                        ?>
                                                             <img src="/wp-content/uploads/2022/05/1L_MAGMA-SYN-ULTRA-S-0W-20-1.png"
                                                                 class="img-fluid" />
-                                                        <?php endif; ?>
+                                                        <?php //endif; 
+                                                        ?>
                                                     </div>
                                                     <div class="productCard__Content">
-                                                        <h3><?php the_title(); ?></h3>
-                                                        <!--                                                    <p class="spec"><strong>SYN - SHPD PLUS </strong> / 10W - 40</p>-->
-                                                        <p class="info"><?php echo get_field('small_text_line'); ?></p>
+                                                        <h3><?php //the_title(); 
+                                                            ?></h3>
+                                                        <p class="info"><?php //echo get_field('small_text_line'); 
+                                                                        ?></p>
                                                     </div>
-                                                    <a href="<?php the_permalink(); ?>" class="productCard__Link"></a>
-                                                </div>
+                                                    <a href="<?php //the_permalink(); 
+                                                                ?>" class="productCard__Link"></a>
+                                                </div> -->
+                                                <?php include 'template-parts/components/product-card.php';
+                                                ?>
                                             </div>
                                         <?php endwhile;
                                         wp_reset_postdata(); ?>

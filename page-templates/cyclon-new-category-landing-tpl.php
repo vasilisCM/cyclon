@@ -199,14 +199,14 @@ get_header(); ?>
                                                                             $color_style = ' style="color: ' . esc_attr($range_color) . ';"';
                                                                         }
                                                                     ?>
-                                                                        <div class="text-l uppercase product-card__grade"<?php echo $color_style; ?>><?php echo $grade_terms[0]->name; ?></div>
+                                                                        <div class="text-l uppercase product-card__grade" <?php echo $color_style; ?>><?php echo $grade_terms[0]->name; ?></div>
                                                                     <?php } ?>
                                                                     <?php if ($range_code) : ?>
                                                                         <div class="text-l regular sans new-category-product-card__code" style="color: <?php echo esc_attr($range_color); ?>;"><?php echo esc_html($range_code); ?></div>
                                                                     <?php endif; ?>
                                                                 </div>
                                                                 <?php if ($small_text_line) : ?>
-                                                                    <div class="text-s new-category-product-card__text"><?php echo esc_html($small_text_line); ?></div>
+                                                                    <div class="text-sm new-category-product-card__text"><?php echo esc_html($small_text_line); ?></div>
                                                                 <?php endif; ?>
 
                                                                 <?php
@@ -214,12 +214,12 @@ get_header(); ?>
                                                                 $words = preg_split('/\s+/', $content, -1, PREG_SPLIT_NO_EMPTY);
                                                                 $short_content = implode(' ', array_slice($words, 0, 20));
                                                                 ?>
-                                                                <div class="text-s info product-card__info">
+                                                                <div class="text-sm info product-card__info">
                                                                     <?php echo esc_html($short_content); ?><?php if (count($words) > 20) echo '...'; ?>
                                                                 </div>
 
                                                                 <h4 class="home-categories__category-heading">
-                                                                    <span></span>    
+                                                                    <span></span>
                                                                 </h4>
                                                             </div>
                                                         </a>
