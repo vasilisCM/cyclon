@@ -43,7 +43,7 @@ function cyclon_search_or_logic($search, $query)
     // Build OR search query
     $search = '';
     $searchand = '';
-    
+
     foreach ($search_terms as $term) {
         $term = $wpdb->esc_like($term);
         $term = '%' . $term . '%';
@@ -375,6 +375,7 @@ function cyclon_theme_scripts()
     // New Product Category Archive
     if (is_tax('cyclon_new_product_cat')) {
         wp_enqueue_style('new-product-archive', get_stylesheet_directory_uri() . '/css/new-product-archive.css', array(), time(), 'all');
+        wp_enqueue_style('new-product-card', get_stylesheet_directory_uri() . '/css/new-product-card.css', array(), time(), 'all');
     }
 
     // New Product Landing
@@ -385,6 +386,7 @@ function cyclon_theme_scripts()
     // New Product Single
     if (is_singular('cyclon_new_product')) {
         wp_enqueue_style('new-product-single', get_stylesheet_directory_uri() . '/css/single-product-new.css', array(), time(), 'all');
+        wp_enqueue_style('new-product-card', get_stylesheet_directory_uri() . '/css/new-product-card.css', array(), time(), 'all');
         wp_enqueue_script('new-product-single', get_stylesheet_directory_uri() . '/js/newSingleProduct.js', array('jquery'), time(), true);
     }
 

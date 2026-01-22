@@ -52,23 +52,23 @@
         </div>
 
         <?php if (get_field('small_text_line')): ?>
-            <div class="text-s info product-card__info"><?php echo get_field('small_text_line'); ?></div>
+            <div class="text-sm info product-card__info"><?php echo get_field('small_text_line'); ?></div>
         <?php endif; ?>
 
-       
+
 
         <?php
         $content = strip_tags(get_the_content());
         $words = preg_split('/\s+/', $content, -1, PREG_SPLIT_NO_EMPTY);
         $short_content = implode(' ', array_slice($words, 0, 20));
         ?>
-        <div class="text-s info product-card__info">
+        <div class="text-sm info product-card__info">
             <?php echo esc_html($short_content); ?><?php if (count($words) > 20) echo '...'; ?>
         </div>
 
         <h4 class="home-categories__category-heading">
-                                  <span></span>    
-                                </h4>
+            <span></span>
+        </h4>
 
     </div>
 </a>

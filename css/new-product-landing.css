@@ -198,6 +198,10 @@
   line-height: 1.3;
 }
 
+.new-category-product-card .product-card__info {
+  line-height: 1.3;
+}
+
 .new-category-product-card__img-container {
   justify-self: center;
 }
