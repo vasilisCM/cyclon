@@ -189,7 +189,7 @@ get_header(); ?>
                                                                 <div>
                                                                     <div class="sans regular range-group__title uppercase text-ms">Cyclon <?php echo esc_html($range_term->name); ?></div>
                                                                     <h5 class="text-l regular primary sans new-category-product-card__title">
-                                                                        <?php echo esc_html(get_the_title($featured_product_id)); ?>
+                                                                        <?php echo get_the_title($featured_product_id); ?>
                                                                     </h5>
                                                                     <?php
                                                                     $grade_terms = get_the_terms($featured_product_id, 'cyclon_product_grade');
