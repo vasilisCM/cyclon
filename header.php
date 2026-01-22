@@ -126,31 +126,105 @@
             $featured_image_url = get_the_post_thumbnail_url($front_page_id, 'full');
             // Fallback to default image if no featured image is set
             $background_image = $featured_image_url ? $featured_image_url : '/wp-content/uploads/2025/12/home-hero.jpg';
+            
+            // Get ACF carousel repeater
+            $carousel_items = get_field('home_hero_carousel', $front_page_id);
+            
+            // Build slides array - first slide is current hardcoded content
+            $slides = array();
+            
+            // Add first slide (current hardcoded content)
+            $slides[] = array(
+                'image' => $background_image,
+                'heading' => 'Engineered <br> to Perform',
+                'subheading' => 'Advanced technology <br> in every move',
+                'label' => 'Ανακαλυψτε Περισσοτερα',
+                'link' => '/'
+            );
+            
+            // Add ACF repeater slides if they exist
+            if ($carousel_items && is_array($carousel_items)) {
+                foreach ($carousel_items as $item) {
+                    if (!empty($item['image'])) {
+                        $slides[] = array(
+                            'image' => $item['image'],
+                            'heading' => $item['heading'] ?? '',
+                            'subheading' => $item['subheading'] ?? '',
+                            'label' => $item['label'] ?? '',
+                            'link' => $item['link'] ?? '/'
+                        );
+                    }
+                }
+            }
+            
+            $is_carousel = count($slides) > 1;
             ?>
-            <section class="taxHeader hero-home" style="background-image: url(<?php echo esc_url($background_image); ?>);">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                            <div class="taxHeader__Content">
-                                <div class="taxHeader__Content__Inner">
-                                    <div class="hero-home__text-container">
-                                        <h1 class="hero-home__heading">
-                                            Engineered <br> to Perform </h1>
-                                        <div class="hero-home__subheading accent">Advanced technology <br> in every move</div>
-                                        <a class="mButton mButton--trans uppercase hero-home__button" href="/">Ανακαλυψτε Περισσοτερα</a>
-                                        <!-- <a class="mButton mButton--trans text-xs letter-spacing-medium uppercase hero-home__button" href="/">Ανακαλυψτε Περισσοτερα</a> -->
+            
+            <?php if ($is_carousel): ?>
+                <section class="taxHeader hero-home carousel-hero">
+                    <div class="carousel-hero__container">
+                        <?php foreach ($slides as $index => $slide): ?>
+                            <div class="carousel-hero__slide" style="background-image: url(<?php echo esc_url($slide['image']); ?>);">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                        </div>
+                                        <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                            <div class="taxHeader__Content">
+                                                <div class="taxHeader__Content__Inner">
+                                                    <div class="hero-home__text-container">
+                                                        <?php if (!empty($slide['heading'])): ?>
+                                                            <h1 class="hero-home__heading"><?php echo $slide['heading']; ?></h1>
+                                                        <?php endif; ?>
+                                                        <?php if (!empty($slide['subheading'])): ?>
+                                                            <div class="hero-home__subheading accent"><?php echo $slide['subheading']; ?></div>
+                                                        <?php endif; ?>
+                                                        <?php if (!empty($slide['label']) && !empty($slide['link'])): ?>
+                                                            <a class="mButton mButton--trans uppercase hero-home__button" href="<?php echo esc_url($slide['link']); ?>"><?php echo esc_html($slide['label']); ?></a>
+                                                        <?php endif; ?>
+                                                    </div>
+                                                    <div class="taxHeader__Buttons d-none d-sm-flex d-md-flex d-lg-flex d-xl-flex">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="taxHeader__Buttons d-none d-sm-flex d-md-flex d-lg-flex d-xl-flex">
+                                </div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+                    <div class="carousel__bottom">
+                        <button class="carousel-hero__button carousel-hero__button--previous" aria-label="Previous slide"></button>
+                        <div class="carousel-hero__dots"></div>
+                        <button class="carousel-hero__button carousel-hero__button--next" aria-label="Next slide"></button>
+                    </div>
+                </section>
+            <?php else: ?>
+                <section class="taxHeader hero-home" style="background-image: url(<?php echo esc_url($background_image); ?>);">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                <div class="taxHeader__Content">
+                                    <div class="taxHeader__Content__Inner">
+                                        <div class="hero-home__text-container">
+                                            <h1 class="hero-home__heading">
+                                                Engineered <br> to Perform </h1>
+                                            <div class="hero-home__subheading accent">Advanced technology <br> in every move</div>
+                                            <a class="mButton mButton--trans uppercase hero-home__button" href="/">Ανακαλυψτε Περισσοτερα</a>
+                                            <!-- <a class="mButton mButton--trans text-xs letter-spacing-medium uppercase hero-home__button" href="/">Ανακαλυψτε Περισσοτερα</a> -->
+                                        </div>
+                                        <div class="taxHeader__Buttons d-none d-sm-flex d-md-flex d-lg-flex d-xl-flex">
 
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </section>
+                </section>
+            <?php endif; ?>
         <?php
         elseif (is_tax()): ?>
             <div class="taxHeader taxHeader2 product-cat"

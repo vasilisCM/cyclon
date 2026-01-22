@@ -1310,6 +1310,177 @@ if (tabsElement) {
   tabs.init();
 }
 
+// Hero Carousel
+class CarouselSingleOpacity {
+  constructor(
+    slideSelector,
+    animationDuration,
+    autoplayDuration,
+    hasAutoplay = false
+  ) {
+    this.slideSelector = slideSelector;
+    this.animationDuration = animationDuration;
+    this.autoplayDuration = autoplayDuration;
+    this.hasAutoplay = hasAutoplay;
+    this.slides = null;
+    this.tl = null;
+    this.currentIndex = 0;
+    this.autoplayInterval = null;
+  }
+
+  init() {
+    this.slides = document.querySelectorAll(this.slideSelector);
+    if (this.slides.length === 0) return;
+
+    // Initialize navigation
+    this.initNavigation();
+
+    // Start autoplay only if hasAutoplay is true
+    if (this.hasAutoplay) {
+      this.startAutoplay();
+      this.initHoverPause();
+    }
+  }
+
+  startAutoplay() {
+    this.autoplayInterval = setInterval(() => {
+      const nextIndex = (this.currentIndex + 1) % this.slides.length;
+      this.goToSlide(nextIndex);
+    }, this.autoplayDuration);
+  }
+
+  initHoverPause() {
+    const carouselContainer = this.slides[0]?.parentElement;
+    const controlsContainer = document.querySelector(".carousel__bottom");
+
+    const pauseAutoplay = () => {
+      if (this.autoplayInterval) {
+        clearInterval(this.autoplayInterval);
+        this.autoplayInterval = null;
+      }
+    };
+
+    const resumeAutoplay = () => {
+      if (this.hasAutoplay && !this.autoplayInterval) {
+        this.startAutoplay();
+      }
+    };
+
+    if (carouselContainer) {
+      carouselContainer.addEventListener("mouseenter", pauseAutoplay);
+      carouselContainer.addEventListener("mouseleave", resumeAutoplay);
+    }
+
+    if (controlsContainer) {
+      controlsContainer.addEventListener("mouseenter", pauseAutoplay);
+      controlsContainer.addEventListener("mouseleave", resumeAutoplay);
+    }
+  }
+
+  initNavigation() {
+    // Get navigation elements
+    const dotsContainer = document.querySelector(".carousel-hero__dots");
+    const prevButton = document.querySelector(
+      ".carousel-hero__button--previous"
+    );
+    const nextButton = document.querySelector(".carousel-hero__button--next");
+
+    // Create dots
+    if (dotsContainer) {
+      this.slides.forEach((_, index) => {
+        const dot = document.createElement("div");
+        dot.classList.add("carousel__dot");
+        if (index === 0) dot.classList.add("hero-carousel__dot--active");
+        dot.addEventListener("click", () => this.goToSlide(index));
+        dotsContainer.appendChild(dot);
+      });
+    }
+
+    // Add click handlers for prev/next buttons
+    if (prevButton) {
+      prevButton.addEventListener("click", () => {
+        const newIndex =
+          (this.currentIndex - 1 + this.slides.length) % this.slides.length;
+        this.goToSlide(newIndex);
+      });
+    }
+
+    if (nextButton) {
+      nextButton.addEventListener("click", () => {
+        const newIndex = (this.currentIndex + 1) % this.slides.length;
+        this.goToSlide(newIndex);
+      });
+    }
+  }
+
+  goToSlide(index) {
+    if (index === this.currentIndex) return;
+
+    // Kill the current timeline
+    if (this.tl) {
+      this.tl.kill();
+    }
+
+    // Create new timeline for the transition
+    this.tl = gsap.timeline();
+    this.tl
+      .to(this.slides[this.currentIndex], {
+        opacity: 0,
+        zIndex: 0,
+        duration: this.animationDuration,
+        ease: "power2.inOut",
+      })
+      .to(
+        this.slides[index],
+        {
+          opacity: 0,
+          zIndex: 1,
+          duration: 0,
+        },
+        "<"
+      )
+      .to(this.slides[index], {
+        opacity: 1,
+        zIndex: 1,
+        duration: this.animationDuration,
+        ease: "power2.inOut",
+        delay: 0.1,
+      });
+
+    // Update current index
+    this.currentIndex = index;
+
+    // Update active dot
+    const dots = document.querySelectorAll(".carousel__dot");
+    dots.forEach((dot, i) => {
+      dot.classList.toggle("hero-carousel__dot--active", i === index);
+    });
+  }
+
+  destroy() {
+    if (this.tl) {
+      this.tl.kill();
+      this.tl = null;
+    }
+    if (this.autoplayInterval) {
+      clearInterval(this.autoplayInterval);
+      this.autoplayInterval = null;
+    }
+    this.slides = null;
+  }
+}
+
+const carouselHeroElement = document.querySelector(".carousel-hero");
+if (carouselHeroElement) {
+  const carousel = new CarouselSingleOpacity(
+    ".carousel-hero__slide",
+    0.2,
+    5000,
+    true
+  );
+  carousel.init();
+}
+
 // Search Header
 jQuery("form.search-form label span").click(function () {
   if (jQuery("header").hasClass("openSearch")) {
