@@ -96,55 +96,65 @@ if (have_posts()): while (have_posts()): the_post();
                                     </div>
                                 <?php } ?>
 
-                                <div class="text">
-                                    <?php if (get_field('single_product__parent_code')): ?>
-                                        <div class="text-sm">
-                                            <span>Parent Code:</span>
-                                            <span><?php echo get_field('single_product__parent_code'); ?></span>
+                                <div>
+                                    <div class="single-product-new__previous-info-container">
+    
+                                        <div class="text">
+                                            <?php if (get_field('single_product__parent_code')): ?>
+                                                <div class="text-sm">
+                                                    <span>Parent Code:</span>
+                                                    <span><?php echo get_field('single_product__parent_code'); ?></span>
+                                                </div>
+                                            <?php endif; ?>
                                         </div>
-                                    <?php endif; ?>
-                                </div>
-                            </div>
-
-                            <?php if (get_field('single_product__previous_name')): ?>
-                                <div class="single-product-new__previous-info uppercase">
-                                    <span class="text-s">Replaces</span>
-                                    <div class="text accent">
-                                        <span><?php echo get_field('single_product__previous_name'); ?></span>
-                                        <span><?php echo get_field('single_product__previous_code'); ?></span>
+        
+                                        <?php if (get_field('single_product__previous_name')): ?>
+                                            <div class="single-product-new__previous-info uppercase">
+                                                <span class="text-s">Replaces</span>
+                                                <div class="text accent">
+                                                    <span><?php echo get_field('single_product__previous_name'); ?></span>
+                                                    <span><?php echo get_field('single_product__previous_code'); ?></span>
+                                                </div>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
+
+                                    <!-- Additional fields  -->
+                                    <div class="text-ms single-product-new__bullets">
+                                        <?php if (get_field('single_product_new__banner_1')): ?>
+                                            <li>
+                                                <span><?php echo get_field('single_product_new__banner_1'); ?></span>
+                                            </li>
+                                        <?php endif; ?>
+
+                                        <?php if (get_field('single_product_new__banner_2')): ?>
+                                            <li>
+                                                <span><?php echo get_field('single_product_new__banner_2'); ?></span>
+                                            </li>
+                                        <?php endif; ?>
+
+                                        <?php
+                                        $product_types = wp_get_post_terms(get_the_ID(), 'cyclon_product_type');
+                                        if (!empty($product_types) && !is_wp_error($product_types)):
+                                            $type_names = array();
+                                            foreach ($product_types as $type) {
+                                                $type_names[] = $type->name;
+                                            }
+                                        ?>
+                                            <li>
+                                                <span><?php echo implode(', ', $type_names); ?></span>
+                                            </li>
+                                        <?php endif; ?>
+
+
+                                    </div>
+                                    
                                 </div>
-                            <?php endif; ?>
-
-                            <!-- Additional fields  -->
-                            <div class="text-ms single-product-new__bullets">
-                                <?php if (get_field('single_product_new__banner_1')): ?>
-                                    <li>
-                                        <span><?php echo get_field('single_product_new__banner_1'); ?></span>
-                                    </li>
-                                <?php endif; ?>
-
-                                <?php if (get_field('single_product_new__banner_2')): ?>
-                                    <li>
-                                        <span><?php echo get_field('single_product_new__banner_2'); ?></span>
-                                    </li>
-                                <?php endif; ?>
-
-                                <?php
-                                $product_types = wp_get_post_terms(get_the_ID(), 'cyclon_product_type');
-                                if (!empty($product_types) && !is_wp_error($product_types)):
-                                    $type_names = array();
-                                    foreach ($product_types as $type) {
-                                        $type_names[] = $type->name;
-                                    }
-                                ?>
-                                    <li>
-                                        <span><?php echo implode(', ', $type_names); ?></span>
-                                    </li>
-                                <?php endif; ?>
-
-
                             </div>
+
+                            
+
+
 
                             <div>
                                 <div class="text-ms single-product-new__content">
