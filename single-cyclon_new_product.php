@@ -7,12 +7,21 @@ if (have_posts()): while (have_posts()): the_post();
             <div class="cyclon_product__Inner">
                 <div class="container">
                     <!-- Product Category -->
-                    <div class="single-product-new__category-info">
-                        <?php
-                        $categories = get_the_terms(get_the_ID(), 'cyclon_new_product_cat');
-                        if ($categories && !is_wp_error($categories)):
-                            $category = reset($categories); // Get the first category
-                        ?>
+                    <?php
+                    $categories = get_the_terms(get_the_ID(), 'cyclon_new_product_cat');
+                    $category = null;
+                    $category_link = '';
+                    if ($categories && !is_wp_error($categories)):
+                        $category = reset($categories); // Get the first category
+                        $category_link = get_term_link($category);
+                    endif;
+                    ?>
+                    <?php if ($category && $category_link): ?>
+                        <a href="<?php echo esc_url($category_link); ?>" class="single-product-new__category-info">
+                    <?php else: ?>
+                        <div class="single-product-new__category-info">
+                    <?php endif; ?>
+                        <?php if ($category): ?>
                             <div class="text-s primary single-product-new__category-name">
                                 <span class="bold"><?php echo esc_html($category->name); ?></span>
                             </div>
@@ -27,7 +36,11 @@ if (have_posts()): while (have_posts()): the_post();
                                 <?php endif; ?>
                             </div>
                         <?php endif; ?>
-                    </div>
+                    <?php if ($category && $category_link): ?>
+                        </a>
+                    <?php else: ?>
+                        </div>
+                    <?php endif; ?>
                     <div class="single-product-new__grid">
                         <?php
                         // Categories that should have background image

@@ -37,6 +37,8 @@
 }
 
 .cyclon_single_product_new {
+  position: relative;
+  z-index: 1;
   padding-top: 160px;
 }
 
@@ -183,6 +185,7 @@
 }
 
 .single-product-new__previous-info-container {
+  z-index: 10;
   display: flex;
   flex-wrap: wrap;
   align-items: center;

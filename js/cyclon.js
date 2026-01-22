@@ -1140,6 +1140,9 @@ if (itemHasChildren && submenu && megaMenu && main) {
 // });
 
 // Legacy Categories Tray
+const legacyCategoriesTray = document.querySelector(
+  ".legacy-categories-tray"
+);
 const legacyCategoriesToggle = document.querySelector(
   ".legacy-categories-tray__toggle"
 );
@@ -1151,15 +1154,25 @@ const legacyCategoriesContent = document.querySelector(
 );
 
 legacyCategoriesToggle.addEventListener("click", () => {
-  legacyCategoriesContent.classList.toggle(
-    "legacy-categories-tray__content--active"
-  );
+  // legacyCategoriesContent.classList.toggle(
+  //   "legacy-categories-tray__content--active"
+  // );
+  if (legacyCategoriesTray) {
+    legacyCategoriesTray.classList.toggle(
+      "legacy-categories-tray--active"
+    );
+  }
 });
 
 legacyCategoriesClose.addEventListener("click", () => {
-  legacyCategoriesContent.classList.remove(
-    "legacy-categories-tray__content--active"
-  );
+  // legacyCategoriesContent.classList.remove(
+  //   "legacy-categories-tray__content--active"
+  // );
+  if (legacyCategoriesTray) {
+    legacyCategoriesTray.classList.remove(
+      "legacy-categories-tray--active"
+    );
+  }
 });
 
 // Auto-open tray once per session to indicate its presence
@@ -1177,12 +1190,22 @@ legacyCategoriesClose.addEventListener("click", () => {
     legacyCategoriesContent.classList.add(
       "legacy-categories-tray__content--active"
     );
+    if (legacyCategoriesTray) {
+      legacyCategoriesTray.classList.add(
+        "legacy-categories-tray--active"
+      );
+    }
 
     // Close after 2 seconds
     setTimeout(() => {
       if (legacyCategoriesContent) {
         legacyCategoriesContent.classList.remove(
           "legacy-categories-tray__content--active"
+        );
+      }
+      if (legacyCategoriesTray) {
+        legacyCategoriesTray.classList.remove(
+          "legacy-categories-tray--active"
         );
       }
       // Mark as shown in session storage
