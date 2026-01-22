@@ -52,7 +52,7 @@ jQuery(document).ready(function ($) {
     direction: "horizontal",
     loop: true,
     // autoHeight: true,
-    slidesPerView: 4,
+    slidesPerView: 3,
     spaceBetween: 10,
     pagination: {
       el: ".swiper-pagination",
@@ -67,13 +67,13 @@ jQuery(document).ready(function ($) {
         slidesPerView: 1,
       },
       768: {
-        slidesPerView: 3,
+        slidesPerView: 2,
       },
       1100: {
         slidesPerView: 3,
       },
       1200: {
-        slidesPerView: 4,
+        slidesPerView: 3,
       },
     },
   });
