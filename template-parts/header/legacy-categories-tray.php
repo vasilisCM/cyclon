@@ -2,16 +2,20 @@
     <div class="legacy-categories-tray__toggle">
         <span class="legacy-categories-tray__icon"><img src="/wp-content/uploads/2026/01/ic-side-menu-package.svg" alt="ic-package" /></span>
         <span class="text-ms bold legacy-categories-tray__title"><?php echo get_field('categories_tray_toggle', 'option'); ?></span>
-        <span class="legacy-categories-tray__icon"><img src="/wp-content/uploads/2026/01/ic-side-menu-burger.svg" alt="ic-burger" /></span>
+        <span class="legacy-categories-tray__icon">
+            <div class="legacy-categories-tray__hamburger" pressed="false">
+                <div class="legacy-categories-tray__hamburger-button"></div>
+            </div>
+        </span>
     </div>
     <div class="legacy-categories-tray__content">
 
 
 
         <div class="legacy-categories-tray__categories">
-            <div class="legacy-categories-tray__close hidden-desktop">
+            <!-- <div class="legacy-categories-tray__close hidden-desktop">
                 &times;
-            </div>
+            </div> -->
 
             <?php if (have_rows('categories_tray_list', 'option')): ?>
                 <?php while (have_rows('categories_tray_list', 'option')): the_row(); ?>

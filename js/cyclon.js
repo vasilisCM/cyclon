@@ -1152,6 +1152,9 @@ const legacyCategoriesClose = document.querySelector(
 const legacyCategoriesContent = document.querySelector(
   ".legacy-categories-tray__content"
 );
+const legacyCategoriesHamburger = document.querySelector(
+  ".legacy-categories-tray__hamburger"
+);
 
 legacyCategoriesToggle.addEventListener("click", () => {
   // legacyCategoriesContent.classList.toggle(
@@ -1160,6 +1163,13 @@ legacyCategoriesToggle.addEventListener("click", () => {
   if (legacyCategoriesTray) {
     legacyCategoriesTray.classList.toggle(
       "legacy-categories-tray--active"
+    );
+  }
+  
+  // Toggle hamburger animation
+  if (legacyCategoriesHamburger) {
+    legacyCategoriesHamburger.classList.toggle(
+      "legacy-categories-tray__hamburger--pressed"
     );
   }
 });
@@ -1171,6 +1181,13 @@ legacyCategoriesClose.addEventListener("click", () => {
   if (legacyCategoriesTray) {
     legacyCategoriesTray.classList.remove(
       "legacy-categories-tray--active"
+    );
+  }
+  
+  // Reset hamburger animation
+  if (legacyCategoriesHamburger) {
+    legacyCategoriesHamburger.classList.remove(
+      "legacy-categories-tray__hamburger--pressed"
     );
   }
 });

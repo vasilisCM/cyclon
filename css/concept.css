@@ -490,6 +490,7 @@ li:has(.sub-menu--active) > a:after {
 .legacy-categories-tray__toggle {
   display: flex;
   gap: 8px;
+  justify-content: space-between;
   align-items: center;
   position: absolute;
   top: 0;
@@ -567,6 +568,85 @@ li:has(.sub-menu--active) > a:after {
 
 .legacy-categories-tray__category-text-container {
   padding: 8px 8px 8px 12px;
+}
+
+@media screen and (max-width: 991px) {
+  .legacy-categories-tray {
+    right: revert;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%) translateY(100%);
+  }
+  
+  .legacy-categories-tray--active {
+      transform: translateX(-50%)  translateY(0%);
+  }
+  
+  .legacy-categories-tray__toggle {
+    width: 100%;
+    margin-top: -20px;
+    transform: translateY(-50%);
+  }
+
+  .legacy-categories-tray__icon {
+    transform: rotate(0deg);
+  }
+  
+  .legacy-categories-tray__content {
+    width: max-content;
+  }
+  
+}
+
+/* Legacy Categories Tray Hamburger  */
+.legacy-categories-tray__hamburger {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 24px;
+  width: 18px;
+  cursor: pointer;
+}
+
+.legacy-categories-tray__hamburger--pressed .legacy-categories-tray__hamburger-button {
+  transform: translateX(-50px);
+  background: transparent;
+}
+
+.legacy-categories-tray__hamburger--pressed .legacy-categories-tray__hamburger-button:before {
+  transform: rotate(45deg) translate(35px, -35px);
+}
+
+.legacy-categories-tray__hamburger--pressed .legacy-categories-tray__hamburger-button:after {
+  transform: rotate(-45deg) translate(35px, 35px);
+}
+
+.legacy-categories-tray__hamburger-button {
+  display: flex;
+  position: relative;
+  width: 18px;
+  height: 2px;
+  background: #000;
+  cursor: pointer;
+  transition: all 0.5s ease-in-out;
+}
+
+.legacy-categories-tray__hamburger-button:before,
+.legacy-categories-tray__hamburger-button:after {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 2px;
+  background: #000;
+  transition: all 0.5s ease-in-out;
+}
+
+.legacy-categories-tray__hamburger-button:before {
+  transform: translateY(-6px);
+}
+
+.legacy-categories-tray__hamburger-button:after {
+  transform: translateY(6px);
 }
 
 /* Tabs  */
