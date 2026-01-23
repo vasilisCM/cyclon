@@ -572,20 +572,21 @@ li:has(.sub-menu--active) > a:after {
 
 @media screen and (max-width: 991px) {
   .legacy-categories-tray {
-    right: revert;
+    right: 0;
+    left: 0;
     bottom: 0;
-    left: 50%;
-    transform: translateX(-50%) translateY(100%);
+    transform:translateY(100%);
   }
   
   .legacy-categories-tray--active {
-      transform: translateX(-50%)  translateY(0%);
+      transform: translateY(0%);
   }
   
   .legacy-categories-tray__toggle {
     width: 100%;
     margin-top: -20px;
     transform: translateY(-50%);
+    border-radius: 0;
   }
 
   .legacy-categories-tray__icon {
@@ -593,7 +594,14 @@ li:has(.sub-menu--active) > a:after {
   }
   
   .legacy-categories-tray__content {
-    width: max-content;
+    width: 100%;
+  }
+
+  .legacy-categories-tray__categories {
+    padding: 14px 0 30px 14px;
+  }
+  .legacy-categories-tray__category {
+    max-width: revert;
   }
   
 }
