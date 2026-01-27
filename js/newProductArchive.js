@@ -22,6 +22,16 @@ function initPinElements() {
     return;
   }
 
+  // Disable pin on mobile/tablet devices (below 1024px)
+  if (window.innerWidth <= 1024) {
+    // Kill existing trigger if it exists
+    if (filterPinTrigger) {
+      filterPinTrigger.kill();
+      filterPinTrigger = null;
+    }
+    return;
+  }
+
   const stickyTarget = document.querySelector(".sticky");
   const archiveGrid = document.querySelector(".archive-grid");
 
@@ -162,6 +172,14 @@ function highlightCurrentPagination() {
   });
 }
 
+// Close mobile filters
+function closeMobileFilters() {
+  const productFilters = document.querySelector('.product-filters');
+  if (productFilters && productFilters.classList.contains('active')) {
+    productFilters.classList.remove('active');
+  }
+}
+
 // Main function
 async function filterProducts({
   html: {
@@ -187,6 +205,9 @@ async function filterProducts({
     urlFilters = {},
   } = {},
 } = {}) {
+  // Close mobile filters when AJAX request starts
+  closeMobileFilters();
+
   // Store initial filter options on first call
   if (Object.keys(initialFilterOptions).length === 0) {
     storeInitialFilterOptions();
@@ -699,17 +720,19 @@ function syncFiltersFromUrl() {
     );
     const urlValues = urlFilters[taxonomy] || [];
 
+    // For cyclon_range, reset all active classes first
+    if (taxonomy === 'cyclon_range') {
+      resetCyclonRangeActiveClasses();
+    }
+
     checkboxes.forEach((checkbox) => {
-      const shouldBeChecked = urlValues.includes(checkbox.value);
-      checkbox.checked = shouldBeChecked;
+      checkbox.checked = urlValues.includes(checkbox.value);
       
-      // Update active class based on checked state (for all taxonomies including cyclon_range)
-      const optionDiv = checkbox.closest('.product-filters__option');
-      if (optionDiv) {
-        if (shouldBeChecked) {
+      // Update active class for cyclon_range (only one should be active)
+      if (taxonomy === 'cyclon_range' && checkbox.checked) {
+        const optionDiv = checkbox.closest('.product-filters__option');
+        if (optionDiv) {
           optionDiv.classList.add('active');
-        } else {
-          optionDiv.classList.remove('active');
         }
       }
     });
@@ -727,10 +750,9 @@ function syncFiltersFromUrl() {
         
         const allOptionDiv = allRangesCheckbox.closest('.product-filters__option');
         if (allOptionDiv) {
+          // Reset active class first, then add if needed
           if (!hasRangeFilters) {
             allOptionDiv.classList.add('active');
-          } else {
-            allOptionDiv.classList.remove('active');
           }
         }
       }
@@ -840,17 +862,12 @@ function clearAllFilters() {
 
   // Clear all filter checkboxes and dropdowns
   taxonomies.forEach((taxonomy) => {
-    // Uncheck ALL checkboxes and remove active classes
+    // Uncheck checkboxes
     const checkboxes = document.querySelectorAll(
-      `input[name="filters[${taxonomy}][]"]`
+      `input[name="filters[${taxonomy}][]"]:checked`
     );
     checkboxes.forEach((checkbox) => {
       checkbox.checked = false;
-      // Remove active class from option div
-      const optionDiv = checkbox.closest('.product-filters__option');
-      if (optionDiv) {
-        optionDiv.classList.remove('active');
-      }
     });
 
     // Reset dropdowns
@@ -860,9 +877,10 @@ function clearAllFilters() {
     }
   });
 
-  // Special handling for cyclon_range: set "All Ranges" to active
+  // Special handling for cyclon_range: reset active classes and set "All Ranges" to active
   const allRangesCheckbox = document.querySelector('input[name="filters[cyclon_range][]"][value=""]');
   if (allRangesCheckbox) {
+    resetCyclonRangeActiveClasses();
     allRangesCheckbox.checked = true;
     const allOptionDiv = allRangesCheckbox.closest('.product-filters__option');
     if (allOptionDiv) {
@@ -882,11 +900,6 @@ function removeFilter(taxonomy, termSlug) {
 
   if (checkbox) {
     checkbox.checked = false;
-    // Remove active class from option div
-    const optionDiv = checkbox.closest('.product-filters__option');
-    if (optionDiv) {
-      optionDiv.classList.remove('active');
-    }
   } else {
     // If not a checkbox, check for dropdown
     const dropdown = document.querySelector(`select[name="filters[${taxonomy}][]"]`);
@@ -1016,11 +1029,10 @@ document.addEventListener("DOMContentLoaded", () => {
         // Find and toggle the checkbox
         if (checkbox) {
           checkbox.checked = !checkbox.checked;
-          // Toggle active class for THIS option only (like a normal checkbox)
+          // Reset all active classes first, then set the new one
+          resetCyclonRangeActiveClasses();
           if (checkbox.checked) {
             optionDiv.classList.add('active');
-          } else {
-            optionDiv.classList.remove('active');
           }
           // Manually trigger the change event
           checkbox.dispatchEvent(new Event('change', { bubbles: true }));
@@ -1030,11 +1042,11 @@ document.addEventListener("DOMContentLoaded", () => {
       // Also update active class when checkbox changes (for label clicks)
       if (checkbox) {
         checkbox.addEventListener('change', () => {
-          // Toggle active class for THIS option only (like a normal checkbox)
+          // Reset all active classes first
+          resetCyclonRangeActiveClasses();
+          // Then add active to the checked one
           if (checkbox.checked) {
             optionDiv.classList.add('active');
-          } else {
-            optionDiv.classList.remove('active');
           }
         });
       }
@@ -1047,6 +1059,9 @@ document.addEventListener("DOMContentLoaded", () => {
   if (allRangesCheckbox && rangeCheckboxes.length > 0) {
     rangeCheckboxes.forEach((checkbox) => {
       checkbox.addEventListener('change', () => {
+        // Always reset all active classes first
+        resetCyclonRangeActiveClasses();
+        
         if (checkbox === allRangesCheckbox) {
           // "All Ranges" was clicked
           if (checkbox.checked) {
@@ -1067,18 +1082,14 @@ document.addEventListener("DOMContentLoaded", () => {
               allOptionDiv.classList.add('active');
             }
           } else {
-            // "All Ranges" was unchecked
-            const allOptionDiv = allRangesCheckbox.closest('.product-filters__option');
-            if (allOptionDiv) {
-              allOptionDiv.classList.remove('active');
-            }
-            // Ensure at least one range is selected
+            // "All Ranges" was unchecked - ensure at least one range is selected
             // If no other ranges are checked, check "All Ranges" again
             const anyRangeChecked = Array.from(rangeCheckboxes).some(
               (cb) => cb !== allRangesCheckbox && cb.checked
             );
             if (!anyRangeChecked) {
               allRangesCheckbox.checked = true;
+              const allOptionDiv = allRangesCheckbox.closest('.product-filters__option');
               if (allOptionDiv) {
                 allOptionDiv.classList.add('active');
               }
@@ -1088,8 +1099,6 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         } else {
           // A specific range was clicked
-          const optionDiv = checkbox.closest('.product-filters__option');
-          
           if (checkbox.checked) {
             // Uncheck "All Ranges" if it's checked
             if (allRangesCheckbox.checked) {
@@ -1100,16 +1109,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 allOptionDiv.classList.remove('active');
               }
             }
-            // Add active class to THIS range option
+            // Add active class to the checked range option
+            const optionDiv = checkbox.closest('.product-filters__option');
             if (optionDiv) {
               optionDiv.classList.add('active');
             }
           } else {
             // A specific range was unchecked
-            // Remove active class from THIS option
-            if (optionDiv) {
-              optionDiv.classList.remove('active');
-            }
             // If no ranges are selected, check "All Ranges"
             const anyRangeChecked = Array.from(rangeCheckboxes).some(
               (cb) => cb !== allRangesCheckbox && cb.checked
@@ -1173,4 +1179,43 @@ document.addEventListener("DOMContentLoaded", () => {
   initPinElements();
   ScrollTrigger.refresh();
   highlightCurrentPagination();
+
+  // Mobile filter toggle functionality
+  const filterToggleBtn = document.querySelector('.filter-toggle-btn');
+  const productFilters = document.querySelector('.product-filters');
+  const filterCloseBtn = document.querySelector('.product-filters__close');
+
+  // Only set up toggle functionality if all required elements exist
+  if (filterToggleBtn && productFilters && filterCloseBtn) {
+    // Open filters
+    filterToggleBtn.addEventListener('click', () => {
+      productFilters.classList.add('active');
+    });
+
+    // Close filters with close button
+    filterCloseBtn.addEventListener('click', () => {
+      productFilters.classList.remove('active');
+    });
+
+    // Close filters when clicking outside
+    document.addEventListener('click', (e) => {
+      if (productFilters.classList.contains('active') && 
+          !productFilters.contains(e.target) && 
+          !filterToggleBtn.contains(e.target)) {
+        productFilters.classList.remove('active');
+      }
+    });
+  }
+
+  // Handle window resize for ScrollTrigger pin
+  let resizeTimeout;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      if (typeof ScrollTrigger !== "undefined") {
+        initPinElements();
+        ScrollTrigger.refresh();
+      }
+    }, 250);
+  });
 });

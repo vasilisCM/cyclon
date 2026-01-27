@@ -7,6 +7,11 @@ get_header(); ?>
         <div class="container product-archive__container">
 
 
+            <!-- Mobile Filter Toggle Button -->
+            <button class="filter-toggle-btn" aria-label="Toggle Filters">
+                Filters
+            </button>
+
             <!-- Product Filters  -->
             <?php
             // Get current category term
@@ -41,7 +46,8 @@ get_header(); ?>
             $cyclon_taxonomies = array_filter($cyclon_taxonomies);
             if (! empty($cyclon_taxonomies)): ?>
                 <div class="product-filters sticky">
-                    <div lang="el" class="font-ferry black-weight lowercase product-filters__heading"><?php _e('Φιλτρα', 'cyclon'); ?></div>
+                    <button class="product-filters__close" aria-label="Close Filters">&times;</button>
+                    <div lang="el" class="font-ferry black-weight lowercase product-filters__heading"><?php _e('Filters', 'cyclon'); ?></div>
                     <div class="product-filters__grid">
                         <?php
                         $dropdown_wrapper_opened = false;
@@ -199,13 +205,13 @@ get_header(); ?>
                     
                    
                     <div class="selected-filters" style="display: none;">
-                        <div lang="el" class="font-ferry text selected-filters__heading"><?php _e('Επιλεγμενα Φιλτρα', 'cyclon'); ?></div>
+                        <div lang="el" class="font-ferry text selected-filters__heading"><?php _e('Selected Filters', 'cyclon'); ?></div>
 
                         <div class="selected-filters__list-container">
                             <div class="text-xs uppercase selected-filters__list">
                                 <!-- Filters will be dynamically inserted here -->
                             </div>
-                            <div type="button" class="text-xs uppercase selected-filters__clear-all"><?php _e('Διαγραφη ολων', 'cyclon'); ?></div>
+                            <div type="button" class="text-xs uppercase selected-filters__clear-all"><?php _e('Clear All', 'cyclon'); ?></div>
                         </div>
                     </div>
 

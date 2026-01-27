@@ -1174,23 +1174,10 @@ legacyCategoriesToggle.addEventListener("click", () => {
   }
 });
 
+if (legacyCategoriesClose) {
 legacyCategoriesClose.addEventListener("click", () => {
-  // legacyCategoriesContent.classList.remove(
-  //   "legacy-categories-tray__content--active"
-  // );
-  if (legacyCategoriesTray) {
-    legacyCategoriesTray.classList.remove(
-      "legacy-categories-tray--active"
-    );
-  }
-  
-  // Reset hamburger animation
-  if (legacyCategoriesHamburger) {
-    legacyCategoriesHamburger.classList.remove(
-      "legacy-categories-tray__hamburger--pressed"
-    );
-  }
 });
+}
 
 // Auto-open tray once per session to indicate its presence
 (function autoOpenLegacyCategoriesTray() {

@@ -14,6 +14,8 @@
 
 /* Hero */
 .tax-cyclon_new_product_cat .taxHeader {
+  position: relative;
+  z-index: 200;
   background-image: url("/wp-content/uploads/2025/12/cat-landing-hero-bg.jpg") !important;
   height: clamp(270px, calc((500 * 100vw) / 1280), 500px);
   overflow: hidden;
@@ -233,6 +235,7 @@
 .product-filters__grid {
   display: grid;
   gap: 20px;
+  background-color: white;
 }
 
 .product-filters__group {
@@ -326,5 +329,113 @@
   }
   to {
     background-position: 200% 0;
+  }
+}
+
+/* Mobile Filter Toggle */
+.filter-toggle-btn {
+  display: none;
+  position: fixed;
+  top: 100px;
+  right: 20px;
+  z-index: 100;
+  padding: 12px 24px;
+  background-color: #001a61;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: all 0.3s ease;
+}
+
+.filter-toggle-btn:hover {
+  background-color: #002080;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.product-filters__close {
+  display: none;
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 32px;
+  line-height: 1;
+  color: #001a61;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  z-index: 10;
+}
+
+.product-filters__close:hover {
+  color: #ff671c;
+}
+
+/* Mobile Filter Styles */
+@media only screen and (max-width: 1024px) {
+  .filter-toggle-btn {
+    display: block;
+  }
+
+  .product-filters {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 320px;
+    max-width: 85vw;
+    background: #ffffff;
+    z-index: 1000;
+    padding: 20px;
+    overflow-y: auto;
+    box-shadow: 4px 0 12px rgba(0, 0, 0, 0.15);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  .product-filters.active {
+    transform: translateX(0);
+  }
+
+  .product-filters__close {
+    display: block;
+  }
+
+  .product-filters__heading {
+    margin-top: 20px;
+  }
+
+  .product-archive__container {
+    grid-template-columns: 1fr;
+  }
+
+  /* Backdrop overlay */
+  /* .product-filters.active::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: -1;
+    animation: fadeIn 0.3s ease;
+  } */
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
