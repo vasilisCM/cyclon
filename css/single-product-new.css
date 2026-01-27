@@ -47,6 +47,7 @@
   grid-template-columns: 1fr 1fr;
   gap: 20px;
   padding-bottom: 100px;
+  align-items: start;
 }
 
 @media only screen and (max-width: 1024px) {
@@ -62,6 +63,13 @@
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+  margin-top: 40px;
+}
+
+@media only screen and (max-width: 1024px) {
+  .single-product-new__img-container {
+    margin-top: 0;
+  }
 }
 
 .single-product-new__img-container img {
