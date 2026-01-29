@@ -212,10 +212,10 @@ get_header(); ?>
                                                                 <?php
                                                                 $content = strip_tags(get_post_field('post_content', $featured_product_id));
                                                                 $words = preg_split('/\s+/', $content, -1, PREG_SPLIT_NO_EMPTY);
-                                                                $short_content = implode(' ', array_slice($words, 0, 20));
+                                                                $short_content = implode(' ', array_slice($words, 0, 15));
                                                                 ?>
                                                                 <div class="text-sm info product-card__info">
-                                                                    <?php echo esc_html($short_content); ?><?php if (count($words) > 20) echo '...'; ?>
+                                                                    <?php echo esc_html($short_content); ?><?php if (count($words) > 15) echo '...'; ?>
                                                                 </div>
 
                                                                 <h4 class="home-categories__category-heading">
