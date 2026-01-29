@@ -38,8 +38,8 @@ get_header(); ?>
                 'cyclon_range',
                 'cyclon_product_grade',
                 'cyclon_product_type',
-              
-                'cyclon_specifications',
+                'cyclon_new_product_acea',
+                'cyclon_new_product_oem',
                 'cyclon_new_product_cat', // Subcategories as Applications
             );
             $cyclon_taxonomies = array_map('get_taxonomy', $allowed_taxonomies);
@@ -135,12 +135,20 @@ get_header(); ?>
                                     <div class="bold text-s uppercase letter-spacing-medium"><?php echo esc_html($filter_label); ?></div>
                                 <?php } ?>
 
-                                <?php if ($is_dropdown): ?>
+                                <?php if ($is_dropdown): 
+                                    // Get placeholder text based on taxonomy
+                                    $placeholder = 'All';
+                                    if ($taxonomy->name === 'cyclon_new_product_acea') {
+                                        $placeholder = 'ACEA';
+                                    } elseif ($taxonomy->name === 'cyclon_new_product_oem') {
+                                        $placeholder = 'OEM';
+                                    }
+                                ?>
                                     <!-- Dropdown for ACEA, OEM, and Specifications -->
                                     <select
                                         name="filters[<?php echo esc_attr($taxonomy->name); ?>][]"
                                         class="product-filters__dropdown text-s">
-                                        <option value="">All</option>
+                                        <option value=""><?php echo esc_html($placeholder); ?></option>
                                         <?php foreach ($terms as $term): ?>
                                             <option value="<?php echo esc_attr($term->slug); ?>">
                                                 <?php echo esc_html($term->name); ?>
