@@ -728,7 +728,7 @@ function syncFiltersFromUrl() {
     checkboxes.forEach((checkbox) => {
       checkbox.checked = urlValues.includes(checkbox.value);
       
-      // Update active class for cyclon_range (only one should be active)
+      // Update active class for cyclon_range
       if (taxonomy === 'cyclon_range' && checkbox.checked) {
         const optionDiv = checkbox.closest('.product-filters__option');
         if (optionDiv) {
@@ -1029,10 +1029,11 @@ document.addEventListener("DOMContentLoaded", () => {
         // Find and toggle the checkbox
         if (checkbox) {
           checkbox.checked = !checkbox.checked;
-          // Reset all active classes first, then set the new one
-          resetCyclonRangeActiveClasses();
+          // Toggle active class based on checkbox state
           if (checkbox.checked) {
             optionDiv.classList.add('active');
+          } else {
+            optionDiv.classList.remove('active');
           }
           // Manually trigger the change event
           checkbox.dispatchEvent(new Event('change', { bubbles: true }));
@@ -1042,11 +1043,11 @@ document.addEventListener("DOMContentLoaded", () => {
       // Also update active class when checkbox changes (for label clicks)
       if (checkbox) {
         checkbox.addEventListener('change', () => {
-          // Reset all active classes first
-          resetCyclonRangeActiveClasses();
-          // Then add active to the checked one
+          // Toggle active class on this option only (don't reset others)
           if (checkbox.checked) {
             optionDiv.classList.add('active');
+          } else {
+            optionDiv.classList.remove('active');
           }
         });
       }
@@ -1059,9 +1060,6 @@ document.addEventListener("DOMContentLoaded", () => {
   if (allRangesCheckbox && rangeCheckboxes.length > 0) {
     rangeCheckboxes.forEach((checkbox) => {
       checkbox.addEventListener('change', () => {
-        // Always reset all active classes first
-        resetCyclonRangeActiveClasses();
-        
         if (checkbox === allRangesCheckbox) {
           // "All Ranges" was clicked
           if (checkbox.checked) {

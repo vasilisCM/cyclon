@@ -139,9 +139,9 @@ get_header(); ?>
                                     // Get placeholder text based on taxonomy
                                     $placeholder = 'All';
                                     if ($taxonomy->name === 'cyclon_new_product_acea') {
-                                        $placeholder = 'ACEA';
+                                        $placeholder = 'Industry Specs';
                                     } elseif ($taxonomy->name === 'cyclon_new_product_oem') {
-                                        $placeholder = 'OEM';
+                                        $placeholder = 'OEM Specs';
                                     }
                                 ?>
                                     <!-- Dropdown for ACEA, OEM, and Specifications -->
