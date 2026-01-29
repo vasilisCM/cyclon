@@ -171,7 +171,7 @@
 
 @media screen and (min-width: 1025px) {
   .new-category-product-card {
-   max-width: calc(100% / 3);
+   width: calc(100% / 3);
   }
 }
 
