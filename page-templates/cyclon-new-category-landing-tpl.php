@@ -56,12 +56,52 @@ get_header(); ?>
                 ?>
 
                 <?php if (!empty($range_terms) && !is_wp_error($range_terms)) : ?>
+                    <?php
+                    // Pre-filter range terms to only include those with products
+                    $featured_group = get_field('new_product_landing_featured_products');
+                    $filtered_range_terms = array();
+                    
+                    foreach ($range_terms as $range_term) {
+                        $range_key = sanitize_key($range_term->slug);
+                        $featured_raw = (is_array($featured_group) && isset($featured_group[$range_key])) ? $featured_group[$range_key] : array();
+                        
+                        if (!is_array($featured_raw)) {
+                            $featured_raw = array($featured_raw);
+                        }
+                        
+                        // Check if this range has any valid product IDs
+                        $has_products = false;
+                        foreach ($featured_raw as $item) {
+                            $post_id = 0;
+                            
+                            if (is_numeric($item)) {
+                                $post_id = (int) $item;
+                            } elseif (is_object($item) && isset($item->ID)) {
+                                $post_id = (int) $item->ID;
+                            } elseif (is_string($item) && $item !== '') {
+                                $post_id = (int) url_to_postid($item);
+                            }
+                            
+                            if ($post_id > 0) {
+                                $has_products = true;
+                                break;
+                            }
+                        }
+                        
+                        // Only add this range if it has products
+                        if ($has_products) {
+                            $filtered_range_terms[] = $range_term;
+                        }
+                    }
+                    ?>
+                    
+                    <?php if (!empty($filtered_range_terms)) : ?>
                     <div class="tabs new-category-landing__tabs">
                         <div class="tabs__buttons new-category-landing__tabs-buttons">
                             <span class="white new-category-landing__tabs-buttons-label"><?php echo __('select product range: ', 'cyclon'); ?></span>
                             <?php
                             $tab_index = 0;
-                            foreach ($range_terms as $range_term) :
+                            foreach ($filtered_range_terms as $range_term) :
                                 $button_classes = 'tabs__button tabs__button--' . $range_term->slug;
                                 if ($tab_index === 0) {
                                     $button_classes .= ' tabs__button--active';
@@ -83,7 +123,7 @@ get_header(); ?>
 
 
                             $tab_index = 0;
-                            foreach ($range_terms as $range_term) :
+                            foreach ($filtered_range_terms as $range_term) :
                                 $content_classes = 'tabs__content';
                                 if ($tab_index !== 0) {
                                     $content_classes .= ' tabs__content--hidden';
@@ -240,6 +280,7 @@ get_header(); ?>
                             ?>
                         </div>
                     </div>
+                    <?php endif; ?>
                 <?php endif; ?>
             </div>
         <?php endif; ?>
@@ -247,8 +288,8 @@ get_header(); ?>
         $default_range_slug = '';
         $filtered_saloon_url = $saloon_btn_link;
 
-        if ($has_products_with_range && !empty($range_terms)) {
-            $default_range_slug = $range_terms[0]->slug;
+        if ($has_products_with_range && !empty($filtered_range_terms)) {
+            $default_range_slug = $filtered_range_terms[0]->slug;
 
             if ($saloon_btn_link && $default_range_slug) {
                 $filtered_saloon_url = add_query_arg('cyclon_range', $default_range_slug, $saloon_btn_link);
