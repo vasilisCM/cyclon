@@ -207,6 +207,51 @@ get_header(); ?>
 
             <!-- Products -->
             <?php
+            // Custom sorting for products with 'cyclon_range' taxonomy
+            global $wp_query;
+            
+            if ($wp_query->have_posts()) {
+                $posts = $wp_query->posts;
+                $range_order = array('evo', 'pro', 'eco', 'max');
+                
+                // Sort posts: products with range first (in custom order), then others
+                usort($posts, function($a, $b) use ($range_order) {
+                    // Get range terms for both posts
+                    $terms_a = wp_get_object_terms($a->ID, 'cyclon_range', array('fields' => 'slugs'));
+                    $terms_b = wp_get_object_terms($b->ID, 'cyclon_range', array('fields' => 'slugs'));
+                    
+                    $has_range_a = !is_wp_error($terms_a) && !empty($terms_a);
+                    $has_range_b = !is_wp_error($terms_b) && !empty($terms_b);
+                    
+                    // If both have range terms, sort by custom order
+                    if ($has_range_a && $has_range_b) {
+                        $slug_a = strtolower($terms_a[0]);
+                        $slug_b = strtolower($terms_b[0]);
+                        
+                        $pos_a = array_search($slug_a, $range_order);
+                        $pos_b = array_search($slug_b, $range_order);
+                        
+                        // If both found in order array, sort by position
+                        if ($pos_a !== false && $pos_b !== false) {
+                            return $pos_a - $pos_b;
+                        }
+                        // If only one found, prioritize it
+                        if ($pos_a !== false) return -1;
+                        if ($pos_b !== false) return 1;
+                    }
+                    
+                    // If only one has range, prioritize it
+                    if ($has_range_a && !$has_range_b) return -1;
+                    if (!$has_range_a && $has_range_b) return 1;
+                    
+                    // If neither has range, maintain original order
+                    return 0;
+                });
+                
+                // Update the posts array in the query
+                $wp_query->posts = $posts;
+                $wp_query->rewind_posts();
+            }
 
             if (have_posts()): ?>
                 <div class="container product-grid">
