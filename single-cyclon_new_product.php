@@ -18,243 +18,243 @@ if (have_posts()): while (have_posts()): the_post();
                     ?>
                     <?php if ($category && $category_link): ?>
                         <a href="<?php echo esc_url($category_link); ?>" class="single-product-new__category-info">
-                    <?php else: ?>
-                        <div class="single-product-new__category-info">
-                    <?php endif; ?>
-                        <?php if ($category): ?>
-                            <div class="text-s primary single-product-new__category-name">
-                                <span class="bold"><?php echo esc_html($category->name); ?></span>
-                            </div>
-                        <?php endif; ?>
+                        <?php else: ?>
+                            <div class="single-product-new__category-info">
+                            <?php endif; ?>
+                            <?php if ($category): ?>
+                                <div class="text-s primary single-product-new__category-name">
+                                    <span class="bold"><?php echo esc_html($category->name); ?></span>
+                                </div>
+                            <?php endif; ?>
 
-                        <?php if ($category): ?>
-                            <div class="single-product-new__category-image">
-                                <?php
-                                $category_image = get_field('new_product_category_image_single', $category);
-                                if ($category_image): ?>
-                                    <img src="<?php echo esc_url($category_image); ?>" alt="<?php echo esc_attr(get_the_title()); ?>">
-                                <?php endif; ?>
-                            </div>
-                        <?php endif; ?>
-                    <?php if ($category && $category_link): ?>
+                            <?php if ($category): ?>
+                                <div class="single-product-new__category-image">
+                                    <?php
+                                    $category_image = get_field('new_product_category_image_single', $category);
+                                    if ($category_image): ?>
+                                        <img src="<?php echo esc_url($category_image); ?>" alt="<?php echo esc_attr(get_the_title()); ?>">
+                                    <?php endif; ?>
+                                </div>
+                            <?php endif; ?>
+                            <?php if ($category && $category_link): ?>
                         </a>
                     <?php else: ?>
+                </div>
+            <?php endif; ?>
+            <div class="single-product-new__grid">
+                <?php
+                // Categories that should have background image
+                $bg_image_categories = array('passenger-light-duty', 'moto', 'agriculture', 'gardening', 'leisure');
+                $product_terms = wp_get_post_terms(get_the_ID(), 'cyclon_new_product_cat');
+                $has_bg_image = false;
+
+                if (!empty($product_terms) && !is_wp_error($product_terms)) {
+                    foreach ($product_terms as $term) {
+                        if (in_array($term->slug, $bg_image_categories)) {
+                            $has_bg_image = true;
+                            break;
+                        }
+                    }
+                }
+
+                // $bg_style = $has_bg_image ? ' style="background-image: url(/wp-content/uploads/2026/01/product-bg-img.svg);"' : '';
+                $bg_style = $has_bg_image ? ' /wp-content/uploads/2026/01/product-bg-img.svg)' : '';
+                ?>
+
+                <!-- Image  -->
+                <div class="single-product-new__img-container relative">
+                    <?php if (has_post_thumbnail()): ?>
+                        <img src="<?php the_post_thumbnail_url('full'); ?>" alt="<?php the_title(); ?>">
+                    <?php endif; ?>
+
+                    <?php if ($has_bg_image == true): ?>
+                        <div class="single-product-new__img-bg-img absolute">
+                            <img src="<?php echo $bg_style; ?>" alt="">
                         </div>
                     <?php endif; ?>
-                    <div class="single-product-new__grid">
-                        <?php
-                        // Categories that should have background image
-                        $bg_image_categories = array('passenger-light-duty', 'moto', 'agriculture', 'gardening', 'leisure');
-                        $product_terms = wp_get_post_terms(get_the_ID(), 'cyclon_new_product_cat');
-                        $has_bg_image = false;
+                </div>
 
-                        if (!empty($product_terms) && !is_wp_error($product_terms)) {
-                            foreach ($product_terms as $term) {
-                                if (in_array($term->slug, $bg_image_categories)) {
-                                    $has_bg_image = true;
-                                    break;
+                <!-- Info  -->
+                <div class="primary single-product-new__info">
+
+
+                    <div class="primary">
+                        <h1 class="text-2xl primary single-product-new__title">
+                            <span>Cyclon </span>
+                            <br>
+                            <?php
+                            $product_range = wp_get_post_terms(get_the_ID(), 'cyclon_range');
+                            if (!empty($product_range) && !is_wp_error($product_range)):
+                            ?>
+                                <span><?php echo $product_range[0]->name; ?> </span>
+                            <?php endif; ?>
+                            <span><?php the_title(); ?></span>
+                        </h1>
+
+                        <?php
+                        $grade_terms = get_the_terms(get_the_ID(), 'cyclon_product_grade');
+                        if (!empty($grade_terms) && !is_wp_error($grade_terms)) {
+                            // Get color from cyclon_range taxonomy term
+                            $range_terms = get_the_terms(get_the_ID(), 'cyclon_range');
+                            $color_style = '';
+                            if (!empty($range_terms) && !is_wp_error($range_terms)) {
+                                $color = get_field('color', $range_terms[0]);
+                                if ($color) {
+                                    $color_style = ' style="color: ' . esc_attr($color) . ';"';
                                 }
                             }
-                        }
-
-                        // $bg_style = $has_bg_image ? ' style="background-image: url(/wp-content/uploads/2026/01/product-bg-img.svg);"' : '';
-                        $bg_style = $has_bg_image ? ' /wp-content/uploads/2026/01/product-bg-img.svg)' : '';
                         ?>
+                            <div class="text-xl single-product-new__range-code" <?php echo $color_style; ?>>
+                                <?php echo esc_html($grade_terms[0]->name); ?>
+                            </div>
+                        <?php } ?>
 
-                        <!-- Image  -->
-                        <div class="single-product-new__img-container relative">
-                            <?php if (has_post_thumbnail()): ?>
-                                <img src="<?php the_post_thumbnail_url('full'); ?>" alt="<?php the_title(); ?>">
-                            <?php endif; ?>
+                        <div>
+                            <div class="single-product-new__previous-info-container">
 
-                            <?php if ($has_bg_image == true): ?>
-                                <div class="single-product-new__img-bg-img absolute">
-                                    <img src="<?php echo $bg_style; ?>" alt="">
-                                </div>
-                            <?php endif; ?>
-                        </div>
-
-                        <!-- Info  -->
-                        <div class="primary single-product-new__info">
-
-
-                            <div class="primary">
-                                <h1 class="text-2xl primary single-product-new__title">
-                                    <span>Cyclon </span>
-                                    <br>
-                                    <?php
-                                    $product_range = wp_get_post_terms(get_the_ID(), 'cyclon_range');
-                                    if (!empty($product_range) && !is_wp_error($product_range)):
-                                    ?>
-                                        <span><?php echo $product_range[0]->name; ?> </span>
+                                <div class="text">
+                                    <?php if (get_field('single_product__parent_code')): ?>
+                                        <div class="text-sm">
+                                            <span>Parent Code:</span>
+                                            <span><?php echo get_field('single_product__parent_code'); ?></span>
+                                        </div>
                                     <?php endif; ?>
-                                    <span><?php the_title(); ?></span>
-                                </h1>
+                                </div>
+
+                                <?php if (get_field('single_product__previous_name')): ?>
+                                    <div class="single-product-new__previous-info uppercase">
+                                        <span class="text-s">Replaces</span>
+                                        <div class="text accent">
+                                            <span><?php echo get_field('single_product__previous_name'); ?></span>
+                                            <span><?php echo get_field('single_product__previous_code'); ?></span>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+
+                            <!-- Additional fields  -->
+                            <div class="text-ms single-product-new__bullets">
+                                <?php if (get_field('single_product_new__banner_1')): ?>
+                                    <li>
+                                        <span><?php echo get_field('single_product_new__banner_1'); ?></span>
+                                    </li>
+                                <?php endif; ?>
+
+                                <?php if (get_field('single_product_new__banner_2')): ?>
+                                    <li>
+                                        <span><?php echo get_field('single_product_new__banner_2'); ?></span>
+                                    </li>
+                                <?php endif; ?>
 
                                 <?php
-                                $grade_terms = get_the_terms(get_the_ID(), 'cyclon_product_grade');
-                                if (!empty($grade_terms) && !is_wp_error($grade_terms)) {
-                                    // Get color from cyclon_range taxonomy term
-                                    $range_terms = get_the_terms(get_the_ID(), 'cyclon_range');
-                                    $color_style = '';
-                                    if (!empty($range_terms) && !is_wp_error($range_terms)) {
-                                        $color = get_field('color', $range_terms[0]);
-                                        if ($color) {
-                                            $color_style = ' style="color: ' . esc_attr($color) . ';"';
-                                        }
+                                $product_types = wp_get_post_terms(get_the_ID(), 'cyclon_product_type');
+                                if (!empty($product_types) && !is_wp_error($product_types)):
+                                    $type_names = array();
+                                    foreach ($product_types as $type) {
+                                        $type_names[] = $type->name;
                                     }
                                 ?>
-                                    <div class="text-xl single-product-new__range-code" <?php echo $color_style; ?>>
-                                        <?php echo esc_html($grade_terms[0]->name); ?>
-                                    </div>
-                                <?php } ?>
-
-                                <div>
-                                    <div class="single-product-new__previous-info-container">
-    
-                                        <div class="text">
-                                            <?php if (get_field('single_product__parent_code')): ?>
-                                                <div class="text-sm">
-                                                    <span>Parent Code:</span>
-                                                    <span><?php echo get_field('single_product__parent_code'); ?></span>
-                                                </div>
-                                            <?php endif; ?>
-                                        </div>
-        
-                                        <?php if (get_field('single_product__previous_name')): ?>
-                                            <div class="single-product-new__previous-info uppercase">
-                                                <span class="text-s">Replaces</span>
-                                                <div class="text accent">
-                                                    <span><?php echo get_field('single_product__previous_name'); ?></span>
-                                                    <span><?php echo get_field('single_product__previous_code'); ?></span>
-                                                </div>
-                                            </div>
-                                        <?php endif; ?>
-                                    </div>
-
-                                    <!-- Additional fields  -->
-                                    <div class="text-ms single-product-new__bullets">
-                                        <?php if (get_field('single_product_new__banner_1')): ?>
-                                            <li>
-                                                <span><?php echo get_field('single_product_new__banner_1'); ?></span>
-                                            </li>
-                                        <?php endif; ?>
-
-                                        <?php if (get_field('single_product_new__banner_2')): ?>
-                                            <li>
-                                                <span><?php echo get_field('single_product_new__banner_2'); ?></span>
-                                            </li>
-                                        <?php endif; ?>
-
-                                        <?php
-                                        $product_types = wp_get_post_terms(get_the_ID(), 'cyclon_product_type');
-                                        if (!empty($product_types) && !is_wp_error($product_types)):
-                                            $type_names = array();
-                                            foreach ($product_types as $type) {
-                                                $type_names[] = $type->name;
-                                            }
-                                        ?>
-                                            <li>
-                                                <span><?php echo implode(', ', $type_names); ?></span>
-                                            </li>
-                                        <?php endif; ?>
-
-
-                                    </div>
-                                    
-                                </div>
-                            </div>
-
-                            
-
-
-
-                            <div>
-                                <div class="text-ms single-product-new__content">
-                                    <?php the_content(); ?>
-                                </div>
-
-                                <div class="single-product-new__toggle">
-                                    <div class="show-more-line"></div>
-                                    <div>
-                                        <div class="text-ms text-center single-product-new__toggle-content" aria-expanded="false">
-                                            Show more
-                                        </div>
-                                    </div>
-                                    <div class="show-more-line"></div>
-                                </div>
-
-                            </div>
-
-                            <?php
-                            $specifications = get_the_terms(get_the_ID(), 'cyclon_specifications');
-                            if ($specifications && !is_wp_error($specifications)):
-                            ?>
-                                <div>
-                                    <div>
-                                        <div class="text-s bold">Specifications</div>
-                                        <div class="text-ms">
-                                            <?php
-                                            $spec_names = array();
-                                            foreach ($specifications as $spec) {
-                                                $spec_names[] = esc_html($spec->name);
-                                            }
-                                            echo implode(', ', $spec_names);
-                                            ?>
-                                        </div>
-                                    </div>
-                                </div>
-                            <?php endif; ?>
-
-                            <div>
-                                <?php if (get_field('single_product__packaging')): ?>
-                                    <div>
-                                        <div class="text-s bold">Packaging</div>
-                                        <div class="text-ms"><?php echo get_field('single_product__packaging'); ?></div>
-                                    </div>
+                                    <li>
+                                        <span><?php echo implode(', ', $type_names); ?></span>
+                                    </li>
                                 <?php endif; ?>
+
+
                             </div>
 
-                            <div class="product-buttons__container">
-                                <!-- PDFs  -->
-                                <?php if (have_rows('technical_guides')): ?>
-                                    <div class="product-buttons single-product-new__technical-guides">
-                                        <?php while (have_rows('technical_guides')): the_row(); ?>
-                                            <a href="<?php echo get_sub_field('guide_pdf'); ?>" class="product-pill" target="_blank">
-                                                <span class="product-pill__title">
-                                                    <?php echo get_sub_field('guide_name'); ?>
-                                                </span>
-                                                <span class="product-pill__subtitle">
-                                                    <?php echo get_sub_field('guide_type'); ?>
-                                                </span>
-                                            </a>
-                                        <?php endwhile; ?>
-                                    </div>
-                                <?php endif; ?>
-                                <div class="product-buttons">
-                                    <a href="/" class="product-pill product-pill--primary" target="_blank">
+                        </div>
+                    </div>
+
+
+
+
+
+                    <div>
+                        <div class="text-ms single-product-new__content">
+                            <?php the_content(); ?>
+                        </div>
+
+                        <div class="single-product-new__toggle">
+                            <div class="show-more-line"></div>
+                            <div>
+                                <div class="text-ms text-center single-product-new__toggle-content" aria-expanded="false">
+                                    Show more
+                                </div>
+                            </div>
+                            <div class="show-more-line"></div>
+                        </div>
+
+                    </div>
+
+                    <?php
+                    $specifications = get_the_terms(get_the_ID(), 'cyclon_specifications');
+                    if ($specifications && !is_wp_error($specifications)):
+                    ?>
+                        <div>
+                            <div>
+                                <div class="text-s bold">Specifications</div>
+                                <div class="text-ms">
+                                    <?php
+                                    $spec_names = array();
+                                    foreach ($specifications as $spec) {
+                                        $spec_names[] = esc_html($spec->name);
+                                    }
+                                    echo implode(', ', $spec_names);
+                                    ?>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+
+                    <div>
+                        <?php if (get_field('single_product__packaging')): ?>
+                            <div>
+                                <div class="text-s bold">Packaging</div>
+                                <div class="text-ms"><?php echo get_field('single_product__packaging'); ?></div>
+                            </div>
+                        <?php endif; ?>
+                    </div>
+
+                    <div class="product-buttons__container">
+                        <!-- PDFs  -->
+                        <?php if (have_rows('technical_guides')): ?>
+                            <div class="product-buttons single-product-new__technical-guides">
+                                <?php while (have_rows('technical_guides')): the_row(); ?>
+                                    <a href="<?php echo get_sub_field('guide_pdf'); ?>" class="product-pill" target="_blank">
                                         <span class="product-pill__title">
-                                            <?php _e('Product Catalogue', 'cyclon'); ?>
+                                            <?php echo get_sub_field('guide_name'); ?>
                                         </span>
                                         <span class="product-pill__subtitle">
-                                            <?php _e('Download here', 'cyclon'); ?>
+                                            <?php echo get_sub_field('guide_type'); ?>
                                         </span>
                                     </a>
-                                </div>
-                                <div class="product-buttons">
-                                    <a href="/" class="product-pill" target="_blank">
-                                        <span class="product-pill__title">
-                                            <?php _e('Product Matching Catalogue', 'cyclon'); ?>
-                                        </span>
-                                        <span class="product-pill__subtitle">
-                                            <?php _e('Download here', 'cyclon'); ?>
-                                        </span>
-                                    </a>
-                                </div>
+                                <?php endwhile; ?>
                             </div>
+                        <?php endif; ?>
+                        <div class="product-buttons">
+                            <a href="/" class="product-pill product-pill--primary" target="_blank">
+                                <span class="product-pill__title">
+                                    <?php _e('Product Catalogue', 'cyclon'); ?>
+                                </span>
+                                <span class="product-pill__subtitle">
+                                    <?php _e('Download here', 'cyclon'); ?>
+                                </span>
+                            </a>
+                        </div>
+                        <div class="product-buttons">
+                            <a href="/" class="product-pill" target="_blank">
+                                <span class="product-pill__title">
+                                    <?php _e('Product Matching Catalogue', 'cyclon'); ?>
+                                </span>
+                                <span class="product-pill__subtitle">
+                                    <?php _e('Download here', 'cyclon'); ?>
+                                </span>
+                            </a>
                         </div>
                     </div>
                 </div>
+            </div>
+            </div>
             </div>
             </div>
         </main>
@@ -263,17 +263,17 @@ if (have_posts()): while (have_posts()): the_post();
         // Build related products query with priority:
         // 1. Products from same cyclon_product_range taxonomy (up to 3)
         // 2. Products from same category/subcategory to fill remaining slots (up to 3 total)
-        
+
         $current_post_id = get_the_ID();
         $related_products = array();
         $excluded_ids = array($current_post_id);
-        
+
         // Step 1: Get products from same range taxonomy (priority)
         $range_terms = wp_get_post_terms($current_post_id, 'cyclon_product_range');
-        
+
         if (!empty($range_terms) && !is_wp_error($range_terms)) {
             $range_term_ids = wp_list_pluck($range_terms, 'term_id');
-            
+
             $rangeArgs = array(
                 'post_type' => 'cyclon_new_product',
                 'posts_per_page' => 3,
@@ -286,9 +286,9 @@ if (have_posts()): while (have_posts()): the_post();
                     ),
                 ),
             );
-            
+
             $rangeQuery = new WP_Query($rangeArgs);
-            
+
             if ($rangeQuery->have_posts()) {
                 while ($rangeQuery->have_posts()) {
                     $rangeQuery->the_post();
@@ -298,23 +298,23 @@ if (have_posts()): while (have_posts()): the_post();
                 wp_reset_postdata();
             }
         }
-        
+
         // Step 2: Fill remaining slots with products from same category (up to 3 total)
         $remaining_slots = 3 - count($related_products);
-        
+
         if ($remaining_slots > 0) {
             $category_terms = wp_get_post_terms($current_post_id, 'cyclon_new_product_cat');
-            
+
             if (!empty($category_terms) && !is_wp_error($category_terms)) {
                 // Filter to get only child categories (those with a parent)
                 $child_categories = array_filter($category_terms, function ($term) {
                     return $term->parent > 0;
                 });
-                
+
                 // Use child categories if they exist, otherwise use all categories
                 $terms_to_use = !empty($child_categories) ? $child_categories : $category_terms;
                 $term_ids = wp_list_pluck($terms_to_use, 'term_id');
-                
+
                 $categoryArgs = array(
                     'post_type' => 'cyclon_new_product',
                     'posts_per_page' => $remaining_slots,
@@ -327,9 +327,9 @@ if (have_posts()): while (have_posts()): the_post();
                         ),
                     ),
                 );
-                
+
                 $categoryQuery = new WP_Query($categoryArgs);
-                
+
                 if ($categoryQuery->have_posts()) {
                     while ($categoryQuery->have_posts()) {
                         $categoryQuery->the_post();
@@ -339,7 +339,7 @@ if (have_posts()): while (have_posts()): the_post();
                 }
             }
         }
-        
+
         // Create a custom query object with our combined results
         $relatedQuery = new WP_Query();
         $relatedQuery->posts = $related_products;
@@ -361,31 +361,6 @@ if (have_posts()): while (have_posts()): the_post();
                                     <div class="relatedProducts__Inner swiper-wrapper">
                                         <?php while ($relatedQuery->have_posts()): $relatedQuery->the_post(); ?>
                                             <div class="swiper-slide">
-                                                <!-- <div class="relatedProduct productCard">
-                                                    <div class="productCard__Image">
-                                                        <?php
-                                                        //$im = get_the_post_thumbnail_url(get_the_ID(), 'full');
-                                                        //if (!empty($im)): 
-                                                        ?>
-                                                            <img src="<?php //echo $im; 
-                                                                        ?>"
-                                                                class="img-fluid" />
-                                                        <?php //else: 
-                                                        ?>
-                                                            <img src="/wp-content/uploads/2022/05/1L_MAGMA-SYN-ULTRA-S-0W-20-1.png"
-                                                                class="img-fluid" />
-                                                        <?php //endif; 
-                                                        ?>
-                                                    </div>
-                                                    <div class="productCard__Content">
-                                                        <h3><?php //the_title(); 
-                                                            ?></h3>
-                                                        <p class="info"><?php //echo get_field('small_text_line'); 
-                                                                        ?></p>
-                                                    </div>
-                                                    <a href="<?php //the_permalink(); 
-                                                                ?>" class="productCard__Link"></a>
-                                                </div> -->
                                                 <?php include 'template-parts/components/product-card.php';
                                                 ?>
                                             </div>
