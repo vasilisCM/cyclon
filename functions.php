@@ -457,6 +457,50 @@ require_once(get_template_directory() . '/inc/post-types.php');
 
 add_filter('facetwp_facet_dropdown_show_counts', '__return_false');
 
+// Disable FacetWP on cyclon_new_product_cat archives (we handle sorting ourselves)
+add_filter('facetwp_is_main_query', function($is_main_query, $query) {
+    if (is_tax('cyclon_new_product_cat')) {
+        return false; // Tell FacetWP to ignore this archive
+    }
+    return $is_main_query;
+}, 10, 2);
+
+// Sort products by cyclon_range at SQL level (works across ALL pages)
+add_action('pre_get_posts', function($query) {
+    // Only for main query on cyclon_new_product_cat archives (not admin)
+    if (!is_admin() && $query->is_main_query() && is_tax('cyclon_new_product_cat')) {
+        // Add custom ORDER BY using posts_clauses filter
+        add_filter('posts_clauses', 'cyclon_sort_by_range_sql', 10, 2);
+    }
+});
+
+function cyclon_sort_by_range_sql($clauses, $query) {
+    global $wpdb;
+    
+    // Only apply once to avoid conflicts
+    static $applied = false;
+    if ($applied) return $clauses;
+    $applied = true;
+    
+    // Add JOINs to get the cyclon_range taxonomy term
+    $clauses['join'] .= " 
+        LEFT JOIN {$wpdb->term_relationships} AS tr_range ON {$wpdb->posts}.ID = tr_range.object_id
+        LEFT JOIN {$wpdb->term_taxonomy} AS tt_range ON tr_range.term_taxonomy_id = tt_range.term_taxonomy_id AND tt_range.taxonomy = 'cyclon_range'
+        LEFT JOIN {$wpdb->terms} AS t_range ON tt_range.term_id = t_range.term_id
+    ";
+    
+    // Sort by: evo, pro, eco, max, then by post title
+    $clauses['orderby'] = "FIELD(t_range.slug, 'evo', 'pro', 'eco', 'max') ASC, {$wpdb->posts}.post_title ASC";
+    
+    // Group by post ID to avoid duplicates from JOIN
+    $clauses['groupby'] = "{$wpdb->posts}.ID";
+    
+    // Remove the filter after first use
+    remove_filter('posts_clauses', 'cyclon_sort_by_range_sql', 10);
+    
+    return $clauses;
+}
+
 // Get single mapping information
 add_action("wp_ajax_get_mapping_info", "get_mapping_info");
 add_action("wp_ajax_nopriv_get_mapping_info", "get_mapping_info");
