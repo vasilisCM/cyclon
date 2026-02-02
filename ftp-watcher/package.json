@@ -1,0 +1,18 @@
+{
+  "name": "ftp-sftp-watcher",
+  "version": "1.0.0",
+  "description": "FTP/SFTP file watcher with auto-upload on save",
+  "main": "ftp-watcher.js",
+  "scripts": {
+    "ftp": "node ftp-watcher.js"
+  },
+  "keywords": ["ftp", "sftp", "watcher", "upload"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "basic-ftp": "^5.0.5",
+    "ssh2-sftp-client": "^10.0.3",
+    "chokidar": "^3.6.0",
+    "minimatch": "^9.0.3"
+  }
+}

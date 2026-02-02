@@ -1,0 +1,5 @@
+node_modules/
+ftp-config.json
+.env
+*.log
+.DS_Store
