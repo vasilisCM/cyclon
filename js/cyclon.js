@@ -344,7 +344,7 @@ jQuery(document).ready(function ($) {
                   "href",
                   mappingInfo.oil_category_link[0][1]
                 );
-                $(".content-wrapper a").text(translateString.viewallproducts);
+                $(".content-wrapper a").text(translateString.similarproducts);
                 $(".content-wrapper a.extra").remove();
               }
               setTimeout(() => {
@@ -804,7 +804,7 @@ jQuery(document).ready(function ($) {
                 that
                   .parents(".col-12")
                   .find("a")
-                  .text(translateString.viewallproducts);
+                  .text(translateString.similarproducts);
                 that.parents(".col-12").find("a.extra").remove();
               }
               setTimeout(() => {
