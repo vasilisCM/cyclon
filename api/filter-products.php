@@ -11,14 +11,13 @@ function custom_filter_products()
         'applied_filters' => array()
     );
 
-    $posts_per_page = isset($_POST['postsNumber']) ? intval($_POST['postsNumber']) : -1;
+    $posts_per_page = isset($_POST['postsNumber']) ? intval($_POST['postsNumber']) : 8;
     $page = isset($_POST['page']) ? max(1, intval($_POST['page'])) : 1;
     $post_type = isset($_POST['postType']) ? sanitize_text_field($_POST['postType']) : 'cyclon_product';
 
     $args = array(
         'post_type' => $post_type,
-        'posts_per_page' => $posts_per_page,
-        'paged' => $page,
+        'posts_per_page' => -1, // Get ALL to sort globally, paginate after
         'tax_query' => array('relation' => 'AND'),
         'meta_query' => array(),
     );
@@ -103,21 +102,22 @@ function custom_filter_products()
     $products = array();
     $available_filters = array(); // Store available taxonomy term values
 
-    // Custom sorting for products with 'cyclon_range' taxonomy
+    // Sort ALL products globally by cyclon_range, then manually paginate
+    $all_products_sorted = array();
+    $total_found = 0;
+    
     if ($query->have_posts()) {
-        $posts = $query->posts;
+        $all_posts = $query->posts;
         $range_order = array('evo', 'pro', 'eco', 'max');
         
-        // Sort posts: products with range first (in custom order), then others
-        usort($posts, function($a, $b) use ($range_order) {
-            // Get range terms for both posts
+        // Sort ALL posts by range (globally, not per-page)
+        usort($all_posts, function($a, $b) use ($range_order) {
             $terms_a = wp_get_object_terms($a->ID, 'cyclon_range', array('fields' => 'slugs'));
             $terms_b = wp_get_object_terms($b->ID, 'cyclon_range', array('fields' => 'slugs'));
             
             $has_range_a = !is_wp_error($terms_a) && !empty($terms_a);
             $has_range_b = !is_wp_error($terms_b) && !empty($terms_b);
             
-            // If both have range terms, sort by custom order
             if ($has_range_a && $has_range_b) {
                 $slug_a = strtolower($terms_a[0]);
                 $slug_b = strtolower($terms_b[0]);
@@ -125,25 +125,31 @@ function custom_filter_products()
                 $pos_a = array_search($slug_a, $range_order);
                 $pos_b = array_search($slug_b, $range_order);
                 
-                // If both found in order array, sort by position
                 if ($pos_a !== false && $pos_b !== false) {
                     return $pos_a - $pos_b;
                 }
-                // If only one found, prioritize it
                 if ($pos_a !== false) return -1;
                 if ($pos_b !== false) return 1;
             }
             
-            // If only one has range, prioritize it
             if ($has_range_a && !$has_range_b) return -1;
             if (!$has_range_a && $has_range_b) return 1;
             
-            // If neither has range, maintain original order
             return 0;
         });
         
-        // Update the posts array in the query
-        $query->posts = $posts;
+        // Store total count
+        $total_found = count($all_posts);
+        
+        // Paginate after sorting
+        $offset = ($page - 1) * $posts_per_page;
+        $posts_for_page = array_slice($all_posts, $offset, $posts_per_page);
+        
+        // Update query with paginated sorted posts
+        $query->posts = $posts_for_page;
+        $query->post_count = count($posts_for_page);
+        $query->found_posts = $total_found;
+        $query->max_num_pages = ceil($total_found / $posts_per_page);
         $query->rewind_posts();
     }
 
