@@ -13,6 +13,10 @@
       color: #001a61;
     }
   }
+
+  .product-card:hover {
+    border-color: #001a61;
+  }
   
   @media (min-width: 1025px) {
     .product-card {
@@ -61,7 +65,12 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     margin-left: auto;
+    transform: translateY(0px);
     /* visibility: hidden; */
     /* opacity: 0; */
     transition: all ease 300ms;
+  }
+
+  .product-card:hover .home-categories__category-heading span::after {
+    transform: translateX(5px);
   }

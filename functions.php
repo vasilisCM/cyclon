@@ -410,7 +410,7 @@ function cyclon_theme_scripts()
 
     wp_localize_script('cyclon', 'translateString', [
         'viewallproducts' => esc_html__('VIEW ALL PRODUCTS', 'cyclon'),
-        'similarproducts' => esc_html__('SIMILAR PRODUCTS', 'cyclon'),
+        'viewproducts' => esc_html__('VIEW PRODUCTS', 'cyclon'),
         'viewall' => esc_html__('VIEW ALL', 'cyclon'),
         'back' => esc_html__('back', 'cyclon'),
     ]);
@@ -458,7 +458,7 @@ require_once(get_template_directory() . '/inc/post-types.php');
 add_filter('facetwp_facet_dropdown_show_counts', '__return_false');
 
 // Disable FacetWP on cyclon_new_product_cat archives (we handle sorting ourselves)
-add_filter('facetwp_is_main_query', function($is_main_query, $query) {
+add_filter('facetwp_is_main_query', function ($is_main_query, $query) {
     if (is_tax('cyclon_new_product_cat')) {
         return false; // Tell FacetWP to ignore this archive
     }
@@ -466,7 +466,7 @@ add_filter('facetwp_is_main_query', function($is_main_query, $query) {
 }, 10, 2);
 
 // Sort products by cyclon_range at SQL level (works across ALL pages)
-add_action('pre_get_posts', function($query) {
+add_action('pre_get_posts', function ($query) {
     // Only for main query on cyclon_new_product_cat archives (not admin)
     if (!is_admin() && $query->is_main_query() && is_tax('cyclon_new_product_cat')) {
         // Add custom ORDER BY using posts_clauses filter
@@ -474,30 +474,31 @@ add_action('pre_get_posts', function($query) {
     }
 });
 
-function cyclon_sort_by_range_sql($clauses, $query) {
+function cyclon_sort_by_range_sql($clauses, $query)
+{
     global $wpdb;
-    
+
     // Only apply once to avoid conflicts
     static $applied = false;
     if ($applied) return $clauses;
     $applied = true;
-    
+
     // Add JOINs to get the cyclon_range taxonomy term
     $clauses['join'] .= " 
         LEFT JOIN {$wpdb->term_relationships} AS tr_range ON {$wpdb->posts}.ID = tr_range.object_id
         LEFT JOIN {$wpdb->term_taxonomy} AS tt_range ON tr_range.term_taxonomy_id = tt_range.term_taxonomy_id AND tt_range.taxonomy = 'cyclon_range'
         LEFT JOIN {$wpdb->terms} AS t_range ON tt_range.term_id = t_range.term_id
     ";
-    
+
     // Sort by: evo, pro, eco, max, then by post title
     $clauses['orderby'] = "FIELD(t_range.slug, 'evo', 'pro', 'eco', 'max') ASC, {$wpdb->posts}.post_title ASC";
-    
+
     // Group by post ID to avoid duplicates from JOIN
     $clauses['groupby'] = "{$wpdb->posts}.ID";
-    
+
     // Remove the filter after first use
     remove_filter('posts_clauses', 'cyclon_sort_by_range_sql', 10);
-    
+
     return $clauses;
 }
 
