@@ -575,7 +575,9 @@ get_header(); ?>
                                     </div>
                                 </div>
                             </div>
-                            <a class="mButton mButton--trans" href="<?php echo esc_url($category_link); ?>"><?php echo __('SIMILAR PRODUCTS', 'cyclon') ?> </a>
+                            <a class="mButton mButton--trans" href="<?php echo esc_url($category_link);
+                                                                    ?>"><?php echo __('VIEW PRODUCTS', 'cyclon')
+                                                                                ?> </a>
 
 
                         </div>
@@ -748,7 +750,9 @@ get_header(); ?>
                                         <div class="oil-content"></div>
                                         <div class="oil-image"><img src="" alt=""></div>
                                     </div>
-                                    <a class="mButton mButton--trans" href="<?php echo esc_url($category_link); ?>"><?php echo __('SIMILAR PRODUCTS', 'cyclon') ?> </a>
+                                    <a class="mButton mButton--trans" href="<?php echo esc_url($category_link);
+                                                                            ?>"><?php echo __('VIEW PRODUCTS', 'cyclon')
+                                                                                ?> </a>
 
 
                                 </div>

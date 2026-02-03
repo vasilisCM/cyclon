@@ -464,7 +464,7 @@ function cyclon_theme_scripts()
 
     wp_localize_script('cyclon', 'translateString', [
         'viewallproducts' => esc_html__('VIEW ALL PRODUCTS', 'cyclon'),
-        'similarproducts' => esc_html__('SIMILAR PRODUCTS', 'cyclon'),
+        'viewproducts' => esc_html__('VIEW PRODUCTS', 'cyclon'),
         'viewall' => esc_html__('VIEW ALL', 'cyclon'),
         'back' => esc_html__('back', 'cyclon'),
     ]);

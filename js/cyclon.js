@@ -242,6 +242,8 @@ jQuery(document).ready(function ($) {
         that.addClass("active");
 
         $(".oil-wrapper-outer").css("opacity", "0");
+        $(".content-wrapper a").css("opacity", "0");
+        $(".content-wrapper a").css("pointer-events", "none");
         if (checkPosition(that) == "below") {
           $(".line-x").css({
             height: "0px",
@@ -344,11 +346,13 @@ jQuery(document).ready(function ($) {
                   "href",
                   mappingInfo.oil_category_link[0][1]
                 );
-                $(".content-wrapper a").text(translateString.similarproducts);
+                $(".content-wrapper a").text(translateString.viewproducts);
                 $(".content-wrapper a.extra").remove();
               }
               setTimeout(() => {
                 $(".oil-wrapper-outer").css("opacity", "1");
+                $(".content-wrapper a").css("opacity", "1");
+                $(".content-wrapper a").css("pointer-events", "all");
               }, 600);
 
               setTimeout(() => {
@@ -804,7 +808,7 @@ jQuery(document).ready(function ($) {
                 that
                   .parents(".col-12")
                   .find("a")
-                  .text(translateString.similarproducts);
+                  .text(translateString.viewproducts);
                 that.parents(".col-12").find("a.extra").remove();
               }
               setTimeout(() => {

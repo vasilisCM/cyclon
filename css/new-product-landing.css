@@ -376,5 +376,10 @@
   opacity: 1;
 }
 
+/* Mapping  */
+.page-template-cyclon-new-category-landing-tpl .appMapping a {
+  opacity: 0;
+  pointer-events: none;
+}
 
 
