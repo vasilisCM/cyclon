@@ -266,7 +266,7 @@
  
 
 
-.home-categories__category-heading span {
+.landing-categories__category-heading span {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -277,7 +277,7 @@
   color: #001a61;
 }
 
-.home-categories__category-heading span::after {
+.landing-categories__category-heading span::after {
   content: "\e900";
   font-family: "icomoon";
   font-variant: normal;
@@ -288,3 +288,93 @@
   /* opacity: 0; */
   transition: all ease 300ms;
 }
+
+
+/* New Categories  */
+.landing-categories__grid {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+}
+
+@media (max-width: 1024px) {
+  .landing-categories__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .landing-categories__grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* @media (max-width: 640px) {
+  .home-categories__grid {
+    grid-template-columns: 1fr;
+  }
+} */
+
+.landing-categories__card {
+  display: grid;
+  grid-template-rows: auto auto 1fr;
+  /* flex-direction: column;
+  justify-content: space-between; */
+  margin-bottom: clamp(20px, 6.3vw, 40px);
+  min-height: clamp(140px, 22vw, 180px);
+}
+
+.landing-categories__card .catBox__Inner {
+  margin-bottom: 0 !important;
+}
+
+.landing-categories__card {
+  padding-top: 0 !important;
+  background: linear-gradient(180deg, transparent 20%, #ffffff 20%);
+}
+
+.landing-categories__card .catBox__Inner a {
+  display: flex;
+}
+
+.landing-categories__card .catBox__Inner img {
+  width: 100%;
+  margin-top: 0;
+}
+
+.landing-categories__category-heading {
+  grid-row: 3;
+  align-self: end;
+}
+
+.landing-categories__category-heading a {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 10px;
+  font-size: clamp(14px, calc((16 * 100vw) / 1380), 16px);
+  text-transform: none;
+  font-weight: 700;
+  line-height: 1.1;
+  color: #001a61;
+}
+
+.landing-categories__category-heading a::after {
+  content: "\e900";
+  font-family: "icomoon";
+  font-variant: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  visibility: hidden;
+  opacity: 0;
+  transition: all ease 300ms;
+}
+
+.landing-categories__card:hover .landing-categories__category-heading a::after {
+  visibility: visible;
+  opacity: 1;
+}
+
+
+
