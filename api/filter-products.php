@@ -17,7 +17,6 @@ function custom_filter_products()
 
     $args = array(
         'post_type' => $post_type,
-        'posts_per_page' => -1, // Get ALL to sort globally, paginate after
         'tax_query' => array('relation' => 'AND'),
         'meta_query' => array(),
     );
@@ -75,7 +74,7 @@ function custom_filter_products()
                 }
 
                 // Filter out empty values (for "All" options like "All Ranges")
-                $term_slugs = array_filter($term_slugs, function($slug) {
+                $term_slugs = array_filter($term_slugs, function ($slug) {
                     return !empty($slug);
                 });
 
@@ -94,64 +93,66 @@ function custom_filter_products()
         }
     }
 
+    // Fetch ALL posts first (no pagination yet)
+    $args['posts_per_page'] = -1;
+    $args['nopaging'] = true;
+
     // Add final query args to debug info
     $debug_info['final_query_args'] = $args;
 
-    // Query Custom Products
+    // Query Custom Products - get ALL results
     $query = new WP_Query($args);
+
+    // DEBUG: Log posts BEFORE sorting
+    $debug_products_before = array();
+    foreach ($query->posts as $post) {
+        $terms = wp_get_object_terms($post->ID, 'cyclon_range', array('fields' => 'slugs'));
+        $range = (!is_wp_error($terms) && !empty($terms)) ? strtoupper($terms[0]) : 'NO RANGE';
+        $debug_products_before[] = $post->post_title . ' (' . $range . ')';
+    }
+    $debug_info['products_before_sort'] = $debug_products_before;
+
+    // Sort all posts by cyclon_range (evo, pro, eco, max)
+    if (function_exists('cyclon_sort_posts_by_range') && $query->have_posts()) {
+        $query->posts = cyclon_sort_posts_by_range($query->posts);
+        $query->post_count = count($query->posts);
+    }
+
+    // DEBUG: Log posts AFTER sorting
+    $debug_products_after = array();
+    foreach ($query->posts as $post) {
+        $terms = wp_get_object_terms($post->ID, 'cyclon_range', array('fields' => 'slugs'));
+        $range = (!is_wp_error($terms) && !empty($terms)) ? strtoupper($terms[0]) : 'NO RANGE';
+        $debug_products_after[] = $post->post_title . ' (' . $range . ')';
+    }
+    $debug_info['products_after_sort'] = $debug_products_after;
+
+    // Now manually paginate the sorted results
+    $total_posts = count($query->posts);
+    $offset = ($page - 1) * $posts_per_page;
+    $query->posts = array_slice($query->posts, $offset, $posts_per_page);
+    $query->post_count = count($query->posts);
+    $query->found_posts = $total_posts;
+    $query->max_num_pages = ceil($total_posts / $posts_per_page);
+
+    // Reset the post index
+    $query->rewind_posts();
+
+    // DEBUG: Log posts AFTER pagination
+    $debug_products_final = array();
+    foreach ($query->posts as $post) {
+        $terms = wp_get_object_terms($post->ID, 'cyclon_range', array('fields' => 'slugs'));
+        $range = (!is_wp_error($terms) && !empty($terms)) ? strtoupper($terms[0]) : 'NO RANGE';
+        $debug_products_final[] = $post->post_title . ' (' . $range . ')';
+    }
+    $debug_info['products_final_page'] = $debug_products_final;
+
+    $debug_info['total_posts_before_pagination'] = $total_posts;
+    $debug_info['posts_on_this_page'] = $query->post_count;
+    $debug_info['current_page'] = $page;
+    $debug_info['total_pages'] = $query->max_num_pages;
     $products = array();
     $available_filters = array(); // Store available taxonomy term values
-
-    // Sort ALL products globally by cyclon_range, then manually paginate
-    $all_products_sorted = array();
-    $total_found = 0;
-    
-    if ($query->have_posts()) {
-        $all_posts = $query->posts;
-        $range_order = array('evo', 'pro', 'eco', 'max');
-        
-        // Sort ALL posts by range (globally, not per-page)
-        usort($all_posts, function($a, $b) use ($range_order) {
-            $terms_a = wp_get_object_terms($a->ID, 'cyclon_range', array('fields' => 'slugs'));
-            $terms_b = wp_get_object_terms($b->ID, 'cyclon_range', array('fields' => 'slugs'));
-            
-            $has_range_a = !is_wp_error($terms_a) && !empty($terms_a);
-            $has_range_b = !is_wp_error($terms_b) && !empty($terms_b);
-            
-            if ($has_range_a && $has_range_b) {
-                $slug_a = strtolower($terms_a[0]);
-                $slug_b = strtolower($terms_b[0]);
-                
-                $pos_a = array_search($slug_a, $range_order);
-                $pos_b = array_search($slug_b, $range_order);
-                
-                if ($pos_a !== false && $pos_b !== false) {
-                    return $pos_a - $pos_b;
-                }
-                if ($pos_a !== false) return -1;
-                if ($pos_b !== false) return 1;
-            }
-            
-            if ($has_range_a && !$has_range_b) return -1;
-            if (!$has_range_a && $has_range_b) return 1;
-            
-            return 0;
-        });
-        
-        // Store total count
-        $total_found = count($all_posts);
-        
-        // Paginate after sorting
-        $offset = ($page - 1) * $posts_per_page;
-        $posts_for_page = array_slice($all_posts, $offset, $posts_per_page);
-        
-        // Update query with paginated sorted posts
-        $query->posts = $posts_for_page;
-        $query->post_count = count($posts_for_page);
-        $query->found_posts = $total_found;
-        $query->max_num_pages = ceil($total_found / $posts_per_page);
-        $query->rewind_posts();
-    }
 
     if ($query->have_posts()) {
         while ($query->have_posts()) {
@@ -165,7 +166,7 @@ function custom_filter_products()
             if (count($words) > 20) {
                 $short_content .= '...';
             }
-            
+
             // Get range taxonomy for display and color
             $range_display = '';
             $range_color = '';
@@ -173,14 +174,14 @@ function custom_filter_products()
             if (!empty($range_terms) && !is_wp_error($range_terms)) {
                 $term_names = wp_list_pluck($range_terms, 'name');
                 $range_display = implode(', ', $term_names);
-                
+
                 // Get color from first range term
                 $color = get_field('color', $range_terms[0]);
                 if ($color) {
                     $range_color = $color;
                 }
             }
-            
+
             // Get product grade with color from range taxonomy
             $grade_data = null;
             $grade_terms = get_the_terms($post_id, 'cyclon_product_grade');
@@ -190,7 +191,7 @@ function custom_filter_products()
                     'color' => $range_color,
                 );
             }
-            
+
             // Build product data
             $products[] = array(
                 'id' => $post_id,

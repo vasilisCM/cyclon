@@ -30,7 +30,7 @@ get_header(); ?>
                     ),
                 ),
             ));
-            
+
             $category_product_ids = $category_products_query->posts;
             wp_reset_postdata();
 
@@ -54,7 +54,7 @@ get_header(); ?>
                         foreach ($cyclon_taxonomies as $taxonomy):
                             // Get ONLY terms that are used by products in the current category
                             $terms = array();
-                            
+
                             // Special handling for cyclon_new_product_cat - show only subcategories
                             if ($taxonomy->name === 'cyclon_new_product_cat') {
                                 if ($current_term && isset($current_term->term_id)) {
@@ -74,7 +74,7 @@ get_header(); ?>
                                             $term_ids = array_merge($term_ids, $product_terms);
                                         }
                                     }
-                                    
+
                                     // Get unique term IDs and fetch full term objects
                                     $term_ids = array_unique($term_ids);
                                     if (!empty($term_ids)) {
@@ -94,10 +94,10 @@ get_header(); ?>
                             // Custom ordering for cyclon_range taxonomy
                             if ($taxonomy->name === 'cyclon_range') {
                                 $order = array('evo', 'pro', 'eco', 'max');
-                                usort($terms, function($a, $b) use ($order) {
+                                usort($terms, function ($a, $b) use ($order) {
                                     $pos_a = array_search(strtolower($a->slug), $order);
                                     $pos_b = array_search(strtolower($b->slug), $order);
-                                    
+
                                     // If both found, sort by position
                                     if ($pos_a !== false && $pos_b !== false) {
                                         return $pos_a - $pos_b;
@@ -128,14 +128,14 @@ get_header(); ?>
                             ?>
 
                             <div class="product-filters__group taxonomy-<?php echo esc_attr($taxonomy->name); ?>">
-                                <?php if (!$is_dropdown) { 
+                                <?php if (!$is_dropdown) {
                                     // Custom label for subcategories
                                     $filter_label = ($taxonomy->name === 'cyclon_new_product_cat') ? 'Applications' : ($taxonomy->labels->singular_name ?? $taxonomy->label);
                                 ?>
                                     <div class="bold text-s uppercase letter-spacing-medium"><?php echo esc_html($filter_label); ?></div>
                                 <?php } ?>
 
-                                <?php if ($is_dropdown): 
+                                <?php if ($is_dropdown):
                                     // Get placeholder text based on taxonomy
                                     $placeholder = 'All';
                                     if ($taxonomy->name === 'cyclon_new_product_acea') {
@@ -172,8 +172,8 @@ get_header(); ?>
                                                 </label>
                                             </div>
                                         <?php endforeach; ?>
-                                        
-                                        <?php 
+
+                                        <?php
                                         // Add "All" option for cyclon_range (at the end)
                                         if ($taxonomy->name === 'cyclon_range'):
                                             $all_checkbox_id = esc_attr($taxonomy->name . '-all');
@@ -209,28 +209,28 @@ get_header(); ?>
             <?php
             // Custom sorting for products with 'cyclon_range' taxonomy
             global $wp_query;
-            
+
             if ($wp_query->have_posts()) {
                 $posts = $wp_query->posts;
                 $range_order = array('evo', 'pro', 'eco', 'max');
-                
+
                 // Sort posts: products with range first (in custom order), then others
-                usort($posts, function($a, $b) use ($range_order) {
+                usort($posts, function ($a, $b) use ($range_order) {
                     // Get range terms for both posts
                     $terms_a = wp_get_object_terms($a->ID, 'cyclon_range', array('fields' => 'slugs'));
                     $terms_b = wp_get_object_terms($b->ID, 'cyclon_range', array('fields' => 'slugs'));
-                    
+
                     $has_range_a = !is_wp_error($terms_a) && !empty($terms_a);
                     $has_range_b = !is_wp_error($terms_b) && !empty($terms_b);
-                    
+
                     // If both have range terms, sort by custom order
                     if ($has_range_a && $has_range_b) {
                         $slug_a = strtolower($terms_a[0]);
                         $slug_b = strtolower($terms_b[0]);
-                        
+
                         $pos_a = array_search($slug_a, $range_order);
                         $pos_b = array_search($slug_b, $range_order);
-                        
+
                         // If both found in order array, sort by position
                         if ($pos_a !== false && $pos_b !== false) {
                             return $pos_a - $pos_b;
@@ -239,15 +239,15 @@ get_header(); ?>
                         if ($pos_a !== false) return -1;
                         if ($pos_b !== false) return 1;
                     }
-                    
+
                     // If only one has range, prioritize it
                     if ($has_range_a && !$has_range_b) return -1;
                     if (!$has_range_a && $has_range_b) return 1;
-                    
+
                     // If neither has range, maintain original order
                     return 0;
                 });
-                
+
                 // Update the posts array in the query
                 $wp_query->posts = $posts;
                 $wp_query->rewind_posts();
@@ -255,8 +255,8 @@ get_header(); ?>
 
             if (have_posts()): ?>
                 <div class="container product-grid">
-                    
-                   
+
+
                     <div class="selected-filters" style="display: none;">
                         <div lang="el" class="font-ferry text selected-filters__heading"><?php _e('Selected Filters', 'cyclon'); ?></div>
 
@@ -269,15 +269,17 @@ get_header(); ?>
                     </div>
 
                     <div class="product-count">
-                        <?php 
+                        <?php
                         global $wp_query;
                         $total_products = $wp_query->found_posts;
-                        $product_count_text = $total_products === 1 
+                        $product_count_text = $total_products === 1
                             ? sprintf(__('%d product', 'cyclon'), $total_products)
                             : sprintf(__('%d products', 'cyclon'), $total_products);
                         ?>
                         <span class="text-s uppercase product-count__number"><?php echo esc_html($product_count_text); ?></span>
                     </div>
+
+
 
                     <div class="archive-grid relative">
                         <div class="archive-grid__loader hidden">

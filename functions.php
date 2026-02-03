@@ -19,11 +19,64 @@ function cyclon_limit_product_archive_posts($query)
     }
 
     if ($query->is_tax('cyclon_new_product_cat')) {
-        $query->set('posts_per_page', 8);
+        // Get ALL posts first, we'll handle pagination after sorting
+        $query->set('posts_per_page', -1);
+        $query->set('nopaging', true);
+        // Mark this query for custom sorting
+        $query->set('cyclon_needs_range_sort', true);
+        // Store the desired posts per page for later
+        $query->set('cyclon_per_page', 8);
     }
 }
 
 add_action('pre_get_posts', 'cyclon_limit_product_archive_posts');
+
+// Apply custom sorting to the main query on archive pages
+function cyclon_sort_archive_posts($posts, $query)
+{
+    // Debug log
+    error_log('🔍 cyclon_sort_archive_posts called. Posts count: ' . count($posts));
+    error_log('🔍 Is main query: ' . ($query->is_main_query() ? 'YES' : 'NO'));
+    error_log('🔍 Needs range sort flag: ' . ($query->get('cyclon_needs_range_sort') ? 'YES' : 'NO'));
+
+    // Only sort if this is the main query that needs range sorting
+    if (!$query->get('cyclon_needs_range_sort') || !$query->is_main_query()) {
+        error_log('🔍 SKIPPING sort (flag or main query check failed)');
+        return $posts;
+    }
+
+    error_log('🔍 APPLYING sort to ' . count($posts) . ' posts');
+
+    if (function_exists('cyclon_sort_posts_by_range')) {
+        $sorted = cyclon_sort_posts_by_range($posts);
+        error_log('🔍 Sort completed. Result count: ' . count($sorted));
+
+        // Now manually paginate the sorted results
+        $per_page = $query->get('cyclon_per_page');
+        if ($per_page) {
+            $paged = max(1, get_query_var('paged'));
+            $total = count($sorted);
+            $offset = ($paged - 1) * $per_page;
+
+            error_log('🔍 Paginating: page=' . $paged . ', per_page=' . $per_page . ', offset=' . $offset . ', total=' . $total);
+
+            // Update query vars for pagination
+            $query->found_posts = $total;
+            $query->max_num_pages = ceil($total / $per_page);
+
+            // Slice the sorted posts for this page
+            $sorted = array_slice($sorted, $offset, $per_page);
+            error_log('🔍 After pagination: ' . count($sorted) . ' posts');
+        }
+
+        return $sorted;
+    }
+
+    error_log('🔍 Sort function not found!');
+    return $posts;
+}
+
+add_filter('the_posts', 'cyclon_sort_archive_posts', 10, 2);
 
 // Improve search to use OR logic instead of AND (more user-friendly)
 function cyclon_search_or_logic($search, $query)
@@ -466,41 +519,43 @@ add_filter('facetwp_is_main_query', function ($is_main_query, $query) {
     return $is_main_query;
 }, 10, 2);
 
-// Sort products by cyclon_range at SQL level (works across ALL pages)
-add_action('pre_get_posts', function ($query) {
-    // Only for main query on cyclon_new_product_cat archives (not admin)
-    if (!is_admin() && $query->is_main_query() && is_tax('cyclon_new_product_cat')) {
-        // Add custom ORDER BY using posts_clauses filter
-        add_filter('posts_clauses', 'cyclon_sort_by_range_sql', 10, 2);
-    }
-});
-
-function cyclon_sort_by_range_sql($clauses, $query)
+// Helper function to sort posts by cyclon_range taxonomy
+// Order: evo, pro, eco, max, then alphabetically by title
+function cyclon_sort_posts_by_range($posts)
 {
-    global $wpdb;
+    if (empty($posts)) {
+        return $posts;
+    }
 
-    // Only apply once to avoid conflicts
-    static $applied = false;
-    if ($applied) return $clauses;
-    $applied = true;
+    $range_order = array('evo' => 1, 'pro' => 2, 'eco' => 3, 'max' => 4);
 
-    // Add JOINs to get the cyclon_range taxonomy term
-    $clauses['join'] .= " 
-        LEFT JOIN {$wpdb->term_relationships} AS tr_range ON {$wpdb->posts}.ID = tr_range.object_id
-        LEFT JOIN {$wpdb->term_taxonomy} AS tt_range ON tr_range.term_taxonomy_id = tt_range.term_taxonomy_id AND tt_range.taxonomy = 'cyclon_range'
-        LEFT JOIN {$wpdb->terms} AS t_range ON tt_range.term_id = t_range.term_id
-    ";
+    usort($posts, function ($a, $b) use ($range_order) {
+        $terms_a = wp_get_object_terms($a->ID, 'cyclon_range', array('fields' => 'slugs'));
+        $terms_b = wp_get_object_terms($b->ID, 'cyclon_range', array('fields' => 'slugs'));
 
-    // Sort by: evo, pro, eco, max, then by post title
-    $clauses['orderby'] = "FIELD(t_range.slug, 'evo', 'pro', 'eco', 'max') ASC, {$wpdb->posts}.post_title ASC";
+        $has_range_a = !is_wp_error($terms_a) && !empty($terms_a);
+        $has_range_b = !is_wp_error($terms_b) && !empty($terms_b);
 
-    // Group by post ID to avoid duplicates from JOIN
-    $clauses['groupby'] = "{$wpdb->posts}.ID";
+        if ($has_range_a && $has_range_b) {
+            $slug_a = strtolower($terms_a[0]);
+            $slug_b = strtolower($terms_b[0]);
 
-    // Remove the filter after first use
-    remove_filter('posts_clauses', 'cyclon_sort_by_range_sql', 10);
+            $pos_a = isset($range_order[$slug_a]) ? $range_order[$slug_a] : 999;
+            $pos_b = isset($range_order[$slug_b]) ? $range_order[$slug_b] : 999;
 
-    return $clauses;
+            if ($pos_a !== $pos_b) {
+                return $pos_a - $pos_b;
+            }
+        }
+
+        if ($has_range_a && !$has_range_b) return -1;
+        if (!$has_range_a && $has_range_b) return 1;
+
+        // Same range or both without range - sort alphabetically by title
+        return strcasecmp($a->post_title, $b->post_title);
+    });
+
+    return $posts;
 }
 
 // Get single mapping information
