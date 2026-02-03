@@ -214,7 +214,7 @@
 }
 
 .new-category-product-card__img-container img {
-  max-height: 250px;
+  max-height: 200px;
 }
 
 @media only screen and (max-width: 1024px) {
@@ -287,6 +287,10 @@
   /* visibility: hidden; */
   /* opacity: 0; */
   transition: all ease 300ms;
+}
+
+.new-category-product-card:hover .home-categories__category-heading span::after {
+  transform: translateX(5px);
 }
 
 

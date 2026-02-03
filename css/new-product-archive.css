@@ -279,6 +279,7 @@
 
 .tax-cyclon_new_product_cat .productCard__Image img {
   object-fit: contain;
+  max-height: 200px;
 }
 
 @media (max-width: 1024px) {
