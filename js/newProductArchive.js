@@ -1125,8 +1125,12 @@ document.addEventListener("DOMContentLoaded", () => {
               if (allOptionDiv) {
                 allOptionDiv.classList.add('active');
               }
-              // Don't call updateUrlFromFilters here since we're keeping "All Ranges" checked
-              return;
+              // Remove the active class from the unchecked range
+              const optionDiv = checkbox.closest('.product-filters__option');
+              if (optionDiv) {
+                optionDiv.classList.remove('active');
+              }
+              // Continue to updateUrlFromFilters to clear the filter from URL
             }
           }
         }
