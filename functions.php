@@ -381,6 +381,7 @@ function cyclon_theme_scripts()
     // New Product Landing
     if (is_page_template('page-templates/cyclon-new-category-landing-tpl.php')) {
         wp_enqueue_style('new-product-landing', get_stylesheet_directory_uri() . '/css/new-product-landing.css', array(), time(), 'all');
+        wp_enqueue_style('new-product-card', get_stylesheet_directory_uri() . '/css/new-product-card.css', array(), time(), 'all');
     }
 
     // New Product Single
