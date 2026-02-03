@@ -8265,8 +8265,10 @@ textarea {
 .page-template-cyclon-new-category-landing-tpl .menu-item-has-children > a,
 .single-cyclon_new_product .menu-item-has-children > a,
 .tax-cyclon_new_product_cat .menu-item-has-children > a {
-  background: #ffda00;
-  color: #001a61 !important;
+  /* background: #ffda00;
+  color: #001a61 !important; */
+  color: #ffda00;
+
 }
 
 .menu-toggle,

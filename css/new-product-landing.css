@@ -77,6 +77,8 @@
   z-index: 2;
 }
 
+
+
 .new-category-landing__tabs {
   margin-top: -79px;
 }
@@ -129,6 +131,11 @@
 
 .new-category-landing__dynamic-texts {
   margin-top: 40px;
+}
+
+.new-category-landing__dynamic-texts--no-tabs {
+  display: grid;
+  gap: 12px;
 }
 
 .new-category-landing__dynamic-texts__description {
