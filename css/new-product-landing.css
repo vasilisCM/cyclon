@@ -263,6 +263,13 @@
   background-color: white;
   text-transform: uppercase;
 }
+
+/* Landing Categories  */
+.landing-categories {
+  margin-top: 40px;
+  background-color: #E9ECF1;
+  padding-block: clamp(40px, calc((60 * 100vw) / 1024), 60px) clamp(60px, calc((85 * 100vw) / 1024), 85px);
+}
  
 
 

@@ -34,164 +34,108 @@ get_header(); ?>
                     ?>
                 </div>
 
-                <?php if ($associated_cat_id == 778) : ?>
-                    <!-- Special case: Subcategories Grid for category ID 778 -->
-                    <div class="container">
-                        <div class="landing-categories__grid">
+
+                <?php //else : 
+                ?>
+                <!-- Products for no-range version -->
+                <div class="boxed centered no-padding">
+                    <?php
+                    // Get featured products from ACF field
+                    $featured_products_raw = get_field('new_product_landing_featured_products_no_range');
+
+                    if (!is_array($featured_products_raw)) {
+                        $featured_products_raw = array($featured_products_raw);
+                    }
+
+                    // Convert permalinks to post IDs
+                    $featured_product_ids = array();
+                    foreach ($featured_products_raw as $item) {
+                        $post_id = 0;
+
+                        if (is_numeric($item)) {
+                            $post_id = (int) $item;
+                        } elseif (is_object($item) && isset($item->ID)) {
+                            $post_id = (int) $item->ID;
+                        } elseif (is_string($item) && $item !== '') {
+                            $post_id = (int) url_to_postid($item);
+                        }
+
+                        if ($post_id > 0) {
+                            $featured_product_ids[] = $post_id;
+                        }
+                    }
+
+                    // Limit to 3 products
+                    $featured_product_ids = array_values(array_unique($featured_product_ids));
+                    if (count($featured_product_ids) > 3) {
+                        $featured_product_ids = array_slice($featured_product_ids, 0, 3);
+                    }
+                    ?>
+
+                    <?php if (!empty($featured_product_ids)) : ?>
+                        <div class="new-category-product-grid">
                             <?php
-                            // Get direct children of category 778
-                            $child_terms = get_terms(array(
-                                'taxonomy' => 'cyclon_new_product_cat',
-                                'hide_empty' => false,
-                                'parent' => 778, // Only get direct children of category 778
-                            ));
+                            foreach ($featured_product_ids as $featured_product_id) :
+                                $post_obj = get_post($featured_product_id);
+                                if (!$post_obj) {
+                                    continue;
+                                }
 
-                            if (!empty($child_terms) && !is_wp_error($child_terms)) {
-                                foreach ($child_terms as $term) {
-                                    $term_link = get_term_link($term);
-                                    $landing_page = get_field('landing_page', $term);
-                                    $term_url = $landing_page ? $landing_page : $term_link;
+                                setup_postdata($post_obj);
 
-                                    $landing_page_id = 0;
-                                    if (is_object($landing_page) && isset($landing_page->ID)) {
-                                        $landing_page_id = $landing_page->ID;
-                                    } elseif (is_array($landing_page) && isset($landing_page['ID'])) {
-                                        $landing_page_id = $landing_page['ID'];
-                                    } elseif (is_numeric($landing_page)) {
-                                        $landing_page_id = intval($landing_page);
-                                    } elseif (is_string($landing_page)) {
-                                        $landing_page_id = url_to_postid($landing_page);
-                                    }
-
-                                    $has_product_range = $landing_page_id ? get_field('has_product_range', $landing_page_id) : false;
-                                    $term_image = get_field('right_image', $term);
+                                // Retrieve custom fields
+                                $range_code = get_field('range_code', $featured_product_id);
+                                $small_text_line = get_field('small_text_line', $featured_product_id);
+                                $thumbnail_url = get_the_post_thumbnail_url($featured_product_id, 'large');
                             ?>
+                                <a href="<?php echo esc_url(get_permalink($featured_product_id)); ?>" class="new-category-product-card">
 
-                                    <div class="catBox landing-categories__card">
-                                        <div class="catBox__Inner">
-                                            <a href="<?php echo esc_url($term_url); ?>">
-                                                <?php if ($term_image): ?>
-                                                    <img src="<?php echo esc_url($term_image); ?>" class="catBoxImage" alt="<?php echo esc_attr($term->name); ?>" />
-                                                <?php else: ?>
-                                                    <img src="/wp-content/uploads/2022/04/Mask-Group-157.png" class="catBoxImage" alt="<?php echo esc_attr($term->name); ?>" />
-                                                <?php endif; ?>
-                                            </a>
+                                    <?php if ($thumbnail_url) : ?>
+                                        <div class="new-category-product-card__img-container">
+                                            <img src="<?php echo esc_url($thumbnail_url); ?>" alt="<?php echo esc_attr(get_the_title($featured_product_id)); ?>">
                                         </div>
-                                        <?php if ($has_product_range): ?>
-                                            <img src="/wp-content/uploads/2025/12/home-menu-categories.png" alt="">
+                                    <?php endif; ?>
+                                    <div class="new-category-product-card__text-container">
+                                        <div>
+                                            <div class="sans regular range-group__title uppercase text-ms">Cyclon</div>
+                                            <h5 class="text-l regular primary sans new-category-product-card__title">
+                                                <?php echo get_the_title($featured_product_id); ?>
+                                            </h5>
+                                            <?php
+                                            $grade_terms = get_the_terms($featured_product_id, 'cyclon_product_grade');
+                                            if (!empty($grade_terms) && !is_wp_error($grade_terms)) {
+                                            ?>
+                                                <div class="text-l uppercase product-card__grade"><?php echo $grade_terms[0]->name; ?></div>
+                                            <?php } ?>
+                                            <?php if ($range_code) : ?>
+                                                <div class="text-l regular sans new-category-product-card__code"><?php echo esc_html($range_code); ?></div>
+                                            <?php endif; ?>
+                                        </div>
+                                        <?php if ($small_text_line) : ?>
+                                            <div class="text-sm new-category-product-card__text"><?php echo esc_html($small_text_line); ?></div>
                                         <?php endif; ?>
-                                        <h4 class="landing-categories__category-heading">
-                                            <a href="<?php echo esc_url($term_url); ?>">
-                                                <?php echo esc_html($term->name); ?>
-                                            </a>
+
+                                        <?php
+                                        $content = strip_tags(get_post_field('post_content', $featured_product_id));
+                                        $words = preg_split('/\s+/', $content, -1, PREG_SPLIT_NO_EMPTY);
+                                        $short_content = implode(' ', array_slice($words, 0, 15));
+                                        ?>
+                                        <div class="text-sm info product-card__info">
+                                            <?php echo esc_html($short_content); ?><?php if (count($words) > 15) echo '...'; ?>
+                                        </div>
+
+                                        <h4 class="home-categories__category-heading">
+                                            <span></span>
                                         </h4>
                                     </div>
-
-                            <?php
-                                }
-                            }
-                            ?>
+                                </a>
+                            <?php endforeach; ?>
+                            <?php wp_reset_postdata(); ?>
                         </div>
-                    </div>
-                <?php else : ?>
-                    <!-- Products for no-range version -->
-                    <div class="boxed centered no-padding">
-                        <?php
-                        // Get featured products from ACF field
-                        $featured_products_raw = get_field('new_product_landing_featured_products_no_range');
-
-                        if (!is_array($featured_products_raw)) {
-                            $featured_products_raw = array($featured_products_raw);
-                        }
-
-                        // Convert permalinks to post IDs
-                        $featured_product_ids = array();
-                        foreach ($featured_products_raw as $item) {
-                            $post_id = 0;
-
-                            if (is_numeric($item)) {
-                                $post_id = (int) $item;
-                            } elseif (is_object($item) && isset($item->ID)) {
-                                $post_id = (int) $item->ID;
-                            } elseif (is_string($item) && $item !== '') {
-                                $post_id = (int) url_to_postid($item);
-                            }
-
-                            if ($post_id > 0) {
-                                $featured_product_ids[] = $post_id;
-                            }
-                        }
-
-                        // Limit to 3 products
-                        $featured_product_ids = array_values(array_unique($featured_product_ids));
-                        if (count($featured_product_ids) > 3) {
-                            $featured_product_ids = array_slice($featured_product_ids, 0, 3);
-                        }
-                        ?>
-
-                        <?php if (!empty($featured_product_ids)) : ?>
-                            <div class="new-category-product-grid">
-                                <?php
-                                foreach ($featured_product_ids as $featured_product_id) :
-                                    $post_obj = get_post($featured_product_id);
-                                    if (!$post_obj) {
-                                        continue;
-                                    }
-
-                                    setup_postdata($post_obj);
-
-                                    // Retrieve custom fields
-                                    $range_code = get_field('range_code', $featured_product_id);
-                                    $small_text_line = get_field('small_text_line', $featured_product_id);
-                                    $thumbnail_url = get_the_post_thumbnail_url($featured_product_id, 'large');
-                                ?>
-                                    <a href="<?php echo esc_url(get_permalink($featured_product_id)); ?>" class="new-category-product-card">
-
-                                        <?php if ($thumbnail_url) : ?>
-                                            <div class="new-category-product-card__img-container">
-                                                <img src="<?php echo esc_url($thumbnail_url); ?>" alt="<?php echo esc_attr(get_the_title($featured_product_id)); ?>">
-                                            </div>
-                                        <?php endif; ?>
-                                        <div class="new-category-product-card__text-container">
-                                            <div>
-                                                <div class="sans regular range-group__title uppercase text-ms">Cyclon</div>
-                                                <h5 class="text-l regular primary sans new-category-product-card__title">
-                                                    <?php echo get_the_title($featured_product_id); ?>
-                                                </h5>
-                                                <?php
-                                                $grade_terms = get_the_terms($featured_product_id, 'cyclon_product_grade');
-                                                if (!empty($grade_terms) && !is_wp_error($grade_terms)) {
-                                                ?>
-                                                    <div class="text-l uppercase product-card__grade"><?php echo $grade_terms[0]->name; ?></div>
-                                                <?php } ?>
-                                                <?php if ($range_code) : ?>
-                                                    <div class="text-l regular sans new-category-product-card__code"><?php echo esc_html($range_code); ?></div>
-                                                <?php endif; ?>
-                                            </div>
-                                            <?php if ($small_text_line) : ?>
-                                                <div class="text-sm new-category-product-card__text"><?php echo esc_html($small_text_line); ?></div>
-                                            <?php endif; ?>
-
-                                            <?php
-                                            $content = strip_tags(get_post_field('post_content', $featured_product_id));
-                                            $words = preg_split('/\s+/', $content, -1, PREG_SPLIT_NO_EMPTY);
-                                            $short_content = implode(' ', array_slice($words, 0, 15));
-                                            ?>
-                                            <div class="text-sm info product-card__info">
-                                                <?php echo esc_html($short_content); ?><?php if (count($words) > 15) echo '...'; ?>
-                                            </div>
-
-                                            <h4 class="home-categories__category-heading">
-                                                <span></span>
-                                            </h4>
-                                        </div>
-                                    </a>
-                                <?php endforeach; ?>
-                                <?php wp_reset_postdata(); ?>
-                            </div>
-                        <?php endif; ?>
-                    </div>
-                <?php endif; ?>
+                    <?php endif; ?>
+                </div>
+                <?php //endif; 
+                ?>
             </div>
         <?php else : ?>
             <?php
@@ -492,7 +436,7 @@ get_header(); ?>
             $has_products = $check_products_query->have_posts();
             wp_reset_postdata();
 
-            if ($has_products) {
+            if ($has_products && $associated_cat_id != 778) {
                 $category_link = get_term_link($associated_cat_id, 'cyclon_new_product_cat');
                 if (!is_wp_error($category_link)) {
         ?>
@@ -508,6 +452,88 @@ get_header(); ?>
         }
         ?>
     </section>
+
+    <?php if (!$has_products_with_range) : ?>
+        <?php if ($associated_cat_id == 778) : ?>
+            <!-- Special case: Subcategories Grid for category ID 778 -->
+            <section class="landing-categories">
+                <div class="container">
+                    <div class="text-l regular sans normal primary text-center normal">
+                        <?php echo __('Industrial Lubricants Applications', 'cyclon'); ?>
+                    </div>
+                    <div class="landing-categories__grid">
+                        <?php
+                        // Get direct children of category 778
+                        $child_terms = get_terms(array(
+                            'taxonomy' => 'cyclon_new_product_cat',
+                            'hide_empty' => false,
+                            'parent' => 778, // Only get direct children of category 778
+                        ));
+
+                        if (!empty($child_terms) && !is_wp_error($child_terms)) {
+                            foreach ($child_terms as $term) {
+                                $term_link = get_term_link($term);
+                                $landing_page = get_field('landing_page', $term);
+                                $term_url = $landing_page ? $landing_page : $term_link;
+
+                                $landing_page_id = 0;
+                                if (is_object($landing_page) && isset($landing_page->ID)) {
+                                    $landing_page_id = $landing_page->ID;
+                                } elseif (is_array($landing_page) && isset($landing_page['ID'])) {
+                                    $landing_page_id = $landing_page['ID'];
+                                } elseif (is_numeric($landing_page)) {
+                                    $landing_page_id = intval($landing_page);
+                                } elseif (is_string($landing_page)) {
+                                    $landing_page_id = url_to_postid($landing_page);
+                                }
+
+                                $has_product_range = $landing_page_id ? get_field('has_product_range', $landing_page_id) : false;
+                                $term_image = get_field('right_image', $term);
+                        ?>
+
+                                <div class="catBox landing-categories__card">
+                                    <div class="catBox__Inner">
+                                        <a href="<?php echo esc_url($term_url); ?>">
+                                            <?php if ($term_image): ?>
+                                                <img src="<?php echo esc_url($term_image); ?>" class="catBoxImage" alt="<?php echo esc_attr($term->name); ?>" />
+                                            <?php else: ?>
+                                                <img src="/wp-content/uploads/2022/04/Mask-Group-157.png" class="catBoxImage" alt="<?php echo esc_attr($term->name); ?>" />
+                                            <?php endif; ?>
+                                        </a>
+                                    </div>
+                                    <?php if ($has_product_range): ?>
+                                        <img src="/wp-content/uploads/2025/12/home-menu-categories.png" alt="">
+                                    <?php endif; ?>
+                                    <h4 class="landing-categories__category-heading">
+                                        <a href="<?php echo esc_url($term_url); ?>">
+                                            <?php echo esc_html($term->name); ?>
+                                        </a>
+                                    </h4>
+                                </div>
+
+                        <?php
+                            }
+                        }
+                        ?>
+                    </div>
+                </div>
+                <?php if ($has_products) {
+                    $category_link = get_term_link($associated_cat_id, 'cyclon_new_product_cat');
+                    if (!is_wp_error($category_link)) {
+                ?>
+                        <div class="text-center">
+                            <a class="mButton primary product-category-landing__cta"
+                                href="<?php echo esc_url($category_link); ?>">
+                                View Products
+                            </a>
+                        </div>
+                <?php
+                    }
+                }
+                ?>
+            </section>
+        <?php endif; ?>
+    <?php endif; ?>
 
     <?php if (get_field('mapping_information')): ?>
         <section class="appMapping default" id="mappingSection">
