@@ -57,6 +57,14 @@ if (have_posts()): while (have_posts()): the_post();
                     }
                 }
 
+                // Also show bg image if product has a cyclon_range value
+                if (!$has_bg_image) {
+                    $range_terms = wp_get_post_terms(get_the_ID(), 'cyclon_range');
+                    if (!empty($range_terms) && !is_wp_error($range_terms)) {
+                        $has_bg_image = true;
+                    }
+                }
+
                 // $bg_style = $has_bg_image ? ' style="background-image: url(/wp-content/uploads/2026/01/product-bg-img.svg);"' : '';
                 $bg_style = $has_bg_image ? ' /wp-content/uploads/2026/01/product-bg-img.svg)' : '';
                 ?>
