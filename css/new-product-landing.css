@@ -189,7 +189,7 @@
 .new-category-product-card__text-container {
   display: flex;
   flex-direction: column;
-  gap: clamp(15px, calc((30 * 100vw) / 1280), 30px);
+  /* gap: clamp(15px, calc((30 * 100vw) / 1280), 30px); */
   /* justify-content: space-between; */
 }
 

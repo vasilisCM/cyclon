@@ -154,6 +154,7 @@ get_header(); ?>
                                         <?php endif; ?>
                                         <div class="new-category-product-card__text-container">
                                             <div>
+                                                <div class="sans regular range-group__title uppercase text-ms">Cyclon</div>
                                                 <h5 class="text-l regular primary sans new-category-product-card__title">
                                                     <?php echo get_the_title($featured_product_id); ?>
                                                 </h5>
@@ -577,7 +578,7 @@ get_header(); ?>
                             </div>
                             <a class="mButton mButton--trans" href="<?php echo esc_url($category_link);
                                                                     ?>"><?php echo __('VIEW PRODUCTS', 'cyclon')
-                                                                                ?> </a>
+                                                                        ?> </a>
 
 
                         </div>
