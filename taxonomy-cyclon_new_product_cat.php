@@ -62,6 +62,7 @@ get_header(); ?>
                                         'taxonomy'   => $taxonomy->name,
                                         'parent'     => $current_term->term_id,
                                         'hide_empty' => true,
+                                        'orderby'    => 'term_order',
                                     ));
                                 }
                             } else {
@@ -82,6 +83,7 @@ get_header(); ?>
                                             'taxonomy'   => $taxonomy->name,
                                             'include'    => $term_ids,
                                             'hide_empty' => true,
+                                            'orderby'    => 'term_order',
                                         ));
                                     }
                                 }
