@@ -39,23 +39,23 @@ function initPinElements() {
     return;
   }
 
-  if (filterPinTrigger) {
-    filterPinTrigger.kill();
-    filterPinTrigger = null;
-  }
+  // if (filterPinTrigger) {
+  //   filterPinTrigger.kill();
+  //   filterPinTrigger = null;
+  // }
 
-  const headerHeight =
-    document.querySelector(".site-header")?.offsetHeight || 0;
-  const archiveGridHeight = archiveGrid?.offsetHeight || 0;
+  // const headerHeight =
+  //   document.querySelector(".site-header")?.offsetHeight || 0;
+  // const archiveGridHeight = archiveGrid?.offsetHeight || 0;
 
-  filterPinTrigger = ScrollTrigger.create({
-    trigger: stickyTarget,
-    start: `-${headerHeight} top`,
-    end: `+=${archiveGridHeight} bottom`, // adjust to control how long it stays pinned
-    // markers: true,
-    pin: true,
-    pinSpacing: false, // or true if you want the placeholder spacing
-  });
+  // filterPinTrigger = ScrollTrigger.create({
+  //   trigger: stickyTarget,
+  //   start: `-${headerHeight} top`,
+  //   end: `+=${archiveGridHeight} bottom`, // adjust to control how long it stays pinned
+  //   // markers: true,
+  //   pin: true,
+  //   pinSpacing: false, // or true if you want the placeholder spacing
+  // });
 }
 
 // Helper function for clearing field elements
