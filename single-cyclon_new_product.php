@@ -30,7 +30,17 @@ if (have_posts()): while (have_posts()): the_post();
                             <?php if ($category): ?>
                                 <div class="single-product-new__category-image">
                                     <?php
-                                    $category_image = get_field('new_product_category_image_single', $category);
+                                    // Determine which category to use for the image
+                                    $image_category = $category;
+                                    if ($category->parent != 0) {
+                                        // If this is a child category, get the parent category for the image
+                                        $parent_category = get_term($category->parent, 'cyclon_new_product_cat');
+                                        if ($parent_category && !is_wp_error($parent_category)) {
+                                            $image_category = $parent_category;
+                                        }
+                                    }
+                                    
+                                    $category_image = get_field('new_product_category_image_single', $image_category);
                                     if ($category_image): ?>
                                         <img src="<?php echo esc_url($category_image); ?>" alt="<?php echo esc_attr(get_the_title()); ?>">
                                     <?php endif; ?>
