@@ -126,13 +126,13 @@
             $featured_image_url = get_the_post_thumbnail_url($front_page_id, 'full');
             // Fallback to default image if no featured image is set
             $background_image = $featured_image_url ? $featured_image_url : '/wp-content/uploads/2025/12/home-hero.jpg';
-            
+
             // Get ACF carousel repeater
             $carousel_items = get_field('home_hero_carousel', $front_page_id);
-            
+
             // Build slides array - first slide is current hardcoded content
             $slides = array();
-            
+
             // Add first slide (current hardcoded content)
             $slides[] = array(
                 'image' => $background_image,
@@ -141,7 +141,7 @@
                 'label' => 'Ανακαλυψτε Περισσοτερα',
                 'link' => '/'
             );
-            
+
             // Add ACF repeater slides if they exist
             if ($carousel_items && is_array($carousel_items)) {
                 foreach ($carousel_items as $item) {
@@ -156,10 +156,10 @@
                     }
                 }
             }
-            
+
             $is_carousel = count($slides) > 1;
             ?>
-            
+
             <?php if ($is_carousel): ?>
                 <section class="taxHeader hero-home carousel-hero">
                     <div class="carousel-hero__container">
@@ -212,7 +212,7 @@
                                             <h1 class="hero-home__heading">
                                                 Engineered <br> to Perform </h1>
                                             <div class="hero-home__subheading accent">Advanced technology <br> in every move</div>
-                                            <a class="mButton mButton--trans uppercase hero-home__button" href="/">Ανακαλυψτε Περισσοτερα</a>
+                                            <!-- <a class="mButton mButton--trans uppercase hero-home__button" href="/">Ανακαλυψτε Περισσοτερα</a> -->
                                             <!-- <a class="mButton mButton--trans text-xs letter-spacing-medium uppercase hero-home__button" href="/">Ανακαλυψτε Περισσοτερα</a> -->
                                         </div>
                                         <div class="taxHeader__Buttons d-none d-sm-flex d-md-flex d-lg-flex d-xl-flex">

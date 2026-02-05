@@ -12,7 +12,7 @@
             <img src="<?php echo $im; ?>"
                 class="img-fluid" />
         <?php else: ?>
-            <img src="/wp-content/uploads/2022/05/1L_MAGMA-SYN-ULTRA-S-0W-20-1.png"
+            <img src="/wp-content/uploads/2025/06/brand-history-new-logo.svg"
                 class="img-fluid" />
         <?php endif; ?>
     </div>
