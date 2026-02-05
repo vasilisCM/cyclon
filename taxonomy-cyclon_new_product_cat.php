@@ -256,7 +256,7 @@ get_header(); ?>
             }
 
             if (have_posts()): ?>
-                <div class="container product-grid">
+                <div class="container product-grid" id="product-grid">
 
 
                     <div class="selected-filters" style="display: none;">

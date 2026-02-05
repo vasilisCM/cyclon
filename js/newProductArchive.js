@@ -602,6 +602,12 @@ async function filterProducts({
       ScrollTrigger.refresh();
     }
 
+    // Scroll to the top of the product grid section after AJAX completes
+    const scrollTarget = document.querySelector(".selected-filters") || document.querySelector("#product-grid");
+    if (scrollTarget) {
+      scrollTarget.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
     // UP TO HERE!
 
     // else {
