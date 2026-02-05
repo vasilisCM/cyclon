@@ -383,12 +383,34 @@ li:has(.sub-menu--active) > a:after {
   visibility: hidden;
   opacity: 0;
   transition: all ease 300ms;
+}
 
-  /* @include view(md-max) {
+li:hover > .sub-menu {
+  visibility: visible;
+  opacity: 1;
+}
+
+@media screen and (max-width: 991px) {
+  .sub-menu {
     position: revert;
     display: none;
-    padding: revert;
-  } */
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background-color: white;
+  }
+
+  .sub-menu li {
+    border-bottom: 1px solid  rgba(0, 26, 97, 0.2);
+  }
+
+  .sub-menu li a {
+    color: #001a61 !important;
+  }
+
+  li:hover > .sub-menu {
+    display: block;
+  }
 }
 
 .sub-menu li {

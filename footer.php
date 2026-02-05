@@ -187,7 +187,7 @@
 
 
         <!-- Display None -->
-        <section class="cyclon-categories mobileCategories">
+        <!-- <section class="cyclon-categories mobileCategories">
 
             <div class="container">
                 <div class="row g-2 g-sm-3 g-md-3 g-lg-3">
@@ -317,7 +317,7 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </section> -->
     </div>
 </div>
 
