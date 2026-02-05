@@ -214,12 +214,20 @@
 }
 
 .new-category-product-card__img-container img {
-  max-height: 200px;
+  max-height: clamp(107px, calc((200 * 100vw) / 1920), 200px);
 }
 
 @media only screen and (max-width: 1024px) {
   .new-category-product-grid {
     gap: 50px;
+  }
+
+  .new-category-product-card__img-container img {
+    max-height: clamp(138px, calc((160 * 100vw) / 1920), 160px);
+  }
+
+  .new-category-product-card__img-container {
+    justify-self: end;  
   }
 
   /* .new-category-product-card {

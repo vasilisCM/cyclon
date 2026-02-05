@@ -127,6 +127,11 @@
 
 .single-product-new__category-image {
   max-width: 60px;
+  background-color: #fff;
+}
+
+.single-product-new__category-image img {
+  mix-blend-mode: luminosity;
 }
 
 .single-product-new__title {
