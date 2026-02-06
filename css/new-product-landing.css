@@ -32,7 +32,7 @@
 }
 
 .page-template-cyclon-new-category-landing-tpl .taxHeader .taxHeader__Content__Inner img {
-  max-height: clamp(200px, calc((300 * 100vw) / 1380), 300px);
+  /* max-height: clamp(200px, calc((300 * 100vw) / 1380), 300px); */
   object-fit: contain;
 }
 
