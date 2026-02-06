@@ -168,7 +168,7 @@ get_header(); ?>
             <div class="home-categories__grid">
                 <?php
                 // Define the desired order of term IDs
-                $term_order = array(769, 770, 771, 772, 773, 774, 775, 776, 777, 778, 779, 780, 781);
+                $term_order = array(769, 770, 771, 772, 773, 774, 775, 776, 777, 778, 779, 780, 781,3387,3393,3386,3390,3346,3382,3384,3381,3388,3394,3385,3383,3389);
 
                 // Get all terms from cyclon_new_product_cat taxonomy
                 $terms = get_terms(array(
