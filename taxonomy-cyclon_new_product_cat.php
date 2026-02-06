@@ -83,7 +83,7 @@ get_header(); ?>
                                             'taxonomy'   => $taxonomy->name,
                                             'include'    => $term_ids,
                                             'hide_empty' => true,
-                                            'orderby'    => 'term_order',
+                                            'orderby'    => ($taxonomy->name === 'cyclon_product_grade') ? 'term_order' : 'name',
                                         ));
                                     }
                                 }
