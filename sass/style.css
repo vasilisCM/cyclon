@@ -9364,12 +9364,13 @@ textarea {
   }
 }
 .triboFigure__Number {
-  font-size: 100px;
-  line-height: 126px;
+  font-family: "Ferry-Black", sans-serif;
+  font-size: clamp(50px, calc((75 * 100vw) / 1024),75px);
+  line-height: 1.2;
   /* letter-spacing: -5px; */
   margin: 0 0 -10px 0;
   font-weight: 300;
-  color: #ffda00;
+  color: #001a61;
 }
 @media (max-width: 767px) {
   .triboFigure__Number {
@@ -9377,15 +9378,12 @@ textarea {
   }
 }
 .triboFigure__Description {
-  font-size: 26px;
-  line-height: 33px;
+  font-size: clamp(16px, calc((26 * 100vw) / 1024),26px);;
+  line-height: 1.2;
   color: #001a61;
 }
 @media (max-width: 767px) {
   .triboFigure__Description {
-    font-size: 16px;
-    line-height: 23px;
-    letter-spacing: 0.23px;
     display: inline-block;
   }
 }
@@ -9393,6 +9391,7 @@ textarea {
   position: absolute;
   left: -17px;
   bottom: -30px;
+  max-height: calc(100% + 30px);
 }
 @media (max-width: 767px) {
   .triboFigure img {
