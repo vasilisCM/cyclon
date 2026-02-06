@@ -271,3 +271,7 @@
 .relatedProducts__SuperWrapper .swiper-button-next {
   display: none !important;
 }
+
+.single-cyclon_new_product .relatedProducts__Inner .swiper-slide {
+  padding-top: 0px;
+}

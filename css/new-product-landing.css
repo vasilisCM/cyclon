@@ -27,6 +27,15 @@
   justify-content: left;
 }
 
+.page-template-cyclon-new-category-landing-tpl .taxHeader__Content:has(img) {
+  justify-content: right;
+}
+
+.page-template-cyclon-new-category-landing-tpl .taxHeader .taxHeader__Content__Inner img {
+  max-height: clamp(200px, calc((300 * 100vw) / 1380), 300px);
+  object-fit: contain;
+}
+
 @media only screen and (max-width: 767px) {
   .page-template-cyclon-new-category-landing-tpl .taxHeader {
     height: clamp(520px, calc((620 * 100vw) / 767), 620px);
