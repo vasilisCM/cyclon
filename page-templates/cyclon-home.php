@@ -483,8 +483,7 @@ get_header(); ?>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                     <div class="globalNetwork__Content">
                         <h3 class="primary"><?php echo __('Global Distribution Network', 'cyclon'); ?></h3>
-                        <p><?php echo __('Cyclon is a global brand that has earned the trust of experts and consumers in over 60 countries, from Chile to China. With a relentless focus on innovation and excellence, we offer high-performance lubricants that not only meet but exceed the strictest international standards.<br><br>
-Our products support the success of leading businesses worldwide, ensuring seamless and uninterrupted operation, keeping everything in motion as the world continues to evolve.', 'cyclon'); ?></p>
+                        <div><?php echo get_field('home_network__text'); ?></div>
                         <a href="<?php echo __('/network/', 'cyclon'); ?>" class="mButton"><?php echo __('EXPLORE MORE', 'cyclon'); ?></a>
                     </div>
                 </div>
