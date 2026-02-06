@@ -246,7 +246,14 @@
                             <div class="headerImage_Wrapper" style="max-width: 100%;">
                                 <?php if (is_tax('cyclon_new_product_cat')): ?>
                                     <?php
-                                    $landing_page = get_field('landing_page', $term);
+                                    $term_for_landing = $term;
+                                    if (!empty($term->parent)) {
+                                        $parent_term = get_term((int) $term->parent, 'cyclon_new_product_cat');
+                                        if ($parent_term && !is_wp_error($parent_term)) {
+                                            $term_for_landing = $parent_term;
+                                        }
+                                    }
+                                    $landing_page = get_field('landing_page', $term_for_landing);
                                     if ($landing_page) {
                                         $page_id = url_to_postid($landing_page);
                                         $header_image = get_field('product_category_landing__right_image', $page_id);
