@@ -12,7 +12,7 @@
             <img src="<?php echo $im; ?>"
                 class="img-fluid" />
         <?php else: ?>
-            <img src="/wp-content/uploads/2025/06/brand-history-new-logo.svg"
+            <img src="/wp-content/uploads/2026/01/vareli_new.png"
                 class="img-fluid" />
         <?php endif; ?>
     </div>
