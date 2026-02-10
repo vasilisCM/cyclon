@@ -26,6 +26,59 @@ function cyclon_limit_product_archive_posts($query)
         $query->set('cyclon_needs_range_sort', true);
         // Store the desired posts per page for later
         $query->set('cyclon_per_page', 8);
+
+        // Apply URL filter params (e.g. ?cyclon_product_grade=5w-30) so pagination page 2+ keeps filters on full reload
+        $filter_taxonomies = array(
+            'cyclon_range',
+            'cyclon_product_grade',
+            'cyclon_product_type',
+            'cyclon_new_product_acea',
+            'cyclon_new_product_oem',
+            'cyclon_specifications',
+            'cyclon_new_product_cat',
+        );
+        $has_get_filters = false;
+        foreach ($filter_taxonomies as $taxonomy) {
+            if (!empty($_GET[$taxonomy]) && is_string($_GET[$taxonomy])) {
+                $has_get_filters = true;
+                break;
+            }
+        }
+        if ($has_get_filters) {
+            $tax_query = $query->get('tax_query');
+            if (!is_array($tax_query) || empty($tax_query)) {
+                $term = get_queried_object();
+                if (!$term || !isset($term->term_id)) {
+                    return;
+                }
+                $tax_query = array(
+                    'relation' => 'AND',
+                    array(
+                        'taxonomy' => 'cyclon_new_product_cat',
+                        'field'    => 'term_id',
+                        'terms'    => array($term->term_id),
+                    ),
+                );
+            }
+            if (empty($tax_query['relation'])) {
+                $tax_query['relation'] = 'AND';
+            }
+            foreach ($filter_taxonomies as $taxonomy) {
+                if (!empty($_GET[$taxonomy]) && is_string($_GET[$taxonomy])) {
+                    $terms = array_map('trim', explode(',', sanitize_text_field(wp_unslash($_GET[$taxonomy]))));
+                    $terms = array_filter($terms);
+                    if (!empty($terms)) {
+                        $tax_query[] = array(
+                            'taxonomy' => $taxonomy,
+                            'field'    => 'slug',
+                            'terms'    => $terms,
+                            'operator' => 'IN',
+                        );
+                    }
+                }
+            }
+            $query->set('tax_query', $tax_query);
+        }
     }
 }
 

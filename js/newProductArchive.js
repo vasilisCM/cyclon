@@ -630,11 +630,6 @@ async function filterProducts({
       highlightCurrentPagination();
     }
 
-    if (typeof ScrollTrigger !== "undefined") {
-      initPinElements();
-      ScrollTrigger.refresh();
-    }
-
     // Scroll to the top of the product grid section after AJAX completes
     const scrollTarget =
       document.querySelector(".selected-filters") ||

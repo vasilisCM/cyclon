@@ -294,13 +294,27 @@ function custom_filter_products()
             $base_link = get_pagenum_link(1);
         }
 
+        // Preserve filter query params on pagination links (e.g. ?cyclon_product_grade=5w-30) so page 2+ keeps filters on full reload
+        $pagination_add_args = array();
+        if (!empty($_POST['filters']) && is_array($_POST['filters'])) {
+            foreach ($_POST['filters'] as $taxonomy => $term_slugs) {
+                if (in_array($taxonomy, $custom_taxonomies, true) && !empty($term_slugs)) {
+                    $term_slugs = is_array($term_slugs) ? array_filter($term_slugs) : array($term_slugs);
+                    if (!empty($term_slugs)) {
+                        $pagination_add_args[$taxonomy] = implode(',', array_map('sanitize_text_field', $term_slugs));
+                    }
+                }
+            }
+        }
+
         if (!is_wp_error($base_link)) {
             $pagination_html = paginate_links(array(
-                'base' => trailingslashit($base_link) . '%_%',
-                'format' => 'page/%#%/',
-                'current' => $page,
-                'total' => $query->max_num_pages,
-                'type' => 'list',
+                'base'      => trailingslashit($base_link) . '%_%',
+                'format'    => 'page/%#%/',
+                'current'   => $page,
+                'total'     => $query->max_num_pages,
+                'type'      => 'list',
+                'add_args'  => $pagination_add_args,
             ));
         }
     }

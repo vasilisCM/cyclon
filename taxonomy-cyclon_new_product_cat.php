@@ -296,10 +296,13 @@ get_header(); ?>
 
                     <div class="archive-grid__bottom pagination">
                         <?php
+                        // Preserve filter query params on pagination so page 2+ keeps filters (e.g. ?cyclon_product_grade=5w-30)
+                        $pagination_add_args = array_filter($_GET);
                         echo paginate_links(array(
-                            'total'   => $wp_query->max_num_pages,
-                            'current' => max(1, get_query_var('paged')),
-                            'type'    => 'list',
+                            'total'     => $wp_query->max_num_pages,
+                            'current'   => max(1, get_query_var('paged')),
+                            'type'      => 'list',
+                            'add_args'  => $pagination_add_args,
                         ));
                         ?>
                     </div>
