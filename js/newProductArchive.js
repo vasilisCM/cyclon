@@ -87,8 +87,11 @@ function storeInitialFilterOptions() {
 }
 
 function updateFilterOptions(availableFilters) {
-  console.log("📊 Available filters from API (for reference only):", availableFilters);
-  
+  console.log(
+    "📊 Available filters from API (for reference only):",
+    availableFilters,
+  );
+
   // Note: We no longer disable/hide filter options based on available_filters.
   // All filter options remain enabled, allowing users to make any combination.
   // If a combination results in no products, we'll show a "no products found" message.
@@ -131,28 +134,30 @@ function updateFilterOptions(availableFilters) {
   // Handle checkbox and dropdown filters (new product archive)
   // All options remain enabled - no disabling logic
   const taxonomies = cyclonFilters?.taxonomies || [];
-  
+
   taxonomies.forEach((taxonomy) => {
     // Handle checkboxes - ensure all are enabled
     const checkboxes = document.querySelectorAll(
-      `input[name="filters[${taxonomy}][]"]`
+      `input[name="filters[${taxonomy}][]"]`,
     );
-    
+
     if (checkboxes.length > 0) {
       checkboxes.forEach((checkbox) => {
-        const optionDiv = checkbox.closest('.product-filters__option');
-        
+        const optionDiv = checkbox.closest(".product-filters__option");
+
         // Always enable all checkboxes
         checkbox.disabled = false;
         if (optionDiv) {
-          optionDiv.style.opacity = '1';
-          optionDiv.style.pointerEvents = 'auto';
+          optionDiv.style.opacity = "1";
+          optionDiv.style.pointerEvents = "auto";
         }
       });
     }
-    
+
     // Handle dropdowns - ensure all options are enabled
-    const dropdown = document.querySelector(`select[name="filters[${taxonomy}][]"]`);
+    const dropdown = document.querySelector(
+      `select[name="filters[${taxonomy}][]"]`,
+    );
     if (dropdown) {
       Array.from(dropdown.options).forEach((option) => {
         option.disabled = false;
@@ -166,17 +171,19 @@ function highlightCurrentPagination() {
   const paginationContainer = document.querySelector(".archive-grid__bottom");
   if (!paginationContainer) return;
 
-  paginationContainer.querySelectorAll(".page-numbers.current").forEach((link) => {
-    link.style.textDecoration = "underline";
-    link.style.fontWeight = "600";
-  });
+  paginationContainer
+    .querySelectorAll(".page-numbers.current")
+    .forEach((link) => {
+      link.style.textDecoration = "underline";
+      link.style.fontWeight = "600";
+    });
 }
 
 // Close mobile filters
 function closeMobileFilters() {
-  const productFilters = document.querySelector('.product-filters');
-  if (productFilters && productFilters.classList.contains('active')) {
-    productFilters.classList.remove('active');
+  const productFilters = document.querySelector(".product-filters");
+  if (productFilters && productFilters.classList.contains("active")) {
+    productFilters.classList.remove("active");
   }
 }
 
@@ -243,7 +250,7 @@ async function filterProducts({
 
   // Show the loading overlay
   const loaderOverlay = document.querySelector(
-    ".woo-archive-options__loader-overlay"
+    ".woo-archive-options__loader-overlay",
   );
   if (loaderOverlay) {
     loaderOverlay.classList.remove("invisible");
@@ -274,7 +281,7 @@ async function filterProducts({
     ) {
       formData.append(
         "current_archive_context",
-        JSON.stringify(window.currentArchiveContext)
+        JSON.stringify(window.currentArchiveContext),
       );
     }
 
@@ -328,7 +335,7 @@ async function filterProducts({
 
     // Update product count display
     const productCountElement = document.querySelector(
-      ".product-count__number"
+      ".product-count__number",
     );
     if (productCountElement) {
       const totalProducts = data.total_products || data.products.length;
@@ -358,7 +365,7 @@ async function filterProducts({
     // Get template element - try DOM first (to get latest structure), fallback to stored template
     let templateElement = document.querySelector(productSelector);
     let templateClone = null;
-    
+
     if (templateElement) {
       // Fresh template from DOM - clone and store it
       templateClone = templateElement.cloneNode(true);
@@ -369,7 +376,9 @@ async function filterProducts({
       console.log("Using stored template clone (no template in DOM)");
     } else {
       // No template available at all
-      console.error("No product template found and no stored template available.");
+      console.error(
+        "No product template found and no stored template available.",
+      );
       return;
     }
 
@@ -381,7 +390,9 @@ async function filterProducts({
     });
 
     // Hide "no products found" message if it exists
-    const existingNoProductsMessage = container.querySelector(".archive-grid__no-products");
+    const existingNoProductsMessage = container.querySelector(
+      ".archive-grid__no-products",
+    );
     if (existingNoProductsMessage) {
       existingNoProductsMessage.style.display = "none";
     }
@@ -409,13 +420,13 @@ async function filterProducts({
         const priceElement = template.querySelector(".product-card__price");
         // Update the Add to Cart button
         const addToCartElement = template.querySelector(
-          ".product-card__add-to-cart"
+          ".product-card__add-to-cart",
         );
 
         // const contentElement = template.querySelector(contentSelector);
         // const excerptElement = template.querySelector(excerptSelector);
         const featuredImageElement = template.querySelector(
-          featuredImageSelector
+          featuredImageSelector,
         );
         // const featuredImageCaptionElement = template.querySelector(
         //   featuredImageCaptionSelector
@@ -451,7 +462,7 @@ async function filterProducts({
           featuredImageElement.alt = post.title ?? "";
         } else {
           const featuredImageContainer = template.querySelector(
-            featuredImageSelector.split(" ")[0]
+            featuredImageSelector.split(" ")[0],
           );
           if (featuredImageContainer) {
             featuredImageContainer.innerHTML = `<img src="${
@@ -473,10 +484,19 @@ async function filterProducts({
 
         // Product Grade with color
         const gradeElement = template.querySelector(".product-card__grade");
-        if (gradeElement && post.grade) {
-          gradeElement.textContent = post.grade.name;
-          if (post.grade.color) {
-            gradeElement.style.color = post.grade.color;
+        if (gradeElement) {
+          if (post.grade) {
+            // Use the grade coming from AJAX for this specific product
+            gradeElement.textContent = post.grade.name;
+            if (post.grade.color) {
+              gradeElement.style.color = post.grade.color;
+            } else {
+              gradeElement.style.color = "";
+            }
+          } else {
+            // No grade from API: clear any value from the cloned template
+            gradeElement.textContent = "";
+            gradeElement.style.color = "";
           }
         }
 
@@ -506,7 +526,7 @@ async function filterProducts({
               updateFieldElement(
                 newElement,
                 mapping.property ?? "textContent",
-                safeValue
+                safeValue,
               );
               targetContainer.appendChild(newElement);
             });
@@ -517,7 +537,7 @@ async function filterProducts({
             updateFieldElement(
               newElement,
               mapping.property ?? "textContent",
-              safeValue
+              safeValue,
             );
             targetContainer.appendChild(newElement);
           }
@@ -525,15 +545,19 @@ async function filterProducts({
 
         // Content Excerpt - Add after ACF processing
         if (post.content_excerpt) {
-          const productCardContent = template.querySelector(".productCard__Content");
+          const productCardContent = template.querySelector(
+            ".productCard__Content",
+          );
           if (productCardContent) {
             // Create the content excerpt div
             const excerptDiv = document.createElement("div");
             excerptDiv.className = "text-s info product-card__info";
             excerptDiv.textContent = post.content_excerpt;
-            
+
             // Find the last h4 element to insert before it
-            const h4Element = productCardContent.querySelector("h4.home-categories__category-heading");
+            const h4Element = productCardContent.querySelector(
+              "h4.home-categories__category-heading",
+            );
             if (h4Element) {
               productCardContent.insertBefore(excerptDiv, h4Element);
             } else {
@@ -573,26 +597,35 @@ async function filterProducts({
       }
 
       // Create or update "no products found" message
-      let noProductsMessage = container.querySelector(".archive-grid__no-products");
+      let noProductsMessage = container.querySelector(
+        ".archive-grid__no-products",
+      );
       if (!noProductsMessage) {
         noProductsMessage = document.createElement("div");
         noProductsMessage.className = "archive-grid__no-products";
         container.appendChild(noProductsMessage);
       }
-      noProductsMessage.textContent = "No products found matching your filters. Please try adjusting your selection.";
+      noProductsMessage.textContent =
+        "No products found matching your filters. Please try adjusting your selection.";
       noProductsMessage.style.display = "block";
       noProductsMessage.style.padding = "2rem";
       noProductsMessage.style.textAlign = "center";
 
       // Hide pagination when no products
-      const paginationContainer = document.querySelector(".archive-grid__bottom");
+      const paginationContainer = document.querySelector(
+        ".archive-grid__bottom",
+      );
       if (paginationContainer) {
         paginationContainer.innerHTML = "";
       }
     }
 
     const paginationContainer = document.querySelector(".archive-grid__bottom");
-    if (paginationContainer && "pagination_html" in data && productsInfo.length > 0) {
+    if (
+      paginationContainer &&
+      "pagination_html" in data &&
+      productsInfo.length > 0
+    ) {
       paginationContainer.innerHTML = data.pagination_html || "";
       highlightCurrentPagination();
     }
@@ -603,7 +636,9 @@ async function filterProducts({
     }
 
     // Scroll to the top of the product grid section after AJAX completes
-    const scrollTarget = document.querySelector(".selected-filters") || document.querySelector("#product-grid");
+    const scrollTarget =
+      document.querySelector(".selected-filters") ||
+      document.querySelector("#product-grid");
     if (scrollTarget) {
       scrollTarget.scrollIntoView({ behavior: "smooth", block: "start" });
     }
@@ -622,7 +657,7 @@ async function filterProducts({
 
     // Hide the loading overlay on error
     const loaderOverlay = document.querySelector(
-      ".woo-archive-options__loader-overlay"
+      ".woo-archive-options__loader-overlay",
     );
     if (loaderOverlay) {
       loaderOverlay.classList.add("invisible");
@@ -662,19 +697,23 @@ function updateUrlFromFilters() {
   // Collect values from both checkboxes and dropdowns
   taxonomies.forEach((taxonomy) => {
     // Check for checkboxes first
-    const checkboxes = document.querySelectorAll(`input[name="filters[${taxonomy}][]"]:checked`);
+    const checkboxes = document.querySelectorAll(
+      `input[name="filters[${taxonomy}][]"]:checked`,
+    );
     if (checkboxes.length > 0) {
       // Filter out empty values (for "All" options)
       const checked = Array.from(checkboxes)
         .map((cb) => cb.value)
         .filter((val) => val !== "");
-      
+
       if (checked.length > 0) {
         filters[taxonomy] = checked.join(",");
       }
     } else {
       // Check for dropdown (select)
-      const dropdown = document.querySelector(`select[name="filters[${taxonomy}][]"]`);
+      const dropdown = document.querySelector(
+        `select[name="filters[${taxonomy}][]"]`,
+      );
       if (dropdown && dropdown.value && dropdown.value !== "") {
         filters[taxonomy] = dropdown.value;
       }
@@ -709,9 +748,11 @@ function updateUrlFromFilters() {
 
 // Helper function to reset all active classes for cyclon_range options
 function resetCyclonRangeActiveClasses() {
-  const rangeOptions = document.querySelectorAll('.taxonomy-cyclon_range .product-filters__option');
+  const rangeOptions = document.querySelectorAll(
+    ".taxonomy-cyclon_range .product-filters__option",
+  );
   rangeOptions.forEach((optionDiv) => {
-    optionDiv.classList.remove('active');
+    optionDiv.classList.remove("active");
   });
 }
 
@@ -722,50 +763,55 @@ function syncFiltersFromUrl() {
   taxonomies.forEach((taxonomy) => {
     // Sync checkboxes
     const checkboxes = document.querySelectorAll(
-      `input[name="filters[${taxonomy}][]"]`
+      `input[name="filters[${taxonomy}][]"]`,
     );
     const urlValues = urlFilters[taxonomy] || [];
 
     // For cyclon_range, reset all active classes first
-    if (taxonomy === 'cyclon_range') {
+    if (taxonomy === "cyclon_range") {
       resetCyclonRangeActiveClasses();
     }
 
     checkboxes.forEach((checkbox) => {
       checkbox.checked = urlValues.includes(checkbox.value);
-      
+
       // Update active class for cyclon_range
-      if (taxonomy === 'cyclon_range' && checkbox.checked) {
-        const optionDiv = checkbox.closest('.product-filters__option');
+      if (taxonomy === "cyclon_range" && checkbox.checked) {
+        const optionDiv = checkbox.closest(".product-filters__option");
         if (optionDiv) {
-          optionDiv.classList.add('active');
+          optionDiv.classList.add("active");
         }
       }
     });
 
     // Special handling for cyclon_range "All Ranges" checkbox
-    if (taxonomy === 'cyclon_range') {
+    if (taxonomy === "cyclon_range") {
       const allRangesCheckbox = document.querySelector(
-        `input[name="filters[${taxonomy}][]"][value=""]`
+        `input[name="filters[${taxonomy}][]"][value=""]`,
       );
-      
+
       if (allRangesCheckbox) {
         // If no range filters in URL, check "All Ranges"
-        const hasRangeFilters = urlValues.length > 0 && urlValues.some(val => val !== "");
+        const hasRangeFilters =
+          urlValues.length > 0 && urlValues.some((val) => val !== "");
         allRangesCheckbox.checked = !hasRangeFilters;
-        
-        const allOptionDiv = allRangesCheckbox.closest('.product-filters__option');
+
+        const allOptionDiv = allRangesCheckbox.closest(
+          ".product-filters__option",
+        );
         if (allOptionDiv) {
           // Reset active class first, then add if needed
           if (!hasRangeFilters) {
-            allOptionDiv.classList.add('active');
+            allOptionDiv.classList.add("active");
           }
         }
       }
     }
 
     // Sync dropdowns
-    const dropdown = document.querySelector(`select[name="filters[${taxonomy}][]"]`);
+    const dropdown = document.querySelector(
+      `select[name="filters[${taxonomy}][]"]`,
+    );
     if (dropdown && urlValues.length > 0) {
       dropdown.value = urlValues[0]; // Dropdowns only support single selection
     } else if (dropdown) {
@@ -812,7 +858,7 @@ function updateSelectedFiltersDisplay() {
 
       // Try to find the checkbox and its label first
       const checkbox = document.querySelector(
-        `input[name="filters[${taxonomy}][]"][value="${termSlug}"]`
+        `input[name="filters[${taxonomy}][]"][value="${termSlug}"]`,
       );
 
       if (checkbox) {
@@ -822,7 +868,9 @@ function updateSelectedFiltersDisplay() {
         termName = label ? label.textContent.trim() : termSlug;
       } else {
         // If not a checkbox, check for dropdown option
-        const dropdown = document.querySelector(`select[name="filters[${taxonomy}][]"]`);
+        const dropdown = document.querySelector(
+          `select[name="filters[${taxonomy}][]"]`,
+        );
         if (dropdown) {
           const option = dropdown.querySelector(`option[value="${termSlug}"]`);
           termName = option ? option.textContent.trim() : termSlug;
@@ -870,27 +918,31 @@ function clearAllFilters() {
   taxonomies.forEach((taxonomy) => {
     // Uncheck checkboxes
     const checkboxes = document.querySelectorAll(
-      `input[name="filters[${taxonomy}][]"]:checked`
+      `input[name="filters[${taxonomy}][]"]:checked`,
     );
     checkboxes.forEach((checkbox) => {
       checkbox.checked = false;
     });
 
     // Reset dropdowns
-    const dropdown = document.querySelector(`select[name="filters[${taxonomy}][]"]`);
+    const dropdown = document.querySelector(
+      `select[name="filters[${taxonomy}][]"]`,
+    );
     if (dropdown) {
       dropdown.selectedIndex = 0;
     }
   });
 
   // Special handling for cyclon_range: reset active classes and set "All Ranges" to active
-  const allRangesCheckbox = document.querySelector('input[name="filters[cyclon_range][]"][value=""]');
+  const allRangesCheckbox = document.querySelector(
+    'input[name="filters[cyclon_range][]"][value=""]',
+  );
   if (allRangesCheckbox) {
     resetCyclonRangeActiveClasses();
     allRangesCheckbox.checked = true;
-    const allOptionDiv = allRangesCheckbox.closest('.product-filters__option');
+    const allOptionDiv = allRangesCheckbox.closest(".product-filters__option");
     if (allOptionDiv) {
-      allOptionDiv.classList.add('active');
+      allOptionDiv.classList.add("active");
     }
   }
 
@@ -901,14 +953,16 @@ function clearAllFilters() {
 function removeFilter(taxonomy, termSlug) {
   // Find and uncheck the specific checkbox
   const checkbox = document.querySelector(
-    `input[name="filters[${taxonomy}][]"][value="${termSlug}"]`
+    `input[name="filters[${taxonomy}][]"][value="${termSlug}"]`,
   );
 
   if (checkbox) {
     checkbox.checked = false;
   } else {
     // If not a checkbox, check for dropdown
-    const dropdown = document.querySelector(`select[name="filters[${taxonomy}][]"]`);
+    const dropdown = document.querySelector(
+      `select[name="filters[${taxonomy}][]"]`,
+    );
     if (dropdown && dropdown.value === termSlug) {
       dropdown.selectedIndex = 0; // Reset to first option
     }
@@ -969,7 +1023,7 @@ async function fetchInitialAvailableFilters() {
   try {
     const urlWords = window.location.pathname.split("/");
     const postCategory = urlWords[2];
-    
+
     const formData = new FormData();
     formData.append("action", "filter_products");
     formData.append("postType", "cyclon_new_product");
@@ -977,16 +1031,19 @@ async function fetchInitialAvailableFilters() {
     formData.append("termSlugs", postCategory);
     formData.append("postsNumber", -1); // Get all to check availability
     formData.append("page", 1);
-    
+
     const response = await fetch(wpAjax.ajaxUrl, {
       method: "POST",
       body: formData,
     });
-    
+
     if (response.ok) {
       const data = await response.json();
       if (data.available_filters) {
-        console.log("📥 Initial available filters loaded:", data.available_filters);
+        console.log(
+          "📥 Initial available filters loaded:",
+          data.available_filters,
+        );
         // Don't update filter options on initial load - show all by default
         // They will be filtered when user applies filters
       }
@@ -1000,7 +1057,7 @@ async function fetchInitialAvailableFilters() {
 document.addEventListener("DOMContentLoaded", () => {
   // Sync filters (checkboxes and dropdowns) from URL on page load
   syncFiltersFromUrl();
-  
+
   // Fetch initial available filters (but don't disable anything yet)
   // fetchInitialAvailableFilters();
 
@@ -1010,62 +1067,66 @@ document.addEventListener("DOMContentLoaded", () => {
     .querySelectorAll('input[type="checkbox"][name^="filters["]')
     .forEach((checkbox) => {
       // Skip cyclon_range checkboxes - they're handled in the special logic below
-      if (!checkbox.name.includes('filters[cyclon_range]')) {
+      if (!checkbox.name.includes("filters[cyclon_range]")) {
         checkbox.addEventListener("change", updateUrlFromFilters);
       }
     });
 
   // Special handling for cyclon_range: make the entire div clickable
   document
-    .querySelectorAll('.taxonomy-cyclon_range .product-filters__option')
+    .querySelectorAll(".taxonomy-cyclon_range .product-filters__option")
     .forEach((optionDiv) => {
       // Set initial active state based on checkbox
       const checkbox = optionDiv.querySelector('input[type="checkbox"]');
       if (checkbox && checkbox.checked) {
-        optionDiv.classList.add('active');
+        optionDiv.classList.add("active");
       }
-      
+
       optionDiv.addEventListener("click", (e) => {
         // Don't trigger if clicking on the checkbox or label directly
         // (let the native behavior handle it)
-        if (e.target.tagName === 'INPUT' || e.target.tagName === 'LABEL') {
+        if (e.target.tagName === "INPUT" || e.target.tagName === "LABEL") {
           return;
         }
-        
+
         // Find and toggle the checkbox
         if (checkbox) {
           checkbox.checked = !checkbox.checked;
           // Toggle active class based on checkbox state
           if (checkbox.checked) {
-            optionDiv.classList.add('active');
+            optionDiv.classList.add("active");
           } else {
-            optionDiv.classList.remove('active');
+            optionDiv.classList.remove("active");
           }
           // Manually trigger the change event
-          checkbox.dispatchEvent(new Event('change', { bubbles: true }));
+          checkbox.dispatchEvent(new Event("change", { bubbles: true }));
         }
       });
-      
+
       // Also update active class when checkbox changes (for label clicks)
       if (checkbox) {
-        checkbox.addEventListener('change', () => {
+        checkbox.addEventListener("change", () => {
           // Toggle active class on this option only (don't reset others)
           if (checkbox.checked) {
-            optionDiv.classList.add('active');
+            optionDiv.classList.add("active");
           } else {
-            optionDiv.classList.remove('active');
+            optionDiv.classList.remove("active");
           }
         });
       }
     });
 
   // Special logic for cyclon_range "All Ranges" option
-  const rangeCheckboxes = document.querySelectorAll('input[name="filters[cyclon_range][]"]');
-  const allRangesCheckbox = document.querySelector('input[name="filters[cyclon_range][]"][value=""]');
-  
+  const rangeCheckboxes = document.querySelectorAll(
+    'input[name="filters[cyclon_range][]"]',
+  );
+  const allRangesCheckbox = document.querySelector(
+    'input[name="filters[cyclon_range][]"][value=""]',
+  );
+
   if (allRangesCheckbox && rangeCheckboxes.length > 0) {
     rangeCheckboxes.forEach((checkbox) => {
-      checkbox.addEventListener('change', () => {
+      checkbox.addEventListener("change", () => {
         if (checkbox === allRangesCheckbox) {
           // "All Ranges" was clicked
           if (checkbox.checked) {
@@ -1074,28 +1135,32 @@ document.addEventListener("DOMContentLoaded", () => {
               if (cb !== allRangesCheckbox && cb.checked) {
                 cb.checked = false;
                 // Remove active class from the option div
-                const cbOptionDiv = cb.closest('.product-filters__option');
+                const cbOptionDiv = cb.closest(".product-filters__option");
                 if (cbOptionDiv) {
-                  cbOptionDiv.classList.remove('active');
+                  cbOptionDiv.classList.remove("active");
                 }
               }
             });
             // Add active class to "All Ranges" option
-            const allOptionDiv = allRangesCheckbox.closest('.product-filters__option');
+            const allOptionDiv = allRangesCheckbox.closest(
+              ".product-filters__option",
+            );
             if (allOptionDiv) {
-              allOptionDiv.classList.add('active');
+              allOptionDiv.classList.add("active");
             }
           } else {
             // "All Ranges" was unchecked - ensure at least one range is selected
             // If no other ranges are checked, check "All Ranges" again
             const anyRangeChecked = Array.from(rangeCheckboxes).some(
-              (cb) => cb !== allRangesCheckbox && cb.checked
+              (cb) => cb !== allRangesCheckbox && cb.checked,
             );
             if (!anyRangeChecked) {
               allRangesCheckbox.checked = true;
-              const allOptionDiv = allRangesCheckbox.closest('.product-filters__option');
+              const allOptionDiv = allRangesCheckbox.closest(
+                ".product-filters__option",
+              );
               if (allOptionDiv) {
-                allOptionDiv.classList.add('active');
+                allOptionDiv.classList.add("active");
               }
               // Don't call updateUrlFromFilters here since we're keeping "All Ranges" checked
               return;
@@ -1108,39 +1173,43 @@ document.addEventListener("DOMContentLoaded", () => {
             if (allRangesCheckbox.checked) {
               allRangesCheckbox.checked = false;
               // Remove active class from "All Ranges" option
-              const allOptionDiv = allRangesCheckbox.closest('.product-filters__option');
+              const allOptionDiv = allRangesCheckbox.closest(
+                ".product-filters__option",
+              );
               if (allOptionDiv) {
-                allOptionDiv.classList.remove('active');
+                allOptionDiv.classList.remove("active");
               }
             }
             // Add active class to the checked range option
-            const optionDiv = checkbox.closest('.product-filters__option');
+            const optionDiv = checkbox.closest(".product-filters__option");
             if (optionDiv) {
-              optionDiv.classList.add('active');
+              optionDiv.classList.add("active");
             }
           } else {
             // A specific range was unchecked
             // If no ranges are selected, check "All Ranges"
             const anyRangeChecked = Array.from(rangeCheckboxes).some(
-              (cb) => cb !== allRangesCheckbox && cb.checked
+              (cb) => cb !== allRangesCheckbox && cb.checked,
             );
             if (!anyRangeChecked) {
               allRangesCheckbox.checked = true;
               // Add active class to "All Ranges" option
-              const allOptionDiv = allRangesCheckbox.closest('.product-filters__option');
+              const allOptionDiv = allRangesCheckbox.closest(
+                ".product-filters__option",
+              );
               if (allOptionDiv) {
-                allOptionDiv.classList.add('active');
+                allOptionDiv.classList.add("active");
               }
               // Remove the active class from the unchecked range
-              const optionDiv = checkbox.closest('.product-filters__option');
+              const optionDiv = checkbox.closest(".product-filters__option");
               if (optionDiv) {
-                optionDiv.classList.remove('active');
+                optionDiv.classList.remove("active");
               }
               // Continue to updateUrlFromFilters to clear the filter from URL
             }
           }
         }
-        
+
         // After handling the range logic, update URL and filters
         // This ensures all checkboxes are in the correct state before updating
         updateUrlFromFilters();
@@ -1149,11 +1218,9 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Listen for dropdown changes to modify the URL
-  document
-    .querySelectorAll('select[name^="filters["]')
-    .forEach((dropdown) => {
-      dropdown.addEventListener("change", updateUrlFromFilters);
-    });
+  document.querySelectorAll('select[name^="filters["]').forEach((dropdown) => {
+    dropdown.addEventListener("change", updateUrlFromFilters);
+  });
 
   // Clear all filters button
   const clearAllBtn = document.querySelector(".selected-filters__clear-all");
@@ -1189,35 +1256,37 @@ document.addEventListener("DOMContentLoaded", () => {
   highlightCurrentPagination();
 
   // Mobile filter toggle functionality
-  const filterToggleBtn = document.querySelector('.filter-toggle-btn');
-  const productFilters = document.querySelector('.product-filters');
-  const filterCloseBtn = document.querySelector('.product-filters__close');
+  const filterToggleBtn = document.querySelector(".filter-toggle-btn");
+  const productFilters = document.querySelector(".product-filters");
+  const filterCloseBtn = document.querySelector(".product-filters__close");
 
   // Only set up toggle functionality if all required elements exist
   if (filterToggleBtn && productFilters && filterCloseBtn) {
     // Open filters
-    filterToggleBtn.addEventListener('click', () => {
-      productFilters.classList.add('active');
+    filterToggleBtn.addEventListener("click", () => {
+      productFilters.classList.add("active");
     });
 
     // Close filters with close button
-    filterCloseBtn.addEventListener('click', () => {
-      productFilters.classList.remove('active');
+    filterCloseBtn.addEventListener("click", () => {
+      productFilters.classList.remove("active");
     });
 
     // Close filters when clicking outside
-    document.addEventListener('click', (e) => {
-      if (productFilters.classList.contains('active') && 
-          !productFilters.contains(e.target) && 
-          !filterToggleBtn.contains(e.target)) {
-        productFilters.classList.remove('active');
+    document.addEventListener("click", (e) => {
+      if (
+        productFilters.classList.contains("active") &&
+        !productFilters.contains(e.target) &&
+        !filterToggleBtn.contains(e.target)
+      ) {
+        productFilters.classList.remove("active");
       }
     });
   }
 
   // Handle window resize for ScrollTrigger pin
   let resizeTimeout;
-  window.addEventListener('resize', () => {
+  window.addEventListener("resize", () => {
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
       if (typeof ScrollTrigger !== "undefined") {
