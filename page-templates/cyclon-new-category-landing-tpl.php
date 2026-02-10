@@ -120,13 +120,15 @@ get_header(); ?>
                                         $words = preg_split('/\s+/', $content, -1, PREG_SPLIT_NO_EMPTY);
                                         $short_content = implode(' ', array_slice($words, 0, 15));
                                         ?>
-                                        <div class="text-sm info product-card__info">
-                                            <?php echo esc_html($short_content); ?><?php if (count($words) > 15) echo '...'; ?>
-                                        </div>
+                                        <div class="new-category-product-card__info-btn">
+                                            <div class="text-sm info product-card__info">
+                                                <?php echo esc_html($short_content); ?><?php if (count($words) > 15) echo '...'; ?>
+                                            </div>
 
-                                        <h4 class="home-categories__category-heading">
-                                            <span></span>
-                                        </h4>
+                                            <h4 class="home-categories__category-heading">
+                                                <span></span>
+                                            </h4>
+                                        </div>
                                     </div>
                                 </a>
                             <?php endforeach; ?>
@@ -373,13 +375,15 @@ get_header(); ?>
                                                                 $words = preg_split('/\s+/', $content, -1, PREG_SPLIT_NO_EMPTY);
                                                                 $short_content = implode(' ', array_slice($words, 0, 15));
                                                                 ?>
-                                                                <div class="text-sm info product-card__info">
-                                                                    <?php echo esc_html($short_content); ?><?php if (count($words) > 15) echo '...'; ?>
-                                                                </div>
+                                                                <div class="new-category-product-card__info-btn">
+                                                                    <div class="text-sm info product-card__info">
+                                                                        <?php echo esc_html($short_content); ?><?php if (count($words) > 15) echo '...'; ?>
+                                                                    </div>
 
-                                                                <h4 class="home-categories__category-heading">
-                                                                    <span></span>
-                                                                </h4>
+                                                                    <h4 class="home-categories__category-heading">
+                                                                        <span></span>
+                                                                    </h4>
+                                                                </div>
                                                             </div>
                                                         </a>
                                                     <?php endforeach; ?>
