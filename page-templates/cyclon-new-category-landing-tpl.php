@@ -590,7 +590,7 @@ get_header(); ?>
                     ?>
                     <div class="col-4">
                         <div class="content-wrapper">
-                            <h2><?php echo __('Cyclon products per application', 'cyclon') ?></h2>
+                            <h2><?php echo __('Select Cyclon products per application', 'cyclon') ?></h2>
                             <div class="oil-wrapper-outer">
                                 <h3></h3>
                                 <div class="oil-wrapper">
@@ -682,7 +682,7 @@ get_header(); ?>
                         ?>
                             <div class="row">
                                 <div class="col-12 <?php echo preg_replace('/\s+/', '-', strtolower($repeater[0]['general_title'])); ?>">
-                                    <h2><?php echo __('Cyclon products per application', 'cyclon') ?></h2>
+                                    <h2><?php echo __('Select Cyclon products per application', 'cyclon') ?></h2>
 
                                     <?php $c = 1;
                                     while (have_rows('mapping_information')) : the_row(); ?>
