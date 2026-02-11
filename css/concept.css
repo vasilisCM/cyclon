@@ -84,6 +84,10 @@
   color: #001a61;
 }
 
+.white {
+  color: #fff !important;
+}
+
 /* Typography  */
 .sans {
   font-family: "AeonikPro", sans-serif;

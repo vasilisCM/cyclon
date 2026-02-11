@@ -83,7 +83,12 @@ if (have_posts()): while (have_posts()): the_post();
                 <div class="single-product-new__img-container relative">
                     <?php if (has_post_thumbnail()): ?>
                         <img src="<?php the_post_thumbnail_url('full'); ?>" alt="<?php the_title(); ?>">
+                    <?php else: ?>
+                        <img src="/wp-content/uploads/2026/01/vareli_new.png"
+                            class="img-fluid" alt="<?php the_title(); ?>" />
                     <?php endif; ?>
+
+
 
                     <?php if ($has_bg_image == true): ?>
                         <div class="single-product-new__img-bg-img absolute">
@@ -108,6 +113,7 @@ if (have_posts()): while (have_posts()): the_post();
                             <?php endif; ?>
                             <span><?php the_title(); ?></span>
                         </h1>
+
 
                         <?php
                         $grade_terms = get_the_terms(get_the_ID(), 'cyclon_product_grade');
@@ -139,14 +145,16 @@ if (have_posts()): while (have_posts()): the_post();
                                     <?php endif; ?>
                                 </div>
 
+
                                 <?php if (get_field('single_product__previous_name')): ?>
-                                    <div class="single-product-new__previous-info uppercase">
+
+                                    <a href="<?php echo get_field('single_product__replaced_product'); ?>" class="white single-product-new__previous-info uppercase">
                                         <span class="text-s"><?php echo __('Replaces', 'cyclon'); ?></span>
                                         <div class="text accent">
                                             <span><?php echo get_field('single_product__previous_name'); ?></span>
                                             <span><?php echo get_field('single_product__previous_code'); ?></span>
                                         </div>
-                                    </div>
+                                    </a>
                                 <?php endif; ?>
                             </div>
 
@@ -368,7 +376,7 @@ if (have_posts()): while (have_posts()): the_post();
         // Only render section if there are related products
         if ($relatedQuery->have_posts()): ?>
             <div class="cyclon_single__relatedWrapper">
-                <h3 class="relatedTitle text-center"><?php echo esc_html__('Similar Products', 'cyclon'); ?></h3>
+                <h3 class="relatedTitle text-center"><?php echo _e('Similar Products', 'cyclon'); ?></h3>
 
                 <div class="container">
                     <div class="row">
