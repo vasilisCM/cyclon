@@ -139,7 +139,7 @@ if (have_posts()): while (have_posts()): the_post();
                                 <div class="text">
                                     <?php if (get_field('single_product__parent_code')): ?>
                                         <div class="text-sm">
-                                            <span>Parent Code:</span>
+                                            <span><?php echo __("Parent Code", "cyclon"); ?>:</span>
                                             <span><?php echo get_field('single_product__parent_code'); ?></span>
                                         </div>
                                     <?php endif; ?>
@@ -204,7 +204,7 @@ if (have_posts()): while (have_posts()): the_post();
                             <div class="show-more-line"></div>
                             <div>
                                 <div class="text-ms text-center single-product-new__toggle-content" aria-expanded="false">
-                                    Show more
+                                    <?php echo __("Show more", "cyclon"); ?>
                                 </div>
                             </div>
                             <div class="show-more-line"></div>
@@ -218,7 +218,7 @@ if (have_posts()): while (have_posts()): the_post();
                     ?>
                         <div>
                             <div>
-                                <div class="text-s bold">Specifications</div>
+                                <div class="text-s bold"><?php echo __("Specifications", "cyclon"); ?></div>
                                 <div class="text-ms">
                                     <?php
                                     $spec_names = array();
@@ -235,7 +235,7 @@ if (have_posts()): while (have_posts()): the_post();
                     <div>
                         <?php if (get_field('single_product__packaging')): ?>
                             <div>
-                                <div class="text-s bold">Packaging</div>
+                                <div class="text-s bold"><?php echo __("Packaging", "cyclon"); ?></div>
                                 <div class="text-ms"><?php echo get_field('single_product__packaging'); ?></div>
                             </div>
                         <?php endif; ?>
@@ -377,7 +377,7 @@ if (have_posts()): while (have_posts()): the_post();
         // Only render section if there are related products
         if ($relatedQuery->have_posts()): ?>
             <div class="cyclon_single__relatedWrapper">
-                <h3 class="relatedTitle text-center"><?php echo _e('Similar Products', 'cyclon'); ?></h3>
+                <h3 class="relatedTitle text-center"><?php echo __('Similar Products', 'cyclon'); ?></h3>
 
                 <div class="container">
                     <div class="row">

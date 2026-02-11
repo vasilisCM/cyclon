@@ -304,7 +304,10 @@ get_header(); ?>
 
                                         <div>
                                             <div class="text-l regular sans normal">
-                                                <?php echo esc_html($range_term->name); ?> Line
+                                                <?php $range_title = get_field('range_landing_title', $range_term);
+                                                echo $range_title;
+                                                //esc_html($range_term->name); 
+                                                ?>
                                             </div>
                                             <div class="text-m">
                                                 <?php echo wpautop($range_term->description); ?>
@@ -441,7 +444,7 @@ get_header(); ?>
                     <div class="text-center">
                         <a class="mButton primary product-category-landing__cta"
                             href="<?php echo esc_url($category_link); ?>">
-                            View Products
+                            <?php echo __("View Products", "cyclon") ?>
                         </a>
                     </div>
         <?php
@@ -522,7 +525,7 @@ get_header(); ?>
                         <div class="text-center">
                             <a class="mButton primary product-category-landing__cta"
                                 href="<?php echo esc_url($category_link); ?>">
-                                View Products
+                                <?php echo __("View Products", "cyclon") ?>
                             </a>
                         </div>
                 <?php
