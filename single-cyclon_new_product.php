@@ -242,10 +242,11 @@ if (have_posts()): while (have_posts()): the_post();
                     </div>
 
                     <div class="product-buttons__container">
+
                         <!-- PDFs  -->
-                        <?php if (have_rows('technical_guides')): ?>
+                        <?php if (have_rows('single_product_new__technical_guides')): ?>
                             <div class="product-buttons single-product-new__technical-guides">
-                                <?php while (have_rows('technical_guides')): the_row(); ?>
+                                <?php while (have_rows('single_product_new__technical_guides')): the_row(); ?>
                                     <a href="<?php echo get_sub_field('guide_pdf'); ?>" class="product-pill" target="_blank">
                                         <span class="product-pill__title">
                                             <?php echo get_sub_field('guide_name'); ?>
