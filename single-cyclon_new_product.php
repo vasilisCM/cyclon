@@ -287,83 +287,46 @@ if (have_posts()): while (have_posts()): the_post();
         </main>
 
         <?php
-        // Build related products query with priority:
-        // 1. Products from same cyclon_product_range taxonomy (up to 3)
-        // 2. Products from same category/subcategory to fill remaining slots (up to 3 total)
+        // Related products: up to 3 products by the similar product codes (ACF).
+        // Each code is matched against single_product__parent_code on other products.
 
         $current_post_id = get_the_ID();
         $related_products = array();
         $excluded_ids = array($current_post_id);
 
-        // Step 1: Get products from same range taxonomy (priority)
-        $range_terms = wp_get_post_terms($current_post_id, 'cyclon_product_range');
+        $similar_code_fields = array(
+            'single_product_new__similar_product_code_1',
+            'single_product_new__similar_product_code_2',
+            'single_product_new__similar_product_code_3',
+        );
 
-        if (!empty($range_terms) && !is_wp_error($range_terms)) {
-            $range_term_ids = wp_list_pluck($range_terms, 'term_id');
+        foreach ($similar_code_fields as $field_name) {
+            $code = get_field($field_name, $current_post_id);
+            if (empty($code) || !is_string($code)) {
+                continue;
+            }
+            $code = trim($code);
 
-            $rangeArgs = array(
+            $args = array(
                 'post_type' => 'cyclon_new_product',
-                'posts_per_page' => 3,
+                'posts_per_page' => 1,
                 'post__not_in' => $excluded_ids,
-                'tax_query' => array(
+                'meta_query' => array(
                     array(
-                        'taxonomy' => 'cyclon_product_range',
-                        'field' => 'term_id',
-                        'terms' => $range_term_ids,
+                        'key' => 'single_product__parent_code',
+                        'value' => $code,
+                        'compare' => '=',
                     ),
                 ),
             );
 
-            $rangeQuery = new WP_Query($rangeArgs);
+            $query = new WP_Query($args);
 
-            if ($rangeQuery->have_posts()) {
-                while ($rangeQuery->have_posts()) {
-                    $rangeQuery->the_post();
-                    $related_products[] = get_post();
-                    $excluded_ids[] = get_the_ID();
-                }
+            if ($query->have_posts()) {
+                $query->the_post();
+                $related_products[] = get_post();
+                $excluded_ids[] = get_the_ID();
                 wp_reset_postdata();
-            }
-        }
-
-        // Step 2: Fill remaining slots with products from same category (up to 3 total)
-        $remaining_slots = 3 - count($related_products);
-
-        if ($remaining_slots > 0) {
-            $category_terms = wp_get_post_terms($current_post_id, 'cyclon_new_product_cat');
-
-            if (!empty($category_terms) && !is_wp_error($category_terms)) {
-                // Filter to get only child categories (those with a parent)
-                $child_categories = array_filter($category_terms, function ($term) {
-                    return $term->parent > 0;
-                });
-
-                // Use child categories if they exist, otherwise use all categories
-                $terms_to_use = !empty($child_categories) ? $child_categories : $category_terms;
-                $term_ids = wp_list_pluck($terms_to_use, 'term_id');
-
-                $categoryArgs = array(
-                    'post_type' => 'cyclon_new_product',
-                    'posts_per_page' => $remaining_slots,
-                    'post__not_in' => $excluded_ids,
-                    'tax_query' => array(
-                        array(
-                            'taxonomy' => 'cyclon_new_product_cat',
-                            'field' => 'term_id',
-                            'terms' => $term_ids,
-                        ),
-                    ),
-                );
-
-                $categoryQuery = new WP_Query($categoryArgs);
-
-                if ($categoryQuery->have_posts()) {
-                    while ($categoryQuery->have_posts()) {
-                        $categoryQuery->the_post();
-                        $related_products[] = get_post();
-                    }
-                    wp_reset_postdata();
-                }
             }
         }
 
@@ -384,8 +347,8 @@ if (have_posts()): while (have_posts()): the_post();
                         <div class="col-lg-12 col-md-12 col-md-12 col-sm-12 col-xs-12">
 
                             <div class="relatedProducts__SuperWrapper">
-                                <div class="relatedProducts__Wrapper swiper">
-                                    <div class="relatedProducts__Inner swiper-wrapper">
+                                <div class="relatedProducts__Wrapper">
+                                    <div class="relatedProducts__Inner new-related-products">
                                         <?php while ($relatedQuery->have_posts()): $relatedQuery->the_post(); ?>
                                             <div class="swiper-slide">
                                                 <?php include 'template-parts/components/product-card.php';

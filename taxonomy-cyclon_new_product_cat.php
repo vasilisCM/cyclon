@@ -118,7 +118,7 @@ get_header(); ?>
                             // Open wrapper before first dropdown
                             if ($is_dropdown && !$dropdown_wrapper_opened) {
                                 echo '<div class="product-filters__dropdown-wrapper">
-                                <div class="bold text-s uppercase letter-spacing-medium product-filters__approvals-label">Specifications</div>';
+                                <div class="bold text-s uppercase letter-spacing-medium product-filters__approvals-label">' . __('Specifications', 'cyclon') . '</div>';
                                 $dropdown_wrapper_opened = true;
                             }
 
@@ -132,14 +132,14 @@ get_header(); ?>
                             <div class="product-filters__group taxonomy-<?php echo esc_attr($taxonomy->name); ?>">
                                 <?php if (!$is_dropdown) {
                                     // Custom label for subcategories
-                                    $filter_label = ($taxonomy->name === 'cyclon_new_product_cat') ? 'Applications' : ($taxonomy->labels->singular_name ?? $taxonomy->label);
+                                    $filter_label = ($taxonomy->name === 'cyclon_new_product_cat') ? __('Applications', 'cyclon') : ($taxonomy->labels->singular_name ?? $taxonomy->label);
                                 ?>
                                     <div class="bold text-s uppercase letter-spacing-medium"><?php echo esc_html($filter_label); ?></div>
                                 <?php } ?>
 
                                 <?php if ($is_dropdown):
                                     // Get placeholder text based on taxonomy
-                                    $placeholder = 'All';
+                                    $placeholder = __('All', 'cyclon');
                                     if ($taxonomy->name === 'cyclon_new_product_acea') {
                                         $placeholder = 'Industry';
                                     } elseif ($taxonomy->name === 'cyclon_new_product_oem') {

@@ -136,9 +136,9 @@
             // Add first slide (current hardcoded content)
             $slides[] = array(
                 'image' => $background_image,
-                'heading' => 'Engineered <br> to Perform',
-                'subheading' => 'Advanced technology <br> in every move',
-                'label' => 'Ανακαλυψτε Περισσοτερα',
+                'heading' => __('Engineered <br> to Perform', 'cyclon'),
+                'subheading' => __('Advanced technology <br> in every move', 'cyclon'),
+                'label' => __('Ανακαλυψτε Περισσοτερα', 'cyclon'),
                 'link' => '/'
             );
 
@@ -210,8 +210,10 @@
                                     <div class="taxHeader__Content__Inner">
                                         <div class="hero-home__text-container">
                                             <h1 class="hero-home__heading">
-                                                Engineered <br> to Perform </h1>
-                                            <div class="hero-home__subheading accent">Advanced technology <br> in every move</div>
+                                                <?php echo __('Engineered <br> to Perform', 'cyclon'); ?> </h1>
+                                            <div class="hero-home__subheading accent">
+                                                <?php echo __('Advanced technology <br> in every move', 'cyclon'); ?>
+                                            </div>
                                             <!-- <a class="mButton mButton--trans uppercase hero-home__button" href="/">Ανακαλυψτε Περισσοτερα</a> -->
                                             <!-- <a class="mButton mButton--trans text-xs letter-spacing-medium uppercase hero-home__button" href="/">Ανακαλυψτε Περισσοτερα</a> -->
                                         </div>
