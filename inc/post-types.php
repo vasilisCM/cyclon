@@ -201,6 +201,70 @@ if (! function_exists('cyclon_new_product_category')) {
     add_action('init', 'cyclon_new_product_category', 0);
 }
 
+/**
+ * Add taxonomy filter dropdowns to New Products admin list.
+ * Filters: cyclon_new_product_cat (category), cyclon_product_grade, cyclon_range.
+ */
+if (! function_exists('cyclon_new_product_admin_taxonomy_filters')) {
+
+    function cyclon_new_product_admin_taxonomy_filters()
+    {
+        global $typenow;
+        if ('cyclon_new_product' !== $typenow) {
+            return;
+        }
+        $tax_slugs = array('cyclon_new_product_cat', 'cyclon_product_grade', 'cyclon_range');
+        foreach ($tax_slugs as $tax_slug) {
+            $tax = get_taxonomy($tax_slug);
+            if (! $tax) {
+                continue;
+            }
+            $selected = isset($_GET[ $tax_slug ]) ? sanitize_text_field(wp_unslash($_GET[ $tax_slug ])) : '';
+            $info = $tax->labels->name;
+            wp_dropdown_categories(array(
+                'show_option_all' => sprintf(/* translators: %s: taxonomy label */ __('All %s', 'cyclon'), $info),
+                'taxonomy'        => $tax_slug,
+                'name'            => $tax_slug,
+                'orderby'         => 'name',
+                'selected'        => $selected,
+                'show_count'      => true,
+                'hide_empty'      => false,
+                'value_field'     => 'slug',
+                'hierarchical'    => true,
+            ));
+        }
+    }
+    add_action('restrict_manage_posts', 'cyclon_new_product_admin_taxonomy_filters');
+
+    function cyclon_new_product_admin_taxonomy_filters_query($query)
+    {
+        global $pagenow, $typenow;
+        if ('edit.php' !== $pagenow || 'cyclon_new_product' !== $typenow || ! $query->is_main_query()) {
+            return;
+        }
+        $tax_slugs = array('cyclon_new_product_cat', 'cyclon_product_grade', 'cyclon_range');
+        $tax_query = array();
+        foreach ($tax_slugs as $tax_slug) {
+            if (empty($_GET[ $tax_slug ])) {
+                continue;
+            }
+            $term_slug = sanitize_text_field(wp_unslash($_GET[ $tax_slug ]));
+            if ('' === $term_slug) {
+                continue;
+            }
+            $tax_query[] = array(
+                'taxonomy' => $tax_slug,
+                'field'    => 'slug',
+                'terms'    => $term_slug,
+            );
+        }
+        if (! empty($tax_query)) {
+            $query->set('tax_query', $tax_query);
+        }
+    }
+    add_action('pre_get_posts', 'cyclon_new_product_admin_taxonomy_filters_query');
+}
+
 if (! function_exists('cyclon_specifications')) {
 
     // Register Custom Taxonomy
