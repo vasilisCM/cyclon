@@ -84,7 +84,7 @@ get_header(); ?>
                                 setup_postdata($post_obj);
 
                                 // Retrieve custom fields
-                                $range_code = get_field('range_code', $featured_product_id);
+
                                 $small_text_line = get_field('small_text_line', $featured_product_id);
                                 $thumbnail_url = get_the_post_thumbnail_url($featured_product_id, 'large');
                             ?>
@@ -107,9 +107,7 @@ get_header(); ?>
                                             ?>
                                                 <div class="text-l uppercase product-card__grade"><?php echo $grade_terms[0]->name; ?></div>
                                             <?php } ?>
-                                            <?php if ($range_code) : ?>
-                                                <div class="text-l regular sans new-category-product-card__code"><?php echo esc_html($range_code); ?></div>
-                                            <?php endif; ?>
+                                            >
                                         </div>
                                         <?php if ($small_text_line) : ?>
                                             <div class="text-sm new-category-product-card__text"><?php echo esc_html($small_text_line); ?></div>
@@ -335,7 +333,7 @@ get_header(); ?>
                                                         setup_postdata($post_obj);
 
                                                         // Retrieve custom fields first
-                                                        $range_code = get_field('range_code', $featured_product_id);
+
                                                         $small_text_line = get_field('small_text_line', $featured_product_id);
                                                         $thumbnail_url = get_the_post_thumbnail_url($featured_product_id, 'large');
                                                     ?>
@@ -362,9 +360,7 @@ get_header(); ?>
                                                                     ?>
                                                                         <div class="text-l uppercase product-card__grade" <?php echo $color_style; ?>><?php echo $grade_terms[0]->name; ?></div>
                                                                     <?php } ?>
-                                                                    <?php if ($range_code) : ?>
-                                                                        <div class="text-l regular sans new-category-product-card__code" style="color: <?php echo esc_attr($range_color); ?>;"><?php echo esc_html($range_code); ?></div>
-                                                                    <?php endif; ?>
+
                                                                 </div>
                                                                 <?php if ($small_text_line) : ?>
                                                                     <div class="text-sm new-category-product-card__text"><?php echo esc_html($small_text_line); ?></div>

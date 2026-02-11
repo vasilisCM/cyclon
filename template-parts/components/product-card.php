@@ -27,11 +27,7 @@
             <?php endif; ?>
         </div>
         <div class="text-l uppercase product-card__title"><?php the_title(); ?></div>
-        <!-- <?php // if (get_field('range_code')): 
-                ?>
-            <div class="text-l uppercase product-card__range-code"><?php echo get_field('range_code'); ?></div>
-        <?php // endif; 
-        ?> -->
+
 
         <div>
             <?php
