@@ -107,7 +107,6 @@ get_header(); ?>
                                             ?>
                                                 <div class="text-l uppercase product-card__grade"><?php echo $grade_terms[0]->name; ?></div>
                                             <?php } ?>
-                                            >
                                         </div>
                                         <?php if ($small_text_line) : ?>
                                             <div class="text-sm new-category-product-card__text"><?php echo esc_html($small_text_line); ?></div>
@@ -360,7 +359,6 @@ get_header(); ?>
                                                                     ?>
                                                                         <div class="text-l uppercase product-card__grade" <?php echo $color_style; ?>><?php echo $grade_terms[0]->name; ?></div>
                                                                     <?php } ?>
-
                                                                 </div>
                                                                 <?php if ($small_text_line) : ?>
                                                                     <div class="text-sm new-category-product-card__text"><?php echo esc_html($small_text_line); ?></div>
