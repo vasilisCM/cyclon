@@ -39,7 +39,7 @@ if (have_posts()): while (have_posts()): the_post();
                                             $image_category = $parent_category;
                                         }
                                     }
-                                    
+
                                     $category_image = get_field('new_product_category_image_single', $image_category);
                                     if ($category_image): ?>
                                         <img src="<?php echo esc_url($category_image); ?>" alt="<?php echo esc_attr(get_the_title()); ?>">
@@ -141,7 +141,7 @@ if (have_posts()): while (have_posts()): the_post();
 
                                 <?php if (get_field('single_product__previous_name')): ?>
                                     <div class="single-product-new__previous-info uppercase">
-                                        <span class="text-s">Replaces</span>
+                                        <span class="text-s"><?php echo __('Replaces', 'cyclon'); ?></span>
                                         <div class="text accent">
                                             <span><?php echo get_field('single_product__previous_name'); ?></span>
                                             <span><?php echo get_field('single_product__previous_code'); ?></span>
