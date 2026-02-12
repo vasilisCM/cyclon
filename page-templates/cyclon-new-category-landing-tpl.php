@@ -437,7 +437,7 @@ get_header(); ?>
             $has_products = $check_products_query->have_posts();
             wp_reset_postdata();
 
-            if ($has_products && $associated_cat_id != 778) {
+            if ($has_products && $associated_cat_id != 778 && $associated_cat_id != 3394) {
                 $category_link = get_term_link($associated_cat_id, 'cyclon_new_product_cat');
                 if (!is_wp_error($category_link)) {
         ?>
