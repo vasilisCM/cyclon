@@ -455,8 +455,8 @@ get_header(); ?>
     </section>
 
     <?php if (!$has_products_with_range) : ?>
-        <?php if ($associated_cat_id == 778) : ?>
-            <!-- Special case: Subcategories Grid for category ID 778 -->
+        <?php if ($associated_cat_id == 778 || $associated_cat_id == 3394) : ?>
+            <!-- Special case: Subcategories Grid for category ID 778 (en) + 3394 (el) -->
             <section class="landing-categories">
                 <div class="container">
                     <div class="text-l regular sans normal primary text-center normal">
