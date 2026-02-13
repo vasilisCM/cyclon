@@ -259,7 +259,7 @@ if (have_posts()): while (have_posts()): the_post();
                             </div>
                         <?php endif; ?>
                         <div class="product-buttons">
-                            <a href="/" class="product-pill product-pill--primary" target="_blank">
+                            <a href="/wp-content/uploads/2026/02/Cyclon-Catalogue-EN-Final-LowRes-RGB.pdf" class="product-pill product-pill--primary" target="_blank">
                                 <span class="product-pill__title">
                                     <?php _e('Product Catalogue', 'cyclon'); ?>
                                 </span>
