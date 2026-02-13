@@ -234,6 +234,20 @@
                 <?php
                 $term = get_queried_object();
                 $tax_right_image = get_field('right_image', $term);
+                $tax_landing_page_id = null;
+                if (is_tax('cyclon_new_product_cat')) {
+                    $term_for_landing = $term;
+                    if (!empty($term->parent)) {
+                        $parent_term = get_term((int) $term->parent, 'cyclon_new_product_cat');
+                        if ($parent_term && !is_wp_error($parent_term)) {
+                            $term_for_landing = $parent_term;
+                        }
+                    }
+                    $landing_page = get_field('landing_page', $term_for_landing);
+                    if ($landing_page) {
+                        $tax_landing_page_id = url_to_postid($landing_page);
+                    }
+                }
                 ?>
                 <div class="container">
                     <div class="row">
@@ -241,32 +255,25 @@
                             <div class="taxHeader__Content" style="justify-content: flex-start;">
                                 <div class="taxHeader__Content__Inner">
                                     <h1><?php echo $term->name; ?></h1>
+
+                                    <?php if ($tax_landing_page_id && get_field('product_category_landing__hero_text', $tax_landing_page_id)): ?>
+                                        <div class="text-ml accent hero-new-category-landing__subheading">
+                                            <?php echo get_field('product_category_landing__hero_text', $tax_landing_page_id); ?>
+                                        </div>
+                                    <?php endif; ?>
+
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
                             <div class="headerImage_Wrapper" style="max-width: 100%;">
-                                <?php if (is_tax('cyclon_new_product_cat')): ?>
+                                <?php if (is_tax('cyclon_new_product_cat') && $tax_landing_page_id): ?>
                                     <?php
-                                    $term_for_landing = $term;
-                                    if (!empty($term->parent)) {
-                                        $parent_term = get_term((int) $term->parent, 'cyclon_new_product_cat');
-                                        if ($parent_term && !is_wp_error($parent_term)) {
-                                            $term_for_landing = $parent_term;
-                                        }
-                                    }
-                                    $landing_page = get_field('landing_page', $term_for_landing);
-                                    if ($landing_page) {
-                                        $page_id = url_to_postid($landing_page);
-                                        $header_image = get_field('product_category_landing__right_image', $page_id);
+                                    $header_image = get_field('product_category_landing__right_image', $tax_landing_page_id);
+                                    if ($header_image):
                                     ?>
                                         <img src="<?php echo $header_image; ?>" class="img-fluid" />
-                                    <?php
-                                    }
-
-                                    ?>
-
-
+                                    <?php endif; ?>
                                 <?php else: ?>
                                     <img src="<?php echo $tax_right_image; ?>" class="img-fluid" />
                                 <?php endif; ?>
