@@ -11,6 +11,23 @@ function getCurrentArchivePage(pathname = window.location.pathname) {
   return match ? parseInt(match[1], 10) : 1;
 }
 
+/** Current archive term slug from pathname (last segment). Works with WPML: /el/cyclon_new_product_cat/passenger-light-duty/ -> passenger-light-duty */
+function getArchiveTermSlugFromPath(pathname = window.location.pathname) {
+  const segments = pathname.split("/").filter(Boolean);
+  if (segments.length === 0) return null;
+  return segments[segments.length - 1] || null;
+}
+
+/** Language code to send with filter API: wpAjax.currentLang, or <html lang>, or first path segment if 2–3 letters */
+function getCurrentLang() {
+  if (typeof wpAjax !== "undefined" && wpAjax.currentLang) return wpAjax.currentLang;
+  const htmlLang = document.documentElement.getAttribute("lang");
+  if (htmlLang) return htmlLang.split("-")[0].toLowerCase();
+  const seg = window.location.pathname.split("/").filter(Boolean)[0];
+  if (seg && /^[a-z]{2,3}$/i.test(seg)) return seg.toLowerCase();
+  return "";
+}
+
 let archiveBasePath = getArchiveBasePath();
 let currentArchivePage = getCurrentArchivePage();
 let filterPinTrigger = null;
@@ -266,6 +283,9 @@ async function filterProducts({
     if (searchTerm) formData.append("searchTerm", searchTerm);
     formData.append("postsNumber", postsNumber);
     formData.append("page", page);
+
+    const currentLang = getCurrentLang();
+    if (currentLang) formData.append("lang", currentLang);
 
     // Add archive type information
     if (archiveType) formData.append("archiveType", archiveType);
@@ -971,9 +991,8 @@ function removeFilter(taxonomy, termSlug) {
 function applyFiltersFromUrl() {
   const urlFilters = getUrlParams();
 
-  // Get current category from URL
-  const urlWords = window.location.pathname.split("/");
-  const postCategory = urlWords[2];
+  // Current category = last path segment (works with WPML: /el/cyclon_new_product_cat/passenger-light-duty/ -> passenger-light-duty)
+  const postCategory = getArchiveTermSlugFromPath();
 
   // Detect archive type and prepare data for API
   let archiveType = "category"; // default
@@ -1016,8 +1035,7 @@ function applyFiltersFromUrl() {
 // Fetch initial available filters on page load
 async function fetchInitialAvailableFilters() {
   try {
-    const urlWords = window.location.pathname.split("/");
-    const postCategory = urlWords[2];
+    const postCategory = getArchiveTermSlugFromPath();
 
     const formData = new FormData();
     formData.append("action", "filter_products");
@@ -1026,6 +1044,9 @@ async function fetchInitialAvailableFilters() {
     formData.append("termSlugs", postCategory);
     formData.append("postsNumber", -1); // Get all to check availability
     formData.append("page", 1);
+
+    const currentLang = getCurrentLang();
+    if (currentLang) formData.append("lang", currentLang);
 
     const response = await fetch(wpAjax.ajaxUrl, {
       method: "POST",

@@ -524,7 +524,17 @@ function cyclon_theme_scripts()
 
     if (is_tax('cyclon_new_product_cat')) {
         wp_enqueue_script('new-product-archive', get_stylesheet_directory_uri() . '/js/newProductArchive.js', array('jquery'), time(), true);
-        wp_localize_script('new-product-archive', 'wpAjax', array('ajaxUrl' => admin_url('admin-ajax.php')));
+        $current_lang = '';
+        if (function_exists('apply_filters')) {
+            $current_lang = apply_filters('wpml_current_language', null);
+        }
+        if ($current_lang === null) {
+            $current_lang = '';
+        }
+        wp_localize_script('new-product-archive', 'wpAjax', array(
+            'ajaxUrl' => admin_url('admin-ajax.php'),
+            'currentLang' => $current_lang,
+        ));
         wp_localize_script('new-product-archive', 'cyclonFilters', array(
             'taxonomies' => array(
                 'cyclon_range',

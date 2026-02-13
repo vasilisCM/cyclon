@@ -5,10 +5,38 @@ add_action('wp_ajax_nopriv_filter_products', 'custom_filter_products');
 
 function custom_filter_products()
 {
+    // --- WPML debug: log language state before and after switch ---
+    $wpml_debug = array(
+        'lang_post' => isset($_POST['lang']) ? $_POST['lang'] : '(not set)',
+        'wpml_current_before' => function_exists('apply_filters') ? apply_filters('wpml_current_language', null) : '(wpml not available)',
+    );
+
+    // WPML: switch to requested language so queries and permalinks match the frontend
+    if (!empty($_POST['lang']) && function_exists('do_action')) {
+        $lang = sanitize_text_field($_POST['lang']);
+        $wpml_debug['lang_sanitized'] = $lang;
+        $wpml_debug['lang_regex_ok'] = (bool) preg_match('/^[a-z]{2,3}(-[a-z]{2,4})?$/i', $lang);
+        if ($wpml_debug['lang_regex_ok']) {
+            do_action('wpml_switch_language', $lang);
+            $wpml_debug['lang_switched'] = true;
+        } else {
+            $wpml_debug['lang_switched'] = false;
+        }
+    } else {
+        $wpml_debug['lang_switched'] = false;
+    }
+
+    $wpml_debug['wpml_current_after'] = function_exists('apply_filters') ? apply_filters('wpml_current_language', null) : '(wpml not available)';
+
+    if (function_exists('error_log')) {
+        error_log('[filter-products] WPML: lang_post=' . $wpml_debug['lang_post'] . ' current_before=' . $wpml_debug['wpml_current_before'] . ' current_after=' . $wpml_debug['wpml_current_after'] . ' switched=' . ($wpml_debug['lang_switched'] ? 'yes' : 'no'));
+    }
+
     // Debug: Collect received data for response
     $debug_info = array(
         'received_post_data' => $_POST,
-        'applied_filters' => array()
+        'applied_filters' => array(),
+        'wpml' => $wpml_debug,
     );
 
     $posts_per_page = isset($_POST['postsNumber']) ? intval($_POST['postsNumber']) : 8;
@@ -25,6 +53,7 @@ function custom_filter_products()
     $has_archive_context = false;
     if (!empty($_POST['current_archive_context'])) {
         $context = json_decode(stripslashes($_POST['current_archive_context']), true);
+        $debug_info['archive_context_raw'] = $context;
         if (!empty($context['taxonomy']) && !empty($context['term'])) {
             $args['tax_query'][] = array(
                 'taxonomy' => $context['taxonomy'],
@@ -32,6 +61,9 @@ function custom_filter_products()
                 'terms' => intval($context['term']),
             );
             $has_archive_context = true;
+            if (function_exists('error_log')) {
+                error_log('[filter-products] Archive context: taxonomy=' . $context['taxonomy'] . ' term_id=' . $context['term']);
+            }
         }
     }
 
@@ -51,6 +83,9 @@ function custom_filter_products()
 
         $debug_info['applied_filters']['archive_taxonomy'] = $archive_taxonomy;
         $debug_info['applied_filters']['archive_term'] = $term_slug;
+        if (function_exists('error_log')) {
+            error_log('[filter-products] Archive fallback: taxonomy=' . $archive_taxonomy . ' term_slug=' . $term_slug);
+        }
     }
 
     // Define our custom taxonomies
@@ -102,6 +137,13 @@ function custom_filter_products()
 
     // Query Custom Products - get ALL results
     $query = new WP_Query($args);
+
+    // --- Log raw query result (before sorting/pagination) ---
+    $debug_info['query_raw_found_posts'] = $query->found_posts;
+    $debug_info['query_raw_post_count'] = $query->post_count;
+    if (function_exists('error_log')) {
+        error_log('[filter-products] Query result: found_posts=' . $query->found_posts . ' post_count=' . $query->post_count . ' post_type=' . $post_type);
+    }
 
     // DEBUG: Log posts BEFORE sorting
     $debug_products_before = array();
