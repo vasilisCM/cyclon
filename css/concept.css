@@ -40,6 +40,10 @@
   padding: 0;
 }
 
+.padding-block-20 {
+  padding-block: 20px;
+}
+
 .absolute {
   position: absolute;
 }

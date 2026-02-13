@@ -22,7 +22,7 @@ get_header(); ?>
                         $cat_term = get_term($associated_cat_id, 'cyclon_new_product_cat');
                         if (!is_wp_error($cat_term) && !empty($cat_term)) {
                     ?>
-                            <div class="text-l regular sans normal">
+                            <div class="text-l regular sans normal padding-bottom-20">
                                 <?php echo get_field('new_product_landing__subheading'); ?>
                             </div>
                             <div class="text-m">
@@ -303,7 +303,7 @@ get_header(); ?>
                                         </div>
 
                                         <div>
-                                            <div class="text-l regular sans normal">
+                                            <div class="text-l regular sans normal padding-block-20">
                                                 <?php $range_title = get_field('range_landing_title', $range_term);
                                                 echo $range_title;
                                                 //esc_html($range_term->name); 
