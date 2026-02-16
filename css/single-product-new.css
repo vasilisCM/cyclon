@@ -4,6 +4,11 @@
   transition: 0.3s ease;
 }
 
+.single-cyclon_new_product .cyclon__Menu li a:hover,
+.single-cyclon_new_product .header-language-switcher a:hover {
+  color: #0747a2;
+}
+
 .single-cyclon_new_product .search-form label:after {
   filter: invert(1);
 }
@@ -12,6 +17,11 @@
 .single-cyclon_new_product .solid-header .header-language-switcher a,
 .single-cyclon_new_product .solid-header .header-search label {
   color: #b9bfcb;
+}
+
+.single-cyclon_new_product .solid-header .cyclon__Menu li a:hover,
+.single-cyclon_new_product .solid-header .header-language-switcher a:hover {
+  color: #ffda00;
 }
 
 .single-cyclon_new_product .solid-header .search-form label:after,
