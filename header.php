@@ -137,7 +137,7 @@
             $slides[] = array(
                 'image' => $background_image,
                 'heading' => __('Engineered <br> to Perform', 'cyclon'),
-                'subheading' => __('Advanced technology <br> in every move', 'cyclon'),
+                'subheading' => __('Advanced lubricants technology <br> in every move', 'cyclon'),
                 'label' => __('Ανακαλυψτε Περισσοτερα', 'cyclon'),
                 'link' => '/'
             );
@@ -212,7 +212,7 @@
                                             <h1 class="hero-home__heading">
                                                 <?php echo __('Engineered <br> to Perform', 'cyclon'); ?> </h1>
                                             <div class="hero-home__subheading accent">
-                                                <?php echo __('Advanced technology <br> in every move', 'cyclon'); ?>
+                                                <?php echo __('Advanced lubricants technology <br> in every move', 'cyclon'); ?>
                                             </div>
                                             <!-- <a class="mButton mButton--trans uppercase hero-home__button" href="/">Ανακαλυψτε Περισσοτερα</a> -->
                                             <!-- <a class="mButton mButton--trans text-xs letter-spacing-medium uppercase hero-home__button" href="/">Ανακαλυψτε Περισσοτερα</a> -->

@@ -178,9 +178,10 @@
 }
 
 /* Special Filters (Approvals) */
-/* .product-filters__dropdown-wrapper {
-  margin-top: 20px;
-} */
+.product-filters__dropdown-wrapper {
+  display: grid;
+  gap: 20px;
+}
 
 .product-filters__group.taxonomy-cyclon_new_product_acea,
 .product-filters__group.taxonomy-cyclon_new_product_oem {

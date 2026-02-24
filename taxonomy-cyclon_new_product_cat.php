@@ -117,8 +117,7 @@ get_header(); ?>
 
                             // Open wrapper before first dropdown
                             if ($is_dropdown && !$dropdown_wrapper_opened) {
-                                echo '<div class="product-filters__dropdown-wrapper">
-                                <div class="bold text-s uppercase letter-spacing-medium product-filters__approvals-label">' . __('Specifications', 'cyclon') . '</div>';
+                                echo '<div class="product-filters__dropdown-wrapper">';
                                 $dropdown_wrapper_opened = true;
                             }
 
@@ -138,13 +137,14 @@ get_header(); ?>
                                 <?php } ?>
 
                                 <?php if ($is_dropdown):
-                                    // Get placeholder text based on taxonomy
-                                    $placeholder = __('All', 'cyclon');
-                                    if ($taxonomy->name === 'cyclon_new_product_acea') {
-                                        $placeholder = 'Industry';
-                                    } elseif ($taxonomy->name === 'cyclon_new_product_oem') {
-                                        $placeholder = 'OEM';
-                                    }
+                                    // Per-dropdown title for ACEA and OEM
+                                    if ($taxonomy->name === 'cyclon_new_product_acea'): ?>
+                                        <div class="bold text-s uppercase letter-spacing-medium product-filters__approvals-label">Industry Specifications</div>
+                                    <?php elseif ($taxonomy->name === 'cyclon_new_product_oem'): ?>
+                                        <div class="bold text-s uppercase letter-spacing-medium product-filters__approvals-label">OEM Specifications</div>
+                                    <?php endif; ?>
+                                    <?php
+                                    $placeholder = 'Select';
                                 ?>
                                     <!-- Dropdown for ACEA, OEM, and Specifications -->
                                     <select
