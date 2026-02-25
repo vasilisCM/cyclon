@@ -131,70 +131,125 @@ function cyclon_sort_archive_posts($posts, $query)
 
 add_filter('the_posts', 'cyclon_sort_archive_posts', 10, 2);
 
-// Improve search to use OR logic instead of AND (more user-friendly)
-function cyclon_search_or_logic($search, $query)
+// Search: for cyclon_new_product posts match title + taxonomy terms only (not content/excerpt).
+// For all other post types keep default title + content + excerpt behaviour.
+function cyclon_search_taxonomy_join($join)
 {
     global $wpdb;
+    if (!is_search() || is_admin()) return $join;
 
-    if (!$query->is_search() || is_admin()) {
-        return $search;
+    $join .= " LEFT JOIN {$wpdb->term_relationships} AS ctr ON ({$wpdb->posts}.ID = ctr.object_id)
+               LEFT JOIN {$wpdb->term_taxonomy} AS ctt ON (ctr.term_taxonomy_id = ctt.term_taxonomy_id AND ctt.taxonomy IN ('cyclon_range','cyclon_product_grade'))
+               LEFT JOIN {$wpdb->terms} AS ct ON (ctt.term_id = ct.term_id) ";
+    return $join;
+}
+add_filter('posts_join', 'cyclon_search_taxonomy_join');
+
+function cyclon_search_taxonomy_where($search, $query)
+{
+    global $wpdb;
+    if (!$query->is_search() || is_admin() || empty($search)) return $search;
+
+    $terms = $query->get('search_terms');
+    if (empty($terms)) return $search;
+
+    $new_product_clauses = array();
+    $other_clauses        = array();
+
+    foreach ($terms as $term) {
+        $like = '%' . $wpdb->esc_like($term) . '%';
+
+        // cyclon_new_product: title OR taxonomy term name only
+        $new_product_clauses[] = $wpdb->prepare(
+            "( {$wpdb->posts}.post_type = 'cyclon_new_product' AND ({$wpdb->posts}.post_title LIKE %s OR ct.name LIKE %s) )",
+            $like,
+            $like
+        );
+
+        // all other post types: title only
+        $other_clauses[] = $wpdb->prepare(
+            "( {$wpdb->posts}.post_type != 'cyclon_new_product' AND {$wpdb->posts}.post_title LIKE %s )",
+            $like
+        );
     }
 
-    // Get search terms
-    $search_terms = $query->get('search_terms');
-    if (empty($search_terms)) {
-        return $search;
-    }
-
-    // Build OR search query
-    $search = '';
-    $searchand = '';
-
-    foreach ($search_terms as $term) {
-        $term = $wpdb->esc_like($term);
-        $term = '%' . $term . '%';
-        $search .= "{$searchand}(({$wpdb->posts}.post_title LIKE '{$term}') OR ({$wpdb->posts}.post_content LIKE '{$term}'))";
-        $searchand = ' OR ';
-    }
-
-    if (!empty($search)) {
-        $search = " AND ({$search}) ";
-    }
-
+    // AND between terms (same strictness as WP default)
+    $search = ' AND ( (' . implode(' AND ', $new_product_clauses) . ') OR (' . implode(' AND ', $other_clauses) . ') ) ';
     return $search;
 }
+add_filter('posts_search', 'cyclon_search_taxonomy_where', 10, 2);
 
-add_filter('posts_search', 'cyclon_search_or_logic', 500, 2);
-
-// Order search results by relevance (most matching words first)
-function cyclon_search_orderby_relevance($orderby, $query)
+function cyclon_search_taxonomy_distinct($distinct)
 {
-    global $wpdb;
-
-    if (!$query->is_search() || is_admin()) {
-        return $orderby;
-    }
-
-    $search_terms = $query->get('search_terms');
-    if (empty($search_terms)) {
-        return $orderby;
-    }
-
-    // Calculate relevance score
-    $relevance = '';
-    foreach ($search_terms as $term) {
-        $term = $wpdb->esc_like($term);
-        $term = '%' . $term . '%';
-        $relevance .= "+ (CASE WHEN {$wpdb->posts}.post_title LIKE '{$term}' THEN 2 ELSE 0 END)";
-        $relevance .= "+ (CASE WHEN {$wpdb->posts}.post_content LIKE '{$term}' THEN 1 ELSE 0 END)";
-    }
-
-    $orderby = "({$relevance}) DESC, {$wpdb->posts}.post_date DESC";
-
-    return $orderby;
+    if (is_search() && !is_admin()) return 'DISTINCT';
+    return $distinct;
 }
+add_filter('posts_distinct', 'cyclon_search_taxonomy_distinct');
 
-add_filter('posts_orderby', 'cyclon_search_orderby_relevance', 500, 2);
+// // Improve search to use OR logic instead of AND (more user-friendly)
+// function cyclon_search_or_logic($search, $query)
+// {
+//     global $wpdb;
+
+//     if (!$query->is_search() || is_admin()) {
+//         return $search;
+//     }
+
+//     // Get search terms
+//     $search_terms = $query->get('search_terms');
+//     if (empty($search_terms)) {
+//         return $search;
+//     }
+
+//     // Build OR search query
+//     $search = '';
+//     $searchand = '';
+
+//     foreach ($search_terms as $term) {
+//         $term = $wpdb->esc_like($term);
+//         $term = '%' . $term . '%';
+//         $search .= "{$searchand}(({$wpdb->posts}.post_title LIKE '{$term}') OR ({$wpdb->posts}.post_content LIKE '{$term}'))";
+//         $searchand = ' OR ';
+//     }
+
+//     if (!empty($search)) {
+//         $search = " AND ({$search}) ";
+//     }
+
+//     return $search;
+// }
+
+// add_filter('posts_search', 'cyclon_search_or_logic', 500, 2);
+
+// // Order search results by relevance (most matching words first)
+// function cyclon_search_orderby_relevance($orderby, $query)
+// {
+//     global $wpdb;
+
+//     if (!$query->is_search() || is_admin()) {
+//         return $orderby;
+//     }
+
+//     $search_terms = $query->get('search_terms');
+//     if (empty($search_terms)) {
+//         return $orderby;
+//     }
+
+//     // Calculate relevance score
+//     $relevance = '';
+//     foreach ($search_terms as $term) {
+//         $term = $wpdb->esc_like($term);
+//         $term = '%' . $term . '%';
+//         $relevance .= "+ (CASE WHEN {$wpdb->posts}.post_title LIKE '{$term}' THEN 2 ELSE 0 END)";
+//         $relevance .= "+ (CASE WHEN {$wpdb->posts}.post_content LIKE '{$term}' THEN 1 ELSE 0 END)";
+//     }
+
+//     $orderby = "({$relevance}) DESC, {$wpdb->posts}.post_date DESC";
+
+//     return $orderby;
+// }
+
+// add_filter('posts_orderby', 'cyclon_search_orderby_relevance', 500, 2);
 
 /**
  * Sets up theme defaults and registers support for various WordPress features.
