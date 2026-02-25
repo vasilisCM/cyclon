@@ -70,11 +70,14 @@
 }
 
 .hero-new-category-landing__heading {
+  font-size: calc(min(max(24px, 40/1380 * 100vw), 40px))!important;
   margin: 0 !important;
   padding: 0;
 }
 
 .hero-new-category-landing__subheading {
+  font-size: 18px!important;
+  line-height: 1.2!important;
   max-width: 250px;
   margin-top: 20px;
 }
