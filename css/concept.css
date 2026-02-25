@@ -183,6 +183,8 @@
   transform: translateX(5px);
 }
 
+/* Tribo act banner */
+
 .tribo-act-banner {
   background-color: #ffda00;
   padding-block: clamp(35px, calc((50 * 100vw) / 1280) ,50px); 30px;
@@ -209,7 +211,8 @@
 
 .tribo-act-banner__features-container {
   display: grid;
-  grid-template-columns: 1fr 1fr 1.2fr;
+  /* grid-template-columns: 1fr 1fr 1.2fr; */
+  grid-template-columns: repeat(4, 1fr);
   padding-top: 25px;
 }
 

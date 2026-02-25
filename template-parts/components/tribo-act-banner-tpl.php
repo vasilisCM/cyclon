@@ -23,17 +23,30 @@
 
                     if (have_rows('features')) :
                         while (have_rows('features')) : the_row(); ?>
-                            <div class="tribo-act-banner__feature">
-                                <div class="tribo-act-banner__feature-number relative">
-                                    <div class="sans primary line-height-s"><?php echo get_sub_field('number'); ?></div>
-                                    <div class="tribo-act-banner__feature-image absolute">
-                                        <img src="<?php echo get_sub_field('image'); ?>" alt="">
+                            <?php if (get_sub_field('number')): ?>
+                                <div class="tribo-act-banner__feature">
+                                    <div class="tribo-act-banner__feature-number relative">
+                                        <div class="sans primary line-height-s"><?php echo get_sub_field('number'); ?></div>
+                                        <div class="tribo-act-banner__feature-image absolute">
+                                            <img src="<?php echo get_sub_field('image'); ?>" alt="">
+                                        </div>
+                                    </div>
+                                    <div class="tribo-act-banner__feature-text text primary line-height-m">
+                                        <?php echo get_sub_field('text'); ?>
                                     </div>
                                 </div>
-                                <div class="tribo-act-banner__feature-text text primary line-height-m">
-                                    <?php echo get_sub_field('text'); ?>
+                            <?php else: ?>
+                                <div class="tribo-act-banner__feature tribo-act-banner__feature--no-number">
+                                    <div class="tribo-act-banner__feature-number relative">
+                                        <div class="tribo-act-banner__feature-image absolute">
+                                            <img src="<?php echo get_sub_field('image'); ?>" alt="">
+                                        </div>
+                                        <div class="tribo-act-banner__feature-text text primary line-height-m uppercase bold">
+                                            <?php echo get_sub_field('text'); ?>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
+                            <?php endif; ?>
                 <?php
                         endwhile;
                     endif;

@@ -63,6 +63,10 @@
   z-index: 0;
 }
 
+.hero-new-category-landing__subheading {
+  font-size: 20px;
+}
+
 @media only screen and (max-width: 767px) {
   .tax-cyclon_new_product_cat .taxHeader {
     height: clamp(400px, calc((500 * 100vw) / 767), 500px);
