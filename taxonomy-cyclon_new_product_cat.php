@@ -139,13 +139,13 @@ get_header(); ?>
                                 <?php if ($is_dropdown):
                                     // Per-dropdown title for ACEA and OEM
                                     if ($taxonomy->name === 'cyclon_new_product_acea'): ?>
-                                        <div class="bold text-s uppercase letter-spacing-medium product-filters__approvals-label">Industry Specifications</div>
+                                        <div class="bold text-s uppercase letter-spacing-medium product-filters__approvals-label"><?php echo __('Industry Specifications', 'cyclon'); ?></div>
                                     <?php elseif ($taxonomy->name === 'cyclon_new_product_oem'): ?>
-                                        <div class="bold text-s uppercase letter-spacing-medium product-filters__approvals-label">OEM Specifications</div>
+                                        <div class="bold text-s uppercase letter-spacing-medium product-filters__approvals-label"><?php echo __('OEM Specifications', 'cyclon'); ?></div>
                                     <?php endif; ?>
                                     <?php
-                                    $placeholder = 'Select';
-                                ?>
+                                    $placeholder = __('Select', 'cyclon');
+                                    ?>
                                     <!-- Dropdown for ACEA, OEM, and Specifications -->
                                     <select
                                         name="filters[<?php echo esc_attr($taxonomy->name); ?>][]"
