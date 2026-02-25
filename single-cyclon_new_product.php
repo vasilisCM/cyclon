@@ -349,11 +349,55 @@ if (have_posts()): while (have_posts()): the_post();
                             <div class="relatedProducts__SuperWrapper">
                                 <div class="relatedProducts__Wrapper">
                                     <div class="relatedProducts__Inner new-related-products">
-                                        <?php while ($relatedQuery->have_posts()): $relatedQuery->the_post(); ?>
-                                            <div class="swiper-slide">
-                                                <?php include 'template-parts/components/product-card.php';
-                                                ?>
-                                            </div>
+                                        <?php
+                                        while ($relatedQuery->have_posts()): $relatedQuery->the_post();
+                                            $related_id = get_the_ID();
+                                            $small_text_line = get_field('small_text_line', $related_id);
+                                            $thumbnail_url = get_the_post_thumbnail_url($related_id, 'large');
+                                            $range_terms = get_the_terms($related_id, 'cyclon_range');
+                                            $range_term = (!empty($range_terms) && !is_wp_error($range_terms)) ? $range_terms[0] : null;
+                                            $range_color = $range_term ? get_field('color', $range_term) : '';
+                                        ?>
+
+                                            <a href="<?php echo esc_url(get_permalink($related_id)); ?>" class="new-category-product-card">
+                                                <?php if ($thumbnail_url) : ?>
+                                                    <div class="new-category-product-card__img-container">
+                                                        <img src="<?php echo esc_url($thumbnail_url); ?>" alt="<?php echo esc_attr(get_the_title($related_id)); ?>">
+                                                    </div>
+                                                <?php endif; ?>
+                                                <div class="new-category-product-card__text-container">
+                                                    <div>
+                                                        <div class="sans regular range-group__title uppercase text-ms">Cyclon <?php echo $range_term ? esc_html($range_term->name) : ''; ?></div>
+                                                        <h5 class="text-l regular primary sans new-category-product-card__title">
+                                                            <?php echo get_the_title($related_id); ?>
+                                                        </h5>
+                                                        <?php
+                                                        $grade_terms = get_the_terms($related_id, 'cyclon_product_grade');
+                                                        if (!empty($grade_terms) && !is_wp_error($grade_terms)) {
+                                                            $color_style = $range_color ? ' style="color: ' . esc_attr($range_color) . ';"' : '';
+                                                        ?>
+                                                            <div class="text-l uppercase product-card__grade" <?php echo $color_style; ?>><?php echo $grade_terms[0]->name; ?></div>
+                                                        <?php } ?>
+                                                    </div>
+                                                    <?php if ($small_text_line) : ?>
+                                                        <div class="text-sm new-category-product-card__text"><?php echo esc_html($small_text_line); ?></div>
+                                                    <?php endif; ?>
+                                                    <?php
+                                                    $content = strip_tags(get_post_field('post_content', $related_id));
+                                                    $words = preg_split('/\s+/', $content, -1, PREG_SPLIT_NO_EMPTY);
+                                                    $short_content = implode(' ', array_slice($words, 0, 15));
+                                                    ?>
+                                                    <div class="new-category-product-card__info-btn">
+                                                        <div class="text-sm info product-card__info">
+                                                            <?php echo esc_html($short_content); ?><?php if (count($words) > 15) echo '...'; ?>
+                                                        </div>
+                                                        <h4 class="home-categories__category-heading">
+                                                            <span></span>
+                                                        </h4>
+                                                    </div>
+                                                </div>
+                                            </a>
+
                                         <?php endwhile;
                                         wp_reset_postdata(); ?>
 
