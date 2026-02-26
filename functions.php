@@ -131,15 +131,15 @@ function cyclon_sort_archive_posts($posts, $query)
 
 add_filter('the_posts', 'cyclon_sort_archive_posts', 10, 2);
 
-// Search: for cyclon_new_product posts match title + taxonomy terms only (not content/excerpt).
-// For all other post types keep default title + content + excerpt behaviour.
+// Search: for cyclon_new_product and cyclon_product posts match title + taxonomy terms only (not content/excerpt).
+// For all other post types keep default title only behaviour.
 function cyclon_search_taxonomy_join($join)
 {
     global $wpdb;
     if (!is_search() || is_admin()) return $join;
 
     $join .= " LEFT JOIN {$wpdb->term_relationships} AS ctr ON ({$wpdb->posts}.ID = ctr.object_id)
-               LEFT JOIN {$wpdb->term_taxonomy} AS ctt ON (ctr.term_taxonomy_id = ctt.term_taxonomy_id AND ctt.taxonomy IN ('cyclon_range','cyclon_product_grade'))
+               LEFT JOIN {$wpdb->term_taxonomy} AS ctt ON (ctr.term_taxonomy_id = ctt.term_taxonomy_id AND ctt.taxonomy IN ('cyclon_range','cyclon_product_grade','cyclon_product_cat','cyclon_product_type','cyclon_product_soap','cyclon_product_nlgi'))
                LEFT JOIN {$wpdb->terms} AS ct ON (ctt.term_id = ct.term_id) ";
     return $join;
 }
@@ -154,27 +154,42 @@ function cyclon_search_taxonomy_where($search, $query)
     if (empty($terms)) return $search;
 
     $new_product_clauses = array();
-    $other_clauses        = array();
+    $product_clauses     = array();
+    $other_clauses       = array();
 
     foreach ($terms as $term) {
         $like = '%' . $wpdb->esc_like($term) . '%';
 
-        // cyclon_new_product: title OR taxonomy term name only
-        $new_product_clauses[] = $wpdb->prepare(
-            "( {$wpdb->posts}.post_type = 'cyclon_new_product' AND ({$wpdb->posts}.post_title LIKE %s OR ct.name LIKE %s) )",
-            $like,
-            $like
-        );
+        // "cyclon" is always prepended visually on the frontend but never stored in titles,
+        // so treat it as a pass-through for both product CPTs to avoid false negatives
+        // (e.g. "Cyclon ECO R2" splits into ["cyclon","eco","r2"]; "cyclon" alone would match nothing).
+        $is_cyclon_word = strtolower(trim($term)) === 'cyclon';
+
+        if ($is_cyclon_word) {
+            $new_product_clauses[] = "( {$wpdb->posts}.post_type = 'cyclon_new_product' )";
+            $product_clauses[]     = "( {$wpdb->posts}.post_type = 'cyclon_product' )";
+        } else {
+            $new_product_clauses[] = $wpdb->prepare(
+                "( {$wpdb->posts}.post_type = 'cyclon_new_product' AND ({$wpdb->posts}.post_title LIKE %s OR ct.name LIKE %s) )",
+                $like,
+                $like
+            );
+            $product_clauses[] = $wpdb->prepare(
+                "( {$wpdb->posts}.post_type = 'cyclon_product' AND ({$wpdb->posts}.post_title LIKE %s OR ct.name LIKE %s) )",
+                $like,
+                $like
+            );
+        }
 
         // all other post types: title only
         $other_clauses[] = $wpdb->prepare(
-            "( {$wpdb->posts}.post_type != 'cyclon_new_product' AND {$wpdb->posts}.post_title LIKE %s )",
+            "( {$wpdb->posts}.post_type NOT IN ('cyclon_new_product','cyclon_product') AND {$wpdb->posts}.post_title LIKE %s )",
             $like
         );
     }
 
     // AND between terms (same strictness as WP default)
-    $search = ' AND ( (' . implode(' AND ', $new_product_clauses) . ') OR (' . implode(' AND ', $other_clauses) . ') ) ';
+    $search = ' AND ( (' . implode(' AND ', $new_product_clauses) . ') OR (' . implode(' AND ', $product_clauses) . ') OR (' . implode(' AND ', $other_clauses) . ') ) ';
     return $search;
 }
 add_filter('posts_search', 'cyclon_search_taxonomy_where', 10, 2);
