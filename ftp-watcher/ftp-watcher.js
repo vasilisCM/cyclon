@@ -82,7 +82,8 @@ async function connect() {
         port: config.port || 21,
         user: config.username,
         password: config.password,
-        secure: false
+        secure: config.secure || false,
+        secureOptions: { rejectUnauthorized: false }
       });
     }
     

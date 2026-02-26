@@ -38,7 +38,7 @@
                             <?php else: ?>
                                 <div class="tribo-act-banner__feature tribo-act-banner__feature--no-number">
                                     <div class="tribo-act-banner__feature-number relative">
-                                        <div class="tribo-act-banner__feature-image absolute">
+                                        <div class="tribo-act-banner__feature-image">
                                             <img src="<?php echo get_sub_field('image'); ?>" alt="">
                                         </div>
                                         <div class="tribo-act-banner__feature-text text primary line-height-m uppercase bold">

@@ -213,12 +213,14 @@
   display: grid;
   /* grid-template-columns: 1fr 1fr 1.2fr; */
   grid-template-columns: repeat(4, 1fr);
+  column-gap: clamp(20px, calc((40 * 100vw) / 1280), 40px);
   padding-top: 25px;
 }
 
 .tribo-act-banner__feature-number {
   font-size: clamp(40px, calc((50 * 100vw) / 1280), 50px);
   background-image: linear-gradient(to right, white, transparent 60%);
+  height: 100%;
   padding: 5px 12px;
   border-radius: 15px;
 }
@@ -235,7 +237,8 @@
 }
 
 .tribo-act-banner__feature-image img {
-  max-height: clamp(80px, calc((100 * 100vw) / 1280), 100px);
+  /* max-height: clamp(80px, calc((100 * 100vw) / 1280), 100px); */
+  max-height: 100px;
 }
 
 .tribo-act-banner__feature-text {
@@ -246,6 +249,22 @@
 .tribo-act-banner__button-container {
   grid-column: span 2;
   justify-self: end;
+}
+
+/* no number */
+.tribo-act-banner__feature--no-number .tribo-act-banner__feature-number {
+  background-image: linear-gradient(60deg, white, transparent 80%);
+  padding: 20px;
+}
+
+.tribo-act-banner__feature--no-number .tribo-act-banner__feature-text {
+  padding: 0;
+}
+
+.tribo-act-banner__feature--no-number .tribo-act-banner__feature-image {
+  transform: none;
+  margin-top: -65px;
+  margin-bottom: -10px;
 }
 
 @media screen and (max-width: 1024px) {
@@ -261,14 +280,17 @@
 @media screen and (max-width: 640px) {
   .tribo-act-banner__features-container {
     grid-template-columns: 1fr 1fr;
-    row-gap: 20px;
+    row-gap: 60px;
   }
   .tribo-act-banner__feature {
     max-width: 260px;
   }
-.tribo-act-banner__feature:last-child {
-    grid-column: span 2;
+  .tribo-act-banner__logo-container {
+    margin-bottom: 20px;
   }
+/* .tribo-act-banner__feature:last-child {
+    grid-column: span 2;
+  } */
 }
 
 /* Layouts  */
