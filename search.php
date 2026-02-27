@@ -15,7 +15,8 @@ get_header();
 	<div class="search-results__wrapper">
 		<?php if (have_posts()) : ?>
 			<h1 class="page-title">
-				<span><?php printf(('Search results for the term:' . "<br>" . '"%s"'), esc_html(get_search_query())); ?></span>
+				<span><?php echo __('Search results for the term:', 'cyclon'); ?><br>
+					<?php printf(('"%s"'), esc_html(get_search_query())); ?></span>
 			</h1>
 			<p><?php printf(esc_html(_n('Found %d result', 'Found %d results', (int) $wp_query->found_posts)), (int) $wp_query->found_posts); ?></p>
 
