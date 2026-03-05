@@ -132,6 +132,7 @@ function cyclon_sort_archive_posts($posts, $query)
 add_filter('the_posts', 'cyclon_sort_archive_posts', 10, 2);
 
 // Search: for cyclon_new_product and cyclon_product posts match title + taxonomy terms only (not content/excerpt).
+// For cyclon_new_product also match the ACF field 'single_product__parent_code'.
 // For all other post types keep default title only behaviour.
 function cyclon_search_taxonomy_join($join)
 {
@@ -140,7 +141,8 @@ function cyclon_search_taxonomy_join($join)
 
     $join .= " LEFT JOIN {$wpdb->term_relationships} AS ctr ON ({$wpdb->posts}.ID = ctr.object_id)
                LEFT JOIN {$wpdb->term_taxonomy} AS ctt ON (ctr.term_taxonomy_id = ctt.term_taxonomy_id AND ctt.taxonomy IN ('cyclon_range','cyclon_product_grade','cyclon_product_cat','cyclon_product_type','cyclon_product_soap','cyclon_product_nlgi'))
-               LEFT JOIN {$wpdb->terms} AS ct ON (ctt.term_id = ct.term_id) ";
+               LEFT JOIN {$wpdb->terms} AS ct ON (ctt.term_id = ct.term_id)
+               LEFT JOIN {$wpdb->postmeta} AS cpm ON (cpm.post_id = {$wpdb->posts}.ID AND {$wpdb->posts}.post_type = 'cyclon_new_product' AND cpm.meta_key = 'single_product__parent_code') ";
     return $join;
 }
 add_filter('posts_join', 'cyclon_search_taxonomy_join');
@@ -170,7 +172,8 @@ function cyclon_search_taxonomy_where($search, $query)
             $product_clauses[]     = "( {$wpdb->posts}.post_type = 'cyclon_product' )";
         } else {
             $new_product_clauses[] = $wpdb->prepare(
-                "( {$wpdb->posts}.post_type = 'cyclon_new_product' AND ({$wpdb->posts}.post_title LIKE %s OR ct.name LIKE %s) )",
+                "( {$wpdb->posts}.post_type = 'cyclon_new_product' AND ({$wpdb->posts}.post_title LIKE %s OR ct.name LIKE %s OR cpm.meta_value LIKE %s) )",
+                $like,
                 $like,
                 $like
             );
