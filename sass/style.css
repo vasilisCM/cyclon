@@ -8399,7 +8399,7 @@ textarea {
   .page-template-cyclon-contact .taxHeader,
   .page-template-cyclon-network .taxHeader,
   .page-template-cyclon-category-landing-tpl .taxHeader {
-    height: 260px;
+    height: 300px;
   }
 }
 @media (max-width: 767px) {
@@ -9643,6 +9643,9 @@ textarea {
   background: #001a61;
 }
 @media (max-width: 767px) {
+  .cyclon_brand .main-image {
+    margin-top: -170px;
+  }
   .lpc {
     margin-top: 50px;
     margin-bottom: 70px;
@@ -10328,6 +10331,8 @@ html {
 @media (max-width: 767px) {
   .features {
     padding: 50px 0;
+    display: grid;
+    gap:80px;
   }
 }
 .feature {
@@ -10351,12 +10356,28 @@ html {
 .feature--leftImage .feature__Content {
   padding-right: 80px;
 }
+
+.feature__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
 @media (max-width: 767px) {
+  .feature--leftImage .row {
+    flex-direction: column-reverse;
+  }
+  .feature--rightImage .row {
+    flex-direction: column;
+  }
   .feature--leftImage .feature__Content {
     padding-right: 0;
     text-align: center;
     margin-top: 25px;
     margin-bottom: 25px;
+  }
+
+  .feature__buttons {
+    justify-content: center;
   }
 }
 .feature--leftImage .feature__Image {
@@ -10389,9 +10410,7 @@ html {
     max-width: 250px;
   }
 }
-.feature--rightImage a.mButton:first-child {
-  margin-right: 15px;
-}
+
 .feature__Content h3 {
   font-size: clamp(26px, 4vw, 40px);
   line-height: 1.2;

@@ -433,10 +433,12 @@
                     <?php endif; ?>
                 </div>
             </div>
-            <div class="mobileTaxHeaderTitle">
-                <?php $id = get_queried_object_id(); ?>
-                <?php echo get_the_title(); ?>
-            </div>
+            <?php if (!is_page('brand') && !is_page('contact')): ?>
+                <div class="mobileTaxHeaderTitle">
+                    <?php $id = get_queried_object_id(); ?>
+                    <?php echo get_the_title(); ?>
+                </div>
+            <?php endif; ?>
             <div class="taxHeader__Buttons d-flex d-sm-none d-md-none d-lg-none d-xl-none align-items-center justify-content-center"
                 style="margin-top: -31px;">
                 <?php if (get_field('header_button_1_image', $term)): ?>

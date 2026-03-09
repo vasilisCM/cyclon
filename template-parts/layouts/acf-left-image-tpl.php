@@ -24,16 +24,18 @@
                         </div>
                     <?php endif; ?>
 
-                    <a class="mButton mButton--blueButton mr-3 d-inline-block" style="margin-right: 15px;"
-                        href="<?php echo get_sub_field('button_1_url'); ?>">
-                        <?php echo get_sub_field('button_1_text'); ?>
-                    </a>
-                    <?php if (get_sub_field('button_2_text')): ?>
-                        <a class="mButton mButton--blueButton d-inline-block"
-                            href="<?php echo get_sub_field('button_2_url'); ?>">
-                            <?php echo get_sub_field('button_2_text'); ?>
+                    <div class="feature__buttons">
+                        <a class="mButton mButton--blueButton mr-3 d-inline-block"
+                            href="<?php echo get_sub_field('button_1_url'); ?>">
+                            <?php echo get_sub_field('button_1_text'); ?>
                         </a>
-                    <?php endif; ?>
+                        <?php if (get_sub_field('button_2_text')): ?>
+                            <a class="mButton mButton--blueButton d-inline-block"
+                                href="<?php echo get_sub_field('button_2_url'); ?>">
+                                <?php echo get_sub_field('button_2_text'); ?>
+                            </a>
+                        <?php endif; ?>
+                    </div>
                 </div>
             </div>
 
