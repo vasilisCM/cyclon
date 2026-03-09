@@ -1137,6 +1137,47 @@ if (itemHasChildren && submenu && megaMenu && main) {
   });
 }
 
+// Mobile submenu toggle (<= 991px) – does not affect desktop mega menu
+(function initMobileSubmenuToggle() {
+  const MOBILE_BREAKPOINT = 991;
+
+  document.addEventListener("click", (event) => {
+    if (window.innerWidth > MOBILE_BREAKPOINT) return;
+
+    const clickedLink = event.target.closest("a");
+    if (!clickedLink) return;
+
+    const parentLi = clickedLink.closest("li.menu-item-has-children");
+    if (!parentLi) return;
+
+    const currentSubmenu = parentLi.querySelector(".sub-menu");
+    if (!currentSubmenu) return;
+
+    event.preventDefault();
+
+    const isOpen = currentSubmenu.classList.contains("sub-menu--open");
+
+    // Close any other open submenus in the mobile menu
+    document.querySelectorAll("#mobile-menu .sub-menu.sub-menu--open").forEach((submenuEl) => {
+      if (submenuEl !== currentSubmenu) {
+        submenuEl.classList.remove("sub-menu--open");
+      }
+    });
+
+    currentSubmenu.classList.toggle("sub-menu--open", !isOpen);
+  });
+
+  // Close all open submenus when clicking outside the mobile menu
+  document.addEventListener("click", (event) => {
+    if (window.innerWidth > MOBILE_BREAKPOINT) return;
+    if (event.target.closest("#mobile-menu")) return;
+
+    document.querySelectorAll("#mobile-menu .sub-menu.sub-menu--open").forEach((submenuEl) => {
+      submenuEl.classList.remove("sub-menu--open");
+    });
+  });
+})();
+
 // itemHasChildren.addEventListener("mouseleave", () => {
 //   submenu.style.visibility = "hidden";
 //   submenu.style.opacity = "0";
