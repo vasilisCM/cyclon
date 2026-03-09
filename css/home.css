@@ -13,6 +13,17 @@
   z-index: 1;
 }
 
+@media (max-width: 767px) {
+  .hero-home .row {
+    flex-direction: column;
+    padding-top: 120px;
+  }
+
+  .hero-home .taxHeader__Content {
+    justify-content: flex-start;
+  }
+}
+
 /* Hero Carousel */
 .carousel-hero {
   position: relative;
