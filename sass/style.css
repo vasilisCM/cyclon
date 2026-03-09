@@ -8191,7 +8191,7 @@ textarea {
 } */
 @media (max-width: 550px) {
   .logoLink img {
-    box-shadow: -7px -2px 82px 50px rgba(80, 125, 255, 0.4);
+    /* box-shadow: -7px -2px 82px 50px rgba(80, 125, 255, 0.4); */
   }
 }
 .cyclon__Header.solid-header {
@@ -8208,7 +8208,7 @@ textarea {
 .cyclon__Header.solid-header .cyclon__logo {
   height: 100px;
   margin-bottom: -4px;
-  box-shadow: 0 0 132px 6px rgba(31, 154, 225, 0.8);
+  /* box-shadow: 0 0 132px 6px rgba(31, 154, 225, 0.8); */
 }
 @media (max-width: 550px) {
   .cyclon__Header.solid-header .cyclon__logo {

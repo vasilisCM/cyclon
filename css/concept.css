@@ -424,6 +424,10 @@ li:hover > .sub-menu {
 }
 
 @media screen and (max-width: 991px) {
+  body:has( > .menu-is-visible) .site-header {
+    background-color: #001a61;
+  }
+
   .sub-menu {
     position: revert;
     display: none;
