@@ -1153,6 +1153,9 @@ if (itemHasChildren && submenu && megaMenu && main) {
     const currentSubmenu = parentLi.querySelector(".sub-menu");
     if (!currentSubmenu) return;
 
+    // Only block navigation for the top-level toggle link, not submenu links
+    if (currentSubmenu.contains(clickedLink)) return;
+
     event.preventDefault();
 
     const isOpen = currentSubmenu.classList.contains("sub-menu--open");
