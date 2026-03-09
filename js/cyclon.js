@@ -1190,8 +1190,9 @@ legacyCategoriesClose.addEventListener("click", () => {
     return;
   }
 
-  // Function to show and hide the tray
+  // Function to show and hide the tray only on desktop (>991px)
   function showTrayBriefly() {
+    if (window.innerWidth <= 991) return; // Only for desktop
     if (!legacyCategoriesContent) return;
 
     // Open the tray
