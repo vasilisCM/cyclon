@@ -258,8 +258,12 @@ if (have_posts()): while (have_posts()): the_post();
                                 <?php endwhile; ?>
                             </div>
                         <?php endif; ?>
+                        <?php
+                        $product_catalogue = get_field('product_catalogue', 'option');
+                        $product_matching_catalogue = get_field('product_matching_catalogue', 'option');
+                        ?>
                         <div class="product-buttons">
-                            <a href="/wp-content/uploads/2026/02/Cyclon-Catalogue-EN-Final-LowRes-RGB.pdf" class="product-pill product-pill--primary" target="_blank">
+                            <a href="<?php echo $product_catalogue; ?>" class="product-pill product-pill--primary" target="_blank">
                                 <span class="product-pill__title">
                                     <?php _e('Product Catalogue', 'cyclon'); ?>
                                 </span>
@@ -269,7 +273,7 @@ if (have_posts()): while (have_posts()): the_post();
                             </a>
                         </div>
                         <div class="product-buttons">
-                            <a href="/" class="product-pill" target="_blank">
+                            <a href="<?php echo $product_matching_catalogue; ?>" class="product-pill" target="_blank">
                                 <span class="product-pill__title">
                                     <?php _e('Product Matching Catalogue', 'cyclon'); ?>
                                 </span>
