@@ -247,14 +247,16 @@ get_header(); ?>
                     }
                 }
                 ?>
-                    <a href="<?php echo $link; ?>" class="home-categories__banner">
-                        <?php
+
+<?php
                         $id_lube = get_field('id_lube');
                         $image_1 = $id_lube['image_1'];
                         $image_2 = $id_lube['image_2'];
                         $text = $id_lube['text'];
                         $link = $id_lube['link'];
                         ?>
+                    <a href="<?php echo $link; ?>" class="home-categories__banner">
+                        
                            
                                 <div class="home-categories__banner-text-container">
                                     <div class="">

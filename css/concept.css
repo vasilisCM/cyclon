@@ -488,6 +488,12 @@ li:hover > .sub-menu {
   transition: 0.3s ease;
 }
 
+@media screen and (max-width: 991px) {
+  .sub-menu li::after {
+    content: none;
+  }
+}
+
 .sub-menu__item--active::after {
   opacity: 1 !important;
 }
