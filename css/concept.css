@@ -488,12 +488,6 @@ li:hover > .sub-menu {
   transition: 0.3s ease;
 }
 
-@media screen and (max-width: 991px) {
-  .sub-menu li::after {
-    content: none;
-  }
-}
-
 .sub-menu__item--active::after {
   opacity: 1 !important;
 }
@@ -515,27 +509,93 @@ li:hover > .sub-menu {
   opacity: 1;
 }
 
-/* .sub-menu:after {
-  content: "";
-  position: absolute;
-  top: -10px;
-  left: min(-12px, calc((((100vw - 1400px) / 2) * (-1)) - 22px));
-  width: 100vw;
-  height: 650px;
-  background-image: url(/wp-content/uploads/2025/11/mega-menu-bg-img.jpg);
-  background-size: cover;
-  background-position: center;
-  z-index: -1000;
-} */
-
-/* .cyclon__Menu > li:hover ul {
-  visibility: visible;
-  opacity: 1;
-
-  @include view(md-max) {
-    display: block;
+@media screen and (max-width: 991px) {
+  .sub-menu li {
+    padding-inline: 0;
   }
-} */
+
+  .sub-menu li::after {
+    content: none;
+  }
+
+  .menu-item-icon {
+    position: relative;
+  }
+
+  #mobile-menu .sub-menu li.menu-item-icon a {
+    padding-inline: 65px 15px;
+}
+
+  .menu-item-icon:before {
+    content: "";
+    background-image: url('/wp-content/uploads/2026/02/car-gold.png');
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    mix-blend-mode: luminosity;
+  }
+
+  .menu-item-icon--passanger:before {
+    background-image: url('/wp-content/uploads/2026/02/car-gold.png');
+  }
+
+  .menu-item-icon--trucks:before {
+    background-image: url('/wp-content/uploads/2026/02/trucks.png');
+  }
+
+  .menu-item-icon--moto:before {
+    background-image: url('/wp-content/uploads/2026/02/motorcircles.png');
+  }
+
+  .menu-item-icon--agri:before {
+    background-image: url('/wp-content/uploads/2026/02/agri.png');
+  }
+
+  .menu-item-icon--transmission:before {
+    background-image: url('/wp-content/uploads/2026/02/transmission.png');
+  }
+
+  .menu-item-icon--garden:before {
+    background-image: url('/wp-content/uploads/2026/02/gardening.png');
+  }
+
+  .menu-item-icon--leisure:before {
+    background-image: url('/wp-content/uploads/2026/02/leissure.png');
+  }
+
+  .menu-item-icon--power:before {
+    background-image: url('/wp-content/uploads/2026/02/power-generator.png');
+  }
+
+  .menu-item-icon--industrial:before {
+    background-image: url('/wp-content/uploads/2026/02/insustrial.png');
+  }
+
+  .menu-item-icon--marine:before {
+    background-image: url('/wp-content/uploads/2026/02/marine.png');
+  }
+
+  .menu-item-icon--greases:before {
+    background-image: url('/wp-content/uploads/2026/02/greases.png');
+  }
+
+  .menu-item-icon--special-fluids:before {
+    background-image: url('/wp-content/uploads/2026/02/fluids.png');
+  }
+
+  .menu-item-icon--construction:before {
+    background-image: url('/wp-content/uploads/2026/02/construction.png');
+  }
+
+}
+
+
 
 
 /* Legacy Categories Tray  */
