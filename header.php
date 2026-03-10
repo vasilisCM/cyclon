@@ -133,13 +133,22 @@
             // Build slides array - first slide is current hardcoded content
             $slides = array();
 
-            // Add first slide (current hardcoded content)
+            // Fetch first slide fields from ACF group field 'home_hero'
+            $home_hero_fields = get_field('home_hero', $front_page_id);
+
+            $first_slide_image = $home_hero_fields['image'];
+            $first_slide_heading = $home_hero_fields['heading'];
+            $first_slide_subheading = $home_hero_fields['subheading'];
+            $first_slide_label = $home_hero_fields['label'];
+            $first_slide_link = $home_hero_fields['link'];
+
+
             $slides[] = array(
-                'image' => $background_image,
-                'heading' => __('Engineered <br> to Perform', 'cyclon'),
-                'subheading' => __('Advanced lubricants technology <br> in every move', 'cyclon'),
-                'label' => __('Ανακαλυψτε Περισσοτερα', 'cyclon'),
-                'link' => '/'
+                'image' => $first_slide_image,
+                'heading' => $first_slide_heading,
+                'subheading' => $first_slide_subheading,
+                'label' => $first_slide_label,
+                'link' => $first_slide_link
             );
 
             // Add ACF repeater slides if they exist

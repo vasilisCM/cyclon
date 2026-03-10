@@ -304,6 +304,18 @@
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
   }
+
+  .relatedProducts__Inner {
+    display: flex;
+    width: 100%;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+  }
+
+  .new-category-product-card {
+  flex: 0 0 auto;
+  width: 280px;
+}
 }
 
 @media only screen and (max-width: 768px) {
