@@ -20,6 +20,12 @@ jQuery(document).ready(function ($) {
 
   $(".mobile-trigger").on("click", function () {
     $(".mobileMenuOverlay").toggleClass("menu-is-visible");
+
+    // Reset submenus when closing the menu
+    if (!$(".mobileMenuOverlay").hasClass("menu-is-visible")) {
+      $("#mobile-menu .sub-menu.sub-menu--open").removeClass("sub-menu--open");
+    }
+
     return false;
   });
 
