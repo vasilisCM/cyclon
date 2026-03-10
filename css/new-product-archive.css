@@ -15,7 +15,7 @@
 /* Hero */
 .tax-cyclon_new_product_cat .taxHeader {
   position: relative;
-  z-index: 200;
+  z-index: 10;
   background-image: url("/wp-content/uploads/2025/12/cat-landing-hero-bg.jpg") !important;
   height: clamp(270px, calc((500 * 100vw) / 1280), 500px);
   overflow: hidden;
