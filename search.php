@@ -34,7 +34,7 @@ get_header();
 					}
 					$parts[] = get_the_title();
 					$title   = implode(' ', $parts);
-					printf('<a class="search-results__link" href="%s">%s</a>', esc_url(get_permalink()), esc_html($title));
+					printf('<a class="search-results__link" href="%s">%s</a>', esc_url(get_permalink()), wp_kses($title, ['sup' => [], 'sub' => [], 'em' => [], 'strong' => []]));
 				} else {
 					the_title(sprintf('<a class="search-results__link" href="%s">', esc_url(get_permalink())), '</a>');
 				}
