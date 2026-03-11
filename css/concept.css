@@ -1712,6 +1712,10 @@ body:not(.archive) .taxHeader2 .row > div:last-child > div {
     padding: 28px 0px;
   }
 
+  .appMapping .oil-details .oil-image img {
+    max-width: 40%;
+  }
+
   .custom-select {
     position: relative;
     width: 100%;
