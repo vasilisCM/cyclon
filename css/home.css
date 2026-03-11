@@ -17,10 +17,34 @@
   .hero-home .row {
     flex-direction: column;
     padding-top: 120px;
+    height: 100%;
+  }
+
+  .hero-home .row > div:last-child {
+    height: 100%;
   }
 
   .hero-home .taxHeader__Content {
     justify-content: flex-start;
+    height: 100%;
+  }
+
+  .hero-home .taxHeader__Content__Inner {
+    height: 100%;
+    width: 100%;
+  }
+
+  .hero-home__text-container {
+    display: grid;
+    grid-template-rows: max-content max-content 1fr;
+    height: 100%;
+  }
+
+  .hero-home__button {
+    height: fit-content;
+    align-self: end;
+    justify-self: center;
+    margin-bottom: 80px;
   }
 }
 
