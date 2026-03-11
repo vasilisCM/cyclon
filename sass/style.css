@@ -10379,6 +10379,10 @@ html {
   .feature__buttons {
     justify-content: center;
   }
+
+  .feature .mButton {
+    margin-inline: auto;
+  }
 }
 .feature--leftImage .feature__Image {
   text-align: left;
