@@ -141,6 +141,7 @@
             $first_slide_subheading = $home_hero_fields['subheading'];
             $first_slide_label = $home_hero_fields['label'];
             $first_slide_link = $home_hero_fields['link'];
+            $first_slide_image_mobile = $home_hero_fields['image_mobile'];
 
 
             $slides[] = array(
@@ -148,7 +149,8 @@
                 'heading' => $first_slide_heading,
                 'subheading' => $first_slide_subheading,
                 'label' => $first_slide_label,
-                'link' => $first_slide_link
+                'link' => $first_slide_link,
+                'image_mobile' => $first_slide_image_mobile
             );
 
             // Add ACF repeater slides if they exist
@@ -160,7 +162,8 @@
                             'heading' => $item['heading'] ?? '',
                             'subheading' => $item['subheading'] ?? '',
                             'label' => $item['label'] ?? '',
-                            'link' => $item['link'] ?? '/'
+                            'link' => $item['link'] ?? '/',
+                            'image_mobile' => $item['image_mobile'] ?? ''
                         );
                     }
                 }
@@ -174,6 +177,9 @@
                     <div class="carousel-hero__container">
                         <?php foreach ($slides as $index => $slide): ?>
                             <div class="carousel-hero__slide" style="background-image: url(<?php echo esc_url($slide['image']); ?>);">
+                                <div class="hidden-desktop hero-home__img-mobile-container">
+                                    <img src="<?php echo esc_url($slide['image_mobile']); ?>" alt="">
+                                </div>
                                 <div class="container">
                                     <div class="row">
                                         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -209,7 +215,10 @@
                     </div>
                 </section>
             <?php else: ?>
-                <section class="taxHeader hero-home" style="background-image: url(<?php echo esc_url($background_image); ?>);">
+                <section class="taxHeader hero-home" style="background-image: url(<?php echo esc_url($first_slide_image); ?>);">
+                    <div class="hidden-desktop hero-home__img-mobile-container">
+                        <img src="<?php echo esc_url($first_slide_image_mobile); ?>" alt="">
+                    </div>
                     <div class="container">
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -219,12 +228,13 @@
                                     <div class="taxHeader__Content__Inner">
                                         <div class="hero-home__text-container">
                                             <h1 class="hero-home__heading">
-                                                <?php echo __('Engineered <br> to Perform', 'cyclon'); ?> </h1>
+                                                <?php echo $first_slide_heading; ?> </h1>
                                             <div class="hero-home__subheading accent">
-                                                <?php echo __('Advanced lubricants technology <br> in every move', 'cyclon'); ?>
+                                                <?php echo $first_slide_subheading; ?>
                                             </div>
-                                            <!-- <a class="mButton mButton--trans uppercase hero-home__button" href="/">Ανακαλυψτε Περισσοτερα</a> -->
-                                            <!-- <a class="mButton mButton--trans text-xs letter-spacing-medium uppercase hero-home__button" href="/">Ανακαλυψτε Περισσοτερα</a> -->
+                                            <?php if (!empty($first_slide_label) && !empty($first_slide_link)): ?>
+                                                <a class="mButton mButton--trans uppercase hero-home__button" href="<?php echo esc_url($first_slide_link); ?>"><?php echo esc_html($first_slide_label); ?></a>
+                                            <?php endif; ?>
                                         </div>
                                         <div class="taxHeader__Buttons d-none d-sm-flex d-md-flex d-lg-flex d-xl-flex">
 

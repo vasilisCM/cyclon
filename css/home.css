@@ -50,6 +50,24 @@
   z-index: 0;
 }
 
+@media (max-width: 1024px) {
+  .hero-home,  .carousel-hero__slide {
+    background-image: none !important;
+  }
+
+  .hero-home__img-mobile-container {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+  }
+
+  .hero-home__img-mobile-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
 .carousel-hero__slide:first-child {
   opacity: 1;
   z-index: 1;
