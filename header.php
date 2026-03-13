@@ -341,7 +341,7 @@
                         <?php echo get_field('hero_text'); ?>
                     </h1>
                 <?php endif; ?>
-                <div class="container">
+                <div class="container" <?php if (is_page('contact')): ?> style="display:none;" <?php endif; ?>>
                     <?php if (is_page_template('page-templates/cyclon-new-category-landing-tpl.php')): ?>
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
