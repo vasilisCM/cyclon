@@ -533,7 +533,7 @@
 
         });
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSZnCO_TqvvJWtx195dR56cSvCYSlx5SU"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCqreJ3s5bbb6C-fwSvolWRoRU0NlBfrQo"></script>
 <?php endif; ?>
 </body>
 
