@@ -437,7 +437,7 @@ get_header(); ?>
             $has_products = $check_products_query->have_posts();
             wp_reset_postdata();
 
-            if ($has_products && $associated_cat_id != 778 && $associated_cat_id != 3394) {
+            if ($has_products && $associated_cat_id != 778 && $associated_cat_id != 3394 && $associated_cat_id != 4125) {
                 $category_link = get_term_link($associated_cat_id, 'cyclon_new_product_cat');
                 if (!is_wp_error($category_link)) {
         ?>
@@ -455,8 +455,8 @@ get_header(); ?>
     </section>
 
     <?php if (!$has_products_with_range) : ?>
-        <?php if ($associated_cat_id == 778 || $associated_cat_id == 3394) : ?>
-            <!-- Special case: Subcategories Grid for category ID 778 (en) + 3394 (el) -->
+        <?php if ($associated_cat_id == 778 || $associated_cat_id == 3394 || $associated_cat_id == 4125) : ?>
+            <!-- Special case: Subcategories Grid for category ID 778 (en) + 3394 (el) + 4125 (de) -->
             <section class="landing-categories">
                 <div class="container">
                     <div class="text-l regular sans normal primary text-center normal">
