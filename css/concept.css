@@ -868,12 +868,12 @@ li:hover > .sub-menu {
   margin-top: 0 !important;
   margin-bottom: 20px;
 }
-.mobileMenu__Bottom .mobileLanguage a:visited {
+/* .mobileMenu__Bottom .mobileLanguage a:visited {
   color: #fff;
-}
+} */
 
 .mobileMenu__Bottom .mobileLanguage a:hover {
-  color: #fff;
+  color: #ffda00;
 }
 .header-language-switcher .wpml-ls-legacy-dropdown,
 .mobileMenu__Bottom .mobileLanguage .wpml-ls-legacy-dropdown {
