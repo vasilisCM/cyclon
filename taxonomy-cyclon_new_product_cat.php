@@ -274,24 +274,35 @@ get_header(); ?>
                         <?php
                         global $wp_query;
                         $total_products = $wp_query->found_posts;
-                        $product_count_text = $total_products === 1
-                            ? sprintf(__('%d product', 'cyclon'), $total_products)
-                            : sprintf(__('%d products', 'cyclon'), $total_products);
+                        $locale = get_locale();
+                        if (strpos($locale, 'ro') === 0) {
+                            $product_count_text = $total_products . ($total_products === 1 ? ' produs' : ' produse');
+                        } else {
+                            $product_count_text = $total_products === 1
+                                ? sprintf(__('%d product', 'cyclon'), $total_products)
+                                : sprintf(__('%d products', 'cyclon'), $total_products);
+                        }
                         ?>
-                        <span class="text-s uppercase product-count__number"><?php echo esc_html($product_count_text); ?></span>
+                        <span class="text-s uppercase product-count__number">
+                            <?php echo esc_html($product_count_text); ?>
+                        </span>
                     </div>
-
 
 
                     <div class="archive-grid relative">
                         <div class="archive-grid__loader hidden">
                         </div>
 
-                        <?php while (have_posts()): the_post(); ?>
+                        <?php while (have_posts()): the_post();
+                        ?>
 
-                            <?php include 'template-parts/components/product-card.php'; ?>
+                            <?php include 'template-parts/components/product-card.php';
+                            ?>
 
-                        <?php endwhile; ?>
+                        <?php endwhile;
+                        ?>
+
+
                     </div>
 
                     <div class="archive-grid__bottom pagination">
