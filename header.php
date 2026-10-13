@@ -327,7 +327,7 @@
                     </div>
                 </div>
             </div>
-        <?php elseif (is_page() && !is_page('quality') && !is_page('tribo-act') && !is_page('technology') && !is_page_template('page-templates/cyclon-plain.php')):
+        <?php elseif (is_page() && !is_page('quality') && !is_page('tribo-act') && !is_page('technology') && !is_page_template('page-templates/cyclon-plain.php') && !is_page_template('page-templates/cyclon-thank-you.php')):
             $term = get_queried_object();
             $headerImage = get_field('header_image');
         ?>

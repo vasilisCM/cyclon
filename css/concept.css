@@ -2025,6 +2025,21 @@ body.error404 .taxHeader {
   min-height: 80vh;
 }
 
+body.page-template-page-templates-cyclon-thank-you-php {
+  background-image: url("/wp-content/uploads/2023/02/404-background.png") !important;
+  background-repeat: no-repeat;
+  background-position: center -300px;
+  background-size: cover;
+}
+
+body.page-template-page-templates-cyclon-thank-you-php .taxHeader {
+  min-height: 80vh;
+}
+
+body.page-template-page-templates-cyclon-thank-you-php .error-404 .page-content {
+  min-height: auto;
+}
+
 .error-404 .page-content {
   display: flex;
   flex-direction: column;
