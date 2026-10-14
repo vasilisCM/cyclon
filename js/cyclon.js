@@ -167,7 +167,7 @@ jQuery(document).ready(function ($) {
     var headerHeight = $(".cyclon__Header").outerHeight(true);
     $("html,body").animate(
       { scrollTop: aTag.offset().top - headerHeight - 20 },
-      "slow"
+      "slow",
     );
   }
 
@@ -223,7 +223,7 @@ jQuery(document).ready(function ($) {
                 $(".single-tab:not(.main-tab).active")
                   .attr("id")
                   .split("-")
-                  .slice(2, -1)[0]
+                  .slice(2, -1)[0],
               ) - 1;
           } else {
             var indexRowWrap =
@@ -231,11 +231,11 @@ jQuery(document).ready(function ($) {
                 $(".single-tab:not(.main-tab).active")
                   .attr("id")
                   .split("-")
-                  .pop()
+                  .pop(),
               ) - 1;
           }
           currId = $(".appMapping .single-tab:not(.main-tab).active").attr(
-            "id"
+            "id",
           );
         } else {
           var indexRowWrap = 0;
@@ -311,7 +311,7 @@ jQuery(document).ready(function ($) {
                 .parent()
                 .css(
                   "background-image",
-                  'url("' + mappingInfo.part_image + '")'
+                  'url("' + mappingInfo.part_image + '")',
                 );
 
               that.parent().addClass("changed");
@@ -320,17 +320,17 @@ jQuery(document).ready(function ($) {
               $(".content-wrapper .oil-content").html(mappingInfo.oil_title);
               $(".content-wrapper .oil-image img").attr(
                 "src",
-                mappingInfo.oil_image
+                mappingInfo.oil_image,
               );
               if (mappingInfo.oil_category_link.length > 1) {
                 $(".content-wrapper a").attr(
                   "href",
-                  mappingInfo.oil_category_link[0][1]
+                  mappingInfo.oil_category_link[0][1],
                 );
                 $(".content-wrapper a").text(
                   translateString.viewall +
                     " " +
-                    mappingInfo.oil_category_link[0][0]
+                    mappingInfo.oil_category_link[0][0],
                 );
                 for (
                   let index = 1;
@@ -344,13 +344,13 @@ jQuery(document).ready(function ($) {
                       translateString.viewall +
                       " " +
                       mappingInfo.oil_category_link[index][0] +
-                      "</a>"
+                      "</a>",
                   );
                 }
               } else {
                 $(".content-wrapper a").attr(
                   "href",
-                  mappingInfo.oil_category_link[0][1]
+                  mappingInfo.oil_category_link[0][1],
                 );
                 $(".content-wrapper a").text(translateString.viewproducts);
                 $(".content-wrapper a.extra").remove();
@@ -367,11 +367,11 @@ jQuery(document).ready(function ($) {
                   .find(".hidden-field")
                   .css(
                     "background-image",
-                    'url("' + mappingInfo.part_image + '")'
+                    'url("' + mappingInfo.part_image + '")',
                   );
               }, 400);
             }
-          }
+          },
         );
       });
 
@@ -406,7 +406,7 @@ jQuery(document).ready(function ($) {
           Math.abs(
             that.offset().top -
               $(".content-wrapper .oil-wrapper-outer h3").offset().top -
-              that.innerHeight()
+              that.innerHeight(),
           ) - 6;
         lineXBottom =
           $(".appMapping").offset().top +
@@ -421,7 +421,7 @@ jQuery(document).ready(function ($) {
         lineYWidth = Math.abs(
           $(".appMapping .col-4").innerWidth() +
             (that.offset().left - that.parent().offset().left) +
-            that.innerWidth() / 2
+            that.innerWidth() / 2,
         );
         lineYBottom = lineXBottom + lineXHeight;
         lineYLeft = -(
@@ -449,7 +449,7 @@ jQuery(document).ready(function ($) {
         lineXHeight = Math.abs(
           $(".content-wrapper .oil-wrapper-outer h3").offset().top -
             that.offset().top +
-            that.innerHeight() / 2
+            that.innerHeight() / 2,
         );
         lineXTop =
           that.offset().top -
@@ -464,7 +464,7 @@ jQuery(document).ready(function ($) {
         lineYWidth = Math.abs(
           $(".appMapping .col-4").innerWidth() +
             (that.offset().left - $(".image-wrapper").offset().left) +
-            that.innerWidth() / 2
+            that.innerWidth() / 2,
         );
         lineYTop = lineXTop + lineXHeight;
         lineYLeft = -(
@@ -503,7 +503,7 @@ jQuery(document).ready(function ($) {
       $(".appMapping .single-tab:not(.main-tab)").click(function () {
         var id = $(this).attr("id");
         $(
-          ".appMapping .single-tab, .appMapping .single-mapping-wrapper"
+          ".appMapping .single-tab, .appMapping .single-mapping-wrapper",
         ).removeClass("active");
         $(".oil-wrapper-outer h3, .oil-wrapper-outer .oil-content").text("");
         $(".oil-wrapper-outer img").attr("src", "");
@@ -518,7 +518,7 @@ jQuery(document).ready(function ($) {
               "background-image",
               $(this)
                 .find(".image-wrapper .default-image")
-                .css("background-image")
+                .css("background-image"),
             );
         });
       });
@@ -531,19 +531,19 @@ jQuery(document).ready(function ($) {
         $("." + $currMainTab).fadeIn();
         if ($(".mapping-tabs-wrapper .goback").length == 0) {
           $(".mapping-tabs-wrapper").append(
-            '<div class="goback">' + translateString.back + "</div>"
+            '<div class="goback">' + translateString.back + "</div>",
           );
         }
 
         $(
-          ".appMapping .single-tab, .appMapping .single-mapping-wrapper"
+          ".appMapping .single-tab, .appMapping .single-mapping-wrapper",
         ).removeClass("active");
         $(".oil-wrapper-outer h3, .oil-wrapper-outer .oil-content").text("");
         $(".oil-wrapper-outer img").attr("src", "");
         $(".line-x, .line-y").removeAttr("style");
         $(".line-x, .line-y").removeAttr("style");
         $(".appMapping #content-" + $currMainTabFirstChildId).addClass(
-          "active"
+          "active",
         );
         $(this).addClass("active");
         $(".single-mapping-wrapper").each(function () {
@@ -553,7 +553,7 @@ jQuery(document).ready(function ($) {
               "background-image",
               $(this)
                 .find(".image-wrapper .default-image")
-                .css("background-image")
+                .css("background-image"),
             );
         });
         $($("." + $currMainTab)[0]).addClass("active");
@@ -711,17 +711,17 @@ jQuery(document).ready(function ($) {
       });
 
       $(
-        ".appMapping .custom-select:not(.main-select) .select-items>div.gen-tab, .appMapping .gen-select .select-items>div"
+        ".appMapping .custom-select:not(.main-select) .select-items>div.gen-tab, .appMapping .gen-select .select-items>div",
       ).on("click", function () {
         var that = $(this);
         if ($(".main-select").length > 0) {
           if ($(".main-select .select-items>div.same-as-selected").length > 0) {
             var indexRowWrap = $(
-              ".main-select .select-items>div.active"
+              ".main-select .select-items>div.active",
             ).index();
 
             var indexRowWrap = parseInt(
-              that.parents(".custom-select").attr("id").split("-").pop()
+              that.parents(".custom-select").attr("id").split("-").pop(),
             );
           } else {
             var indexRowWrap = 0;
@@ -764,7 +764,7 @@ jQuery(document).ready(function ($) {
                 .find(".image-wrapper.active")
                 .css(
                   "background-image",
-                  'url("' + mappingInfo.part_image + '")'
+                  'url("' + mappingInfo.part_image + '")',
                 );
 
               that.parent().addClass("changed");
@@ -788,7 +788,7 @@ jQuery(document).ready(function ($) {
                   .text(
                     translateString.viewall +
                       " " +
-                      mappingInfo.oil_category_link[0][0]
+                      mappingInfo.oil_category_link[0][0],
                   );
                 for (
                   let index = 1;
@@ -803,7 +803,7 @@ jQuery(document).ready(function ($) {
                         translateString.viewall +
                         " " +
                         mappingInfo.oil_category_link[index][0] +
-                        "</a>"
+                        "</a>",
                     );
                 }
               } else {
@@ -830,11 +830,11 @@ jQuery(document).ready(function ($) {
                   .find(".image-wrapper.active .hidden-field")
                   .css(
                     "background-image",
-                    'url("' + mappingInfo.part_image + '")'
+                    'url("' + mappingInfo.part_image + '")',
                   );
               }, 400);
             }
-          }
+          },
         );
       });
 
@@ -860,13 +860,13 @@ jQuery(document).ready(function ($) {
             $(".oil-details .oil-content").text("");
             $(".oil-image img").attr("src", "");
             $(
-              ".appMapping .image-wrapper, .appMapping .custom-select:not(.main-select), .appMapping .image-main-wrap"
+              ".appMapping .image-wrapper, .appMapping .custom-select:not(.main-select), .appMapping .image-main-wrap",
             ).removeClass("active");
             $(makeImageActive).addClass("active");
             $(makeImageActive).parent().addClass("active");
             $(makeSelectActive).parent().addClass("active");
             $(makeSelectActive).addClass("active");
-          }
+          },
         );
       }
     }
@@ -1039,10 +1039,10 @@ function removeBlurFromBackground() {
 
 function showMegaMenu() {
   if (!submenu || !megaMenu) return;
-  
+
   submenu.classList.add("sub-menu--active");
   megaMenu.classList.add("mega-menu--active");
-  
+
   // Enable pointer events for menu
   submenu.style.pointerEvents = "auto";
   megaMenu.style.pointerEvents = "auto";
@@ -1060,10 +1060,10 @@ function showMegaMenu() {
 
 function hideMegaMenu() {
   if (!submenu || !megaMenu) return;
-  
+
   submenu.classList.remove("sub-menu--active");
   megaMenu.classList.remove("mega-menu--active");
-  
+
   // Disable pointer events when hidden - fixes the blocking issue
   submenu.style.pointerEvents = "none";
   megaMenu.style.pointerEvents = "none";
@@ -1108,7 +1108,7 @@ if (itemHasChildren && submenu && megaMenu && main) {
       megaMenuItems.forEach((megaItem) => {
         megaItem.classList.remove("mega-menu__item--active");
       });
-      
+
       if (megaMenuItems[i]) {
         megaMenuItems[i].classList.add("mega-menu__item--active");
       }
@@ -1167,11 +1167,13 @@ if (itemHasChildren && submenu && megaMenu && main) {
     const isOpen = currentSubmenu.classList.contains("sub-menu--open");
 
     // Close any other open submenus in the mobile menu
-    document.querySelectorAll("#mobile-menu .sub-menu.sub-menu--open").forEach((submenuEl) => {
-      if (submenuEl !== currentSubmenu) {
-        submenuEl.classList.remove("sub-menu--open");
-      }
-    });
+    document
+      .querySelectorAll("#mobile-menu .sub-menu.sub-menu--open")
+      .forEach((submenuEl) => {
+        if (submenuEl !== currentSubmenu) {
+          submenuEl.classList.remove("sub-menu--open");
+        }
+      });
 
     currentSubmenu.classList.toggle("sub-menu--open", !isOpen);
   });
@@ -1181,9 +1183,11 @@ if (itemHasChildren && submenu && megaMenu && main) {
     if (window.innerWidth > MOBILE_BREAKPOINT) return;
     if (event.target.closest("#mobile-menu")) return;
 
-    document.querySelectorAll("#mobile-menu .sub-menu.sub-menu--open").forEach((submenuEl) => {
-      submenuEl.classList.remove("sub-menu--open");
-    });
+    document
+      .querySelectorAll("#mobile-menu .sub-menu.sub-menu--open")
+      .forEach((submenuEl) => {
+        submenuEl.classList.remove("sub-menu--open");
+      });
   });
 })();
 
@@ -1194,20 +1198,18 @@ if (itemHasChildren && submenu && megaMenu && main) {
 // });
 
 // Legacy Categories Tray
-const legacyCategoriesTray = document.querySelector(
-  ".legacy-categories-tray"
-);
+const legacyCategoriesTray = document.querySelector(".legacy-categories-tray");
 const legacyCategoriesToggle = document.querySelector(
-  ".legacy-categories-tray__toggle"
+  ".legacy-categories-tray__toggle",
 );
 const legacyCategoriesClose = document.querySelector(
-  ".legacy-categories-tray__close"
+  ".legacy-categories-tray__close",
 );
 const legacyCategoriesContent = document.querySelector(
-  ".legacy-categories-tray__content"
+  ".legacy-categories-tray__content",
 );
 const legacyCategoriesHamburger = document.querySelector(
-  ".legacy-categories-tray__hamburger"
+  ".legacy-categories-tray__hamburger",
 );
 
 legacyCategoriesToggle.addEventListener("click", () => {
@@ -1215,22 +1217,19 @@ legacyCategoriesToggle.addEventListener("click", () => {
   //   "legacy-categories-tray__content--active"
   // );
   if (legacyCategoriesTray) {
-    legacyCategoriesTray.classList.toggle(
-      "legacy-categories-tray--active"
-    );
+    legacyCategoriesTray.classList.toggle("legacy-categories-tray--active");
   }
-  
+
   // Toggle hamburger animation
   if (legacyCategoriesHamburger) {
     legacyCategoriesHamburger.classList.toggle(
-      "legacy-categories-tray__hamburger--pressed"
+      "legacy-categories-tray__hamburger--pressed",
     );
   }
 });
 
 if (legacyCategoriesClose) {
-legacyCategoriesClose.addEventListener("click", () => {
-});
+  legacyCategoriesClose.addEventListener("click", () => {});
 }
 
 // Auto-open tray once per session to indicate its presence
@@ -1247,25 +1246,21 @@ legacyCategoriesClose.addEventListener("click", () => {
 
     // Open the tray
     legacyCategoriesContent.classList.add(
-      "legacy-categories-tray__content--active"
+      "legacy-categories-tray__content--active",
     );
     if (legacyCategoriesTray) {
-      legacyCategoriesTray.classList.add(
-        "legacy-categories-tray--active"
-      );
+      legacyCategoriesTray.classList.add("legacy-categories-tray--active");
     }
 
     // Close after 2 seconds
     setTimeout(() => {
       if (legacyCategoriesContent) {
         legacyCategoriesContent.classList.remove(
-          "legacy-categories-tray__content--active"
+          "legacy-categories-tray__content--active",
         );
       }
       if (legacyCategoriesTray) {
-        legacyCategoriesTray.classList.remove(
-          "legacy-categories-tray--active"
-        );
+        legacyCategoriesTray.classList.remove("legacy-categories-tray--active");
       }
       // Mark as shown in session storage
       sessionStorage.setItem("legacyCategoriesTrayShown", "true");
@@ -1294,7 +1289,7 @@ class Tabs {
     buttonSelector = ".tabs__button",
     contentSelector = ".tabs__content",
     activeButtonModifier = "tabs__button--active",
-    hiddenContentModifier = "tabs__content--hidden"
+    hiddenContentModifier = "tabs__content--hidden",
   ) {
     this.tabsSelector = tabsSelector;
     this.buttonSelector = buttonSelector;
@@ -1398,7 +1393,7 @@ class CarouselSingleOpacity {
     slideSelector,
     animationDuration,
     autoplayDuration,
-    hasAutoplay = false
+    hasAutoplay = false,
   ) {
     this.slideSelector = slideSelector;
     this.animationDuration = animationDuration;
@@ -1463,7 +1458,7 @@ class CarouselSingleOpacity {
     // Get navigation elements
     const dotsContainer = document.querySelector(".carousel-hero__dots");
     const prevButton = document.querySelector(
-      ".carousel-hero__button--previous"
+      ".carousel-hero__button--previous",
     );
     const nextButton = document.querySelector(".carousel-hero__button--next");
 
@@ -1519,7 +1514,7 @@ class CarouselSingleOpacity {
           zIndex: 1,
           duration: 0,
         },
-        "<"
+        "<",
       )
       .to(this.slides[index], {
         opacity: 1,
@@ -1558,7 +1553,7 @@ if (carouselHeroElement) {
     ".carousel-hero__slide",
     0.2,
     5000,
-    true
+    true,
   );
   carousel.init();
 }
