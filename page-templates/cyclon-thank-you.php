@@ -11,17 +11,20 @@ get_header();
         <section class="error-404 not-found">
 
 
-            <div class="page-content ">
+            <div class="page-content">
 
-                <h1 class="error-heading">Thank you for contacting Cyclon. </h1>
-                <span class="error-text text-center">We have received your message and our team will get back to you as soon as possible.
-                </span>
-                <span class="error-text text-center">
-                    Kind regards, <br>
-                    The Cyclon Team
-                </span>
+                <div class="container">
+                    <h1 class="error-heading">Thank you for contacting Cyclon. </h1>
+                    <span class="error-text text-center">We have received your message and our team will get back to you as soon as possible.
+                    </span>
+                    <span class="text-center">
+                        Kind regards, <br>
+                        The Cyclon Team
+                    </span>
 
-                <a class="mButton mButton--trans" href="<?php echo home_url('/'); ?>">Back to home</a>
+                    <a class="mButton mButton--trans" href="<?php echo home_url('/'); ?>">Back to home</a>
+                </div>
+
 
 
 
