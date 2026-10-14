@@ -14,16 +14,20 @@ get_header();
             <div class="page-content">
 
                 <div class="container">
-                    <h1 class="error-heading">Thank you for contacting Cyclon. </h1>
-                    <span class="error-text text-center">We have received your message and our team will get back to you as soon as possible.
+                    <h1 class="error-heading"><?php _e('Thank you for contacting Cyclon.', 'cyclon'); ?></h1>
+                    <span class="error-text text-center">
+                        <?php _e('We have received your message and our team will get back to you as soon as possible.', 'cyclon'); ?>
                     </span>
                     <span class="text-center">
-                        Kind regards, <br>
-                        The Cyclon Team
+                        <?php _e('Kind regards,', 'cyclon'); ?> <br>
+                        <?php _e('The Cyclon Team', 'cyclon'); ?>
                     </span>
 
-                    <a class="mButton mButton--trans" href="<?php echo home_url('/'); ?>">Back to home</a>
+                    <a class="mButton mButton--trans" href="<?php echo home_url('/'); ?>">
+                        <?php _e('Back to home', 'cyclon'); ?>
+                    </a>
                 </div>
+
 
 
 
