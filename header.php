@@ -327,7 +327,32 @@
                     </div>
                 </div>
             </div>
-        <?php elseif (is_page() && !is_page('quality') && !is_page('tribo-act') && !is_page('technology') && !is_page_template('page-templates/cyclon-plain.php') && !is_page_template('page-templates/cyclon-thank-you.php')):
+        <?php elseif (is_page_template('page-templates/booking.php')): ?>
+
+            <div class="taxHeader taxHeader2"
+                style="background: #042a5d; background-image:url(<?php echo get_field('header_image'); ?>)">
+                <div class="container">
+                    <div class="row">
+
+                        <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
+                            <div class="taxHeader__Content" style="justify-content: flex-start;">
+                                <div class="taxHeader__Content__Inner">
+                                    <div class="container">
+                                        <div class="row">
+                                            <div class="col-lg-12">
+                                                <h1><?php echo get_field('hero_heading__booking'); ?></h1>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php elseif (is_page() && !is_page('quality') && !is_page('tribo-act') && !is_page('technology') && !is_page_template('page-templates/cyclon-plain.php') && !is_page_template('page-templates/cyclon-thank-you.php') && !is_page_template('page-templates/booking.php')):
             $term = get_queried_object();
             $headerImage = get_field('header_image');
         ?>
